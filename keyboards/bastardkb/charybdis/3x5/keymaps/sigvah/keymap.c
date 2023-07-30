@@ -121,17 +121,17 @@ enum charybdis_keymap_bstiq_layers {
 
 // Symbols.
 #define LAYOUT_LAYER_SYM                                                                      \
-    NO_LCBR, NO_AMPR, NO_ASTR, NO_LPRN, NO_RCBR, __________________RESET_R__________________, \
-    NO_COLN,  NO_DLR, NO_PERC, NO_CIRC, NO_PLUS,    U_NU, NO_AE,  NO_ARNG,   NO_OSTR,   U_NU,\
-    NO_TILD, NO_EXLM,   NO_AT, NO_HASH, NO_PIPE, ______________HOME_ROW_ALGR_R______________, \
-                      NO_LPRN, NO_RPRN, NO_UNDS,    U_NA,    U_NA
+    __________________RESET_L__________________, NO_PERC,   NO_AT, NO_DQUO, NO_AMPR,  NO_GRV, \
+    ______________HOME_ROW_GASC_L______________, NO_HASH, NO_LPRN, NO_RPRN, NO_LBRC, NO_QUOT, \
+    KC_F12,   KC_F12,   KC_F2,   KC_F5, KC_PSCR, NO_RBRC, NO_LCBR, NO_RCBR, NO_RBRC, NO_TILD, \
+                               U_NA, U_NA, U_NA,    U_NA,    U_NA
 
 // Numerals.
 #define LAYOUT_LAYER_NUM                                                                      \
-    NO_LBRC,    NO_7,    NO_8,    NO_9, NO_RBRC, __________________RESET_R__________________, \
-    NO_SCLN,    NO_4,    NO_5,    NO_6,  NO_EQL, ______________HOME_ROW_GASC_R______________, \
-     NO_GRV,    NO_1,    NO_2,    NO_3, NO_BSLS,  KC_F12,  KC_F12,   KC_F2,   KC_F5, KC_PSCR, \
-                       NO_DOT,    NO_0, NO_MINS,    U_NA,    U_NA
+    NO_BSLS,    NO_7,    NO_8,    NO_9, NO_QUES, __________________RESET_R__________________, \
+    NO_PIPE,    NO_4,    NO_5,    NO_6,  NO_EQL, ______________HOME_ROW_GASC_R______________, \
+    NO_SLSH,    NO_1,    NO_2,    NO_3, NO_EXLM,  KC_F12,   NO_AE, NO_OSTR, NO_ARNG, NO_PLUS, \
+                      NO_PERC,    NO_0, NO_ASTR,    U_NA,    U_NA
 
 // Function keys.
 #define LAYOUT_LAYER_FUN                                                                      \
