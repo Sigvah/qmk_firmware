@@ -108,7 +108,7 @@ enum charybdis_keymap_bstiq_layers {
 // Navigation.
 #define LAYOUT_LAYER_NAV                                                                      \
     __________________RESET_L__________________, RGB_TOG, RGB_MOD, RGB_HUI, RGB_SAI, RGB_VAI, \
-    KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT,  KC_DEL, ______________HOME_ROW_GASC_R______________, \
+    KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, KC_CAPS, ______________HOME_ROW_GASC_R______________, \
     KC_HOME, KC_PGDN, KC_PGUP,  KC_END,  KC_DEL,    U_NU, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, \
                          U_NA,    U_NA,    U_NA, KC_MSTP, KC_MPLY
 
@@ -122,7 +122,7 @@ enum charybdis_keymap_bstiq_layers {
 // Symbols.
 #define LAYOUT_LAYER_SYM                                                                      \
     NO_LCBR, NO_AMPR, NO_ASTR, NO_LPRN, NO_RCBR, __________________RESET_R__________________, \
-    NO_COLN,  NO_DLR, NO_PERC, NO_CIRC, NO_PLUS, ______________HOME_ROW_GASC_R______________, \
+    NO_COLN,  NO_DLR, NO_PERC, NO_CIRC, NO_PLUS,    U_NU, NO_AE,  NO_ARNG,   NO_OSTR,   U_NU,\
     NO_TILD, NO_EXLM,   NO_AT, NO_HASH, NO_PIPE, ______________HOME_ROW_ALGR_R______________, \
                       NO_LPRN, NO_RPRN, NO_UNDS,    U_NA,    U_NA
 
