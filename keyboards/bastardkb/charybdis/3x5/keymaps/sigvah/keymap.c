@@ -35,7 +35,7 @@ enum charybdis_keymap_bstiq_layers {
 #define ESC_NAV LT(LAYER_NAV, KC_ESC)
 #define TAB_SYM LT(LAYER_SYM, KC_TAB)
 #define ENT_SFT LSFT_T(KC_ENT)
-#define BAC_SYM LT(LAYER_SYM, KC_BSPC)
+#define BAC_SFT LSFT_T(KC_BSPC)
 #define SPC_NUM LT(LAYER_NUM, KC_SPC)
 #define MOUSE(KC) LT(LAYER_MOUSE, KC)
 
