@@ -45,6 +45,9 @@
  */
 #define QUICK_TAP_TERM 0
 
+#define POINTING_DEVICE_AUTO_MOUSE_ENABLE
+#define AUTO_MOUSE_DEFAULT_LAYER 4
+
 /*
  * Tap-or-Hold decision modes.
  *

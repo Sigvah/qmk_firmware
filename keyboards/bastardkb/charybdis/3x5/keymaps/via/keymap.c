@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+#include "keymap_norwegian.h"
 
 #ifdef CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 #    include "timer.h"
@@ -24,7 +25,6 @@ enum charybdis_keymap_layers {
     LAYER_BASE = 0,
     LAYER_FUNCTION,
     LAYER_NAVIGATION,
-    LAYER_MEDIA,
     LAYER_POINTER,
     LAYER_NUMERAL,
     LAYER_SYMBOLS,
@@ -45,6 +45,13 @@ static uint16_t auto_pointer_layer_timer = 0;
 #    endif // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD
 #endif     // CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
+#define ESC_NAV LT(LAYER_NAVIGATION, KC_ESC)
+#define TAB_SYM LT(LAYER_SYMBOLS, KC_TAB)
+#define ENT_SFT LSFT_T(KC_ENT)
+#define BAC_SFT LSFT_T(KC_BSPC)
+#define SPC_NUM LT(LAYER_NUMERALS, KC_SPC)
+#define MOUSE(KC) LT(LAYER_POINTER, KC)
+
 #define ESC_MED LT(LAYER_MEDIA, KC_ESC)
 #define SPC_NAV LT(LAYER_NAVIGATION, KC_SPC)
 #define TAB_FUN LT(LAYER_FUNCTION, KC_TAB)
@@ -62,10 +69,14 @@ static uint16_t auto_pointer_layer_timer = 0;
 // clang-format off
 /** \brief QWERTY layout (3 rows, 10 columns). */
 #define LAYOUT_LAYER_BASE                                                                     \
-       KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, \
-       KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L, KC_QUOT, \
-       KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, \
+    NO_Q,    NO_W, NO_F, NO_P, NO_B, NO_J, NO_L, NO_U, NO_Y, NO_QUOT, \
+    NO_A,    NO_R, NO_S, NO_T, NO_G, NO_M, NO_N, NO_E, NO_I, NO_O, \
+    NO_Z,    NO_X, NO_C, NO_D, NO_V, NO_K, NO_H, NO_COMM, NO_DOT, NO_MINS, \
                       ESC_MED, SPC_NAV, TAB_FUN, ENT_SYM, BSP_NUM
+
+/** Convenience key shorthands. */
+#define U_NA KC_NO // Present but not available for use.
+#define U_NU KC_NO // Available but not used.
 
 /** Convenience row shorthands. */
 #define _______________DEAD_HALF_ROW_______________ XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
@@ -124,10 +135,11 @@ static uint16_t auto_pointer_layer_timer = 0;
  * base layer to avoid having to layer change mid edit and to enable auto-repeat.
  */
 #define LAYOUT_LAYER_NAVIGATION                                                               \
-    _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
-    ______________HOME_ROW_GACS_L______________, KC_CAPS, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, \
-    _______________DEAD_HALF_ROW_______________,  KC_INS, KC_HOME, KC_PGDN, KC_PGUP,  KC_END, \
-                      XXXXXXX, _______, XXXXXXX,  KC_ENT, KC_BSPC
+    __________________RESET_L__________________, RGB_TOG, RGB_MOD, RGB_HUI, RGB_SAI, RGB_VAI, \
+    KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, KC_CAPS, ______________HOME_ROW_GASC_R______________, \
+    KC_HOME, KC_PGDN, KC_PGUP,  KC_END,  KC_DEL,    U_NU, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, \
+                         U_NA,    U_NA,    U_NA, KC_MSTP, KC_MPLY
+
 
 /**
  * \brief Numeral layout.
@@ -137,10 +149,10 @@ static uint16_t auto_pointer_layer_timer = 0;
  * `KC_DOT` is duplicated from the base layer.
  */
 #define LAYOUT_LAYER_NUMERAL                                                                  \
-    KC_LBRC,    KC_7,    KC_8,    KC_9, KC_RBRC, _______________DEAD_HALF_ROW_______________, \
-    KC_SCLN,    KC_4,    KC_5,    KC_6,  KC_EQL, ______________HOME_ROW_GACS_R______________, \
-     KC_GRV,    KC_1,    KC_2,    KC_3, KC_BSLS, _______________DEAD_HALF_ROW_______________, \
-                       KC_DOT,    KC_0, KC_MINS, XXXXXXX, _______
+    NO_BSLS,    NO_7,    NO_8,    NO_9, NO_QUES, __________________RESET_R__________________, \
+    NO_PIPE,    NO_4,    NO_5,    NO_6,  NO_EQL, ______________HOME_ROW_GASC_R______________, \
+    NO_SLSH,    NO_1,    NO_2,    NO_3, NO_EXLM,  KC_F12,   NO_AE, NO_OSTR, NO_ARNG, NO_PLUS, \
+                      NO_PERC,    NO_0, NO_ASTR,    U_NA,    U_NA
 
 /**
  * \brief Symbols layer.
@@ -150,10 +162,10 @@ static uint16_t auto_pointer_layer_timer = 0;
  * `KC_RPRN`.
  */
 #define LAYOUT_LAYER_SYMBOLS                                                                  \
-    KC_LCBR, KC_AMPR, KC_ASTR, KC_LPRN, KC_RCBR, _______________DEAD_HALF_ROW_______________, \
-    KC_COLN,  KC_DLR, KC_PERC, KC_CIRC, KC_PLUS, ______________HOME_ROW_GACS_R______________, \
-    KC_TILD, KC_EXLM,   KC_AT, KC_HASH, KC_PIPE, _______________DEAD_HALF_ROW_______________, \
-                      KC_LPRN, KC_RPRN, KC_UNDS, _______, XXXXXXX
+    __________________RESET_L__________________, NO_PERC,   NO_AT, NO_DQUO, NO_AMPR,  NO_GRV, \
+    ______________HOME_ROW_GACS_L______________, NO_HASH, NO_LPRN, NO_RPRN, NO_LBRC, NO_QUOT, \
+    KC_F12,   KC_F12,   KC_F2,   KC_F5, KC_PSCR, NO_RBRC, NO_LCBR, NO_RCBR, NO_RBRC, NO_TILD, \
+                               U_NA, U_NA, U_NA,    U_NA,    U_NA
 
 /**
  * \brief Add Home Row mod to a layout.
@@ -208,15 +220,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   [LAYER_FUNCTION] = LAYOUT_wrapper(LAYOUT_LAYER_FUNCTION),
   [LAYER_NAVIGATION] = LAYOUT_wrapper(LAYOUT_LAYER_NAVIGATION),
-  [LAYER_MEDIA] = LAYOUT_wrapper(LAYOUT_LAYER_MEDIA),
   [LAYER_NUMERAL] = LAYOUT_wrapper(LAYOUT_LAYER_NUMERAL),
   [LAYER_POINTER] = LAYOUT_wrapper(LAYOUT_LAYER_POINTER),
   [LAYER_SYMBOLS] = LAYOUT_wrapper(LAYOUT_LAYER_SYMBOLS),
 };
 // clang-format on
 
-#ifdef POINTING_DEVICE_ENABLE
-#    ifdef CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
+ifdef POINTING_DEVICE_ENABLE
+    ifdef CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
     if (abs(mouse_report.x) > CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD || abs(mouse_report.y) > CHARYBDIS_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD) {
         if (auto_pointer_layer_timer == 0) {

@@ -29,8 +29,17 @@ enum charybdis_keymap_bstiq_layers {
     LAYER_FUN,
 };
 
+bool is_mouse_record_user(uint16_t keycode, keyrecord_t* record) {
+    switch(keycode) {
+        case DRGSCRL:
+            return true;
+        default:
+            return false;
+    }
+}
+
 // Automatically enable sniping when the mouse layer is on.
-#define CHARYBDIS_AUTO_SNIPING_ON_LAYER LAYER_MOUSE
+//#define CHARYBDIS_AUTO_SNIPING_ON_LAYER LAYER_MOUSE
 
 #define ESC_NAV LT(LAYER_NAV, KC_ESC)
 #define TAB_SYM LT(LAYER_SYM, KC_TAB)
@@ -73,7 +82,7 @@ enum charybdis_keymap_bstiq_layers {
        Q,    W,    F,    P,    B,    J,    L,    U,    Y, QUOT, \
        A,    R,    S,    T,    G,    M,    N,    E,    I,    O, \
        Z,    X,    C,    D,    V,    K,    H, COMM,  DOT, MINS, \
-       ESC_NAV, TAB_SYM, ENT_SFT,    BAC_SYM, SPC_NUM)
+       ESC_NAV, TAB_SYM, ENT_SFT,    BAC_SFT, SPC_NUM)
 
 /** Convenience key shorthands. */
 #define U_NA KC_NO // Present but not available for use.
@@ -82,12 +91,10 @@ enum charybdis_keymap_bstiq_layers {
 /** Convenience row shorthands. */
 #define __________________RESET_L__________________ QK_BOOT,    U_NA,    U_NA,    U_NA,    U_NA
 #define __________________RESET_R__________________    U_NA,    U_NA,    U_NA,    U_NA, QK_BOOT
-#define ______________HOME_ROW_GASC_L______________ KC_LGUI, KC_LALT, KC_LSFT, KC_LCTL,    U_NA
+#define ______________HOME_ROW_GASC_L______________ KC_LSFT, KC_LGUI, KC_LALT, KC_LCTL,    U_NA
 #define ______________HOME_ROW_GASC_L_MAC__________ KC_LCTL, KC_LALT, KC_LSFT, KC_LGUI,    U_NA
-#define ______________HOME_ROW_ALGR_L______________    U_NA, KC_ALGR,    U_NA,    U_NA,    U_NA
-#define ______________HOME_ROW_GASC_R______________    U_NA, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI
+#define ______________HOME_ROW_GASC_R______________    U_NA, KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT
 #define ______________HOME_ROW_GASC_R_MAC__________    U_NA, KC_LGUI, KC_LSFT,  KC_CTL, KC_LGUI
-#define ______________HOME_ROW_ALGR_R______________    U_NA,    U_NA,    U_NA, KC_ALGR,    U_NA
 
 /** Layers. */
 
@@ -114,10 +121,10 @@ enum charybdis_keymap_bstiq_layers {
 
 // Mouse.
 #define LAYOUT_LAYER_MOUSE                                                                    \
-    S_D_MOD, USR_PST, USR_CPY, USR_CUT, USR_UND, USR_RDO, USR_PST, USR_CPY, USR_CUT, USR_UND, \
-    DPI_MOD, DRGSCRL, KC_LSFT, KC_LCTL, _______, KC_CAPS, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, \
-    USR_RDO, USR_PST, USR_CPY, USR_CUT, USR_UND,    U_NU,    WH_L,    WH_D,    WH_U,    WH_R, \
-                      KC_BTN2, KC_BTN1, KC_BTN3, KC_BTN1, KC_BTN3
+    XXXXXXX, XXXXXXX, XXXXXXX, DPI_MOD, S_D_MOD, S_D_MOD, DPI_MOD, XXXXXXX, XXXXXXX, XXXXXXX, \
+    ______________HOME_ROW_GASC_L______________, ______________HOME_ROW_GASC_R______________, \
+    _______, DRGSCRL, SNIPING, EE_CLR,  QK_BOOT, QK_BOOT, EE_CLR,  SNIPING, DRGSCRL, _______, \
+                      KC_BTN2, KC_BTN1, KC_BTN3, KC_BTN3, KC_BTN1
 
 // Symbols.
 #define LAYOUT_LAYER_SYM                                                                      \
@@ -137,7 +144,7 @@ enum charybdis_keymap_bstiq_layers {
 #define LAYOUT_LAYER_FUN                                                                      \
      KC_F12,   KC_F7,   KC_F8,   KC_F9, KC_PSCR, __________________RESET_R__________________, \
      KC_F11,   KC_F4,   KC_F5,   KC_F6, KC_SCRL, ______________HOME_ROW_GASC_R______________, \
-     KC_F10,   KC_F1,   KC_F2,   KC_F3, KC_PAUS, ______________HOME_ROW_ALGR_R______________,\
+     KC_F10,   KC_F1,   KC_F2,   KC_F3, KC_PAUS, ______________HOME_ROW_GASC_R______________,\
                        KC_APP,  KC_SPC,  KC_TAB,    U_NA,    U_NA
 
 /**
@@ -213,6 +220,11 @@ layer_state_t layer_state_set_kb(layer_state_t state) {
 // Forward-declare this helper function since it is defined in rgb_matrix.c.
 void rgb_matrix_update_pwm_buffers(void);
 #endif
+
+
+void pointing_device_init_user(void) {
+    set_auto_mouse_enable(true);
+}
 
 void shutdown_user(void) {
 #ifdef RGBLIGHT_ENABLE

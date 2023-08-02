@@ -7,4 +7,3 @@ else ifeq ($(MCU),STM32F411)
 	EEPROM_DRIVER = vendor
 endif
 
-VIA_ENABLE = yes
