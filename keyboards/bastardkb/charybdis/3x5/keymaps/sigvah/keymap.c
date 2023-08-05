@@ -16,8 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+//#include "os_detection.h"
 #include "keymap_norwegian.h"
 
+bool caps_word_press_user(uint16_t keycode) {
+    switch (keycode) {
+        // Keycodes that continue Caps Word, with shift applied.
+        case KC_SLSH:
+        case KC_A ... KC_Z:
+            add_weak_mods(MOD_BIT(KC_LSFT)); // Apply shift to next key.
+            return true;
+
+        // Keycodes that continue Caps Word, without shifting.
+        case KC_1 ... KC_0:
+        case KC_BSPC:
+        case KC_DEL:
+            return true;
+
+        default:
+            return false; // Deactivate Caps Word.
+    }
+}
 enum charybdis_keymap_bstiq_layers {
     LAYER_BASE = 0,
     LAYER_MBO,
@@ -29,22 +48,55 @@ enum charybdis_keymap_bstiq_layers {
     LAYER_FUN,
 };
 
-bool is_mouse_record_user(uint16_t keycode, keyrecord_t* record) {
-    switch(keycode) {
-        case DRGSCRL:
-            return true;
-        default:
-            return false;
-    }
-}
+// ---------------AUTO MOUSE----------------
+// bool is_mouse_record_user(uint16_t keycode, keyrecord_t* record) {
+//     switch(keycode) {
+//         case DRGSCRL:
+//             return true;
+//         default:
+//             return false;
+//     }
+// }
+
+// void pointing_device_init_user(void) {
+//     set_auto_mouse_enable(true);
+// }
+// -----------------------------------------
+
+// ---------------OS CHECKER----------------
+// void keyboard_post_init_user(void) {
+
+// #if defined(OS_DETECTION_ENABLE) && defined(DEFERRED_EXEC_ENABLE)
+
+// os_variant_t os_type;
+
+// uint32_t startup_exec(uint32_t trigger_time, void *cb_arg) {
+//     if (is_keyboard_master()) {
+//         os_type = detected_host_os();
+//         if (os_type) {
+//             bool is_mac = (os_type == OS_MACOS) || (os_type == OS_IOS);
+//             if (keymap_config.swap_lctl_lgui != is_mac) {
+//                 keymap_config.swap_lctl_lgui = keymap_config.swap_rctl_rgui = is_mac;
+//                 eeconfig_update_keymap(keymap_config.raw);
+//             }
+//     return os_type ? 0 : 500;
+// }
+
+// #endif
+// #if defined(OS_DETECTION_ENABLE) && defined(DEFERRED_EXEC_ENABLE)
+//     defer_exec(100, startup_exec, NULL);
+// #endif
+// }
+// -----------------------------------------
+
 
 // Automatically enable sniping when the mouse layer is on.
-//#define CHARYBDIS_AUTO_SNIPING_ON_LAYER LAYER_MOUSE
+#define CHARYBDIS_AUTO_SNIPING_ON_LAYER LAYER_MOUSE
 
 #define ESC_NAV LT(LAYER_NAV, KC_ESC)
 #define TAB_SYM LT(LAYER_SYM, KC_TAB)
 #define ENT_SFT LSFT_T(KC_ENT)
-#define BAC_SFT LSFT_T(KC_BSPC)
+#define BAC_SFT RSFT_T(KC_BSPC)
 #define SPC_NUM LT(LAYER_NUM, KC_SPC)
 #define MOUSE(KC) LT(LAYER_MOUSE, KC)
 
@@ -121,16 +173,16 @@ bool is_mouse_record_user(uint16_t keycode, keyrecord_t* record) {
 
 // Mouse.
 #define LAYOUT_LAYER_MOUSE                                                                    \
-    XXXXXXX, XXXXXXX, XXXXXXX, DPI_MOD, S_D_MOD, S_D_MOD, DPI_MOD, XXXXXXX, XXXXXXX, XXXXXXX, \
-    ______________HOME_ROW_GASC_L______________, ______________HOME_ROW_GASC_R______________, \
-    _______, DRGSCRL, SNIPING, EE_CLR,  QK_BOOT, QK_BOOT, EE_CLR,  SNIPING, DRGSCRL, _______, \
-                      KC_BTN2, KC_BTN1, KC_BTN3, KC_BSPC, KC_SPC
+    QK_BOOT,  EE_CLR, XXXXXXX, DPI_MOD, DPI_RMOD, S_D_MOD, DPI_MOD, XXXXXXX, EE_CLR,  QK_BOOT, \
+    _______, DRGSCRL, SNIPING, KC_LCTL,    U_NA, ______________HOME_ROW_GASC_R______________, \
+    _______, DRGSCRL, SNIPING, QK_BOOT,  EE_CLR, EE_CLR,  QK_BOOT, SNIPING, DRGSCRL, _______, \
+                      DRGSCRL, KC_BTN1, KC_BTN2, KC_BSPC, U_NA
 
 // Symbols.
 #define LAYOUT_LAYER_SYM                                                                      \
     __________________RESET_L__________________, NO_PERC,   NO_AT, NO_DQUO, NO_AMPR,  NO_GRV, \
     ______________HOME_ROW_GASC_L______________, NO_HASH, NO_LPRN, NO_LCBR, NO_LBRC, NO_QUOT, \
-    KC_F12,   KC_F12,   KC_F2,   KC_F5, KC_PSCR, NO_RBRC, NO_RPRN, NO_RCBR, NO_RBRC, NO_TILD, \
+    KC_F12,   KC_F12,   KC_F2,   KC_F5, CW_TOGG, NO_RBRC, NO_RPRN, NO_RCBR, NO_RBRC, NO_TILD, \
                                U_NA, U_NA, U_NA,    U_NA,    U_NA
 
 // Numerals.
@@ -163,8 +215,8 @@ bool is_mouse_record_user(uint16_t keycode, keyrecord_t* record) {
     ...)                                                               \
              L00,         L01,         L02,         L03,         L04,  \
              R05,         R06,         R07,         R08,         R09,  \
-      LSFT_T(L10), LGUI_T(L11), LALT_T(L12), LCTL_T(L13),        L14,  \
-             R15,  RCTL_T(R16), LALT_T(R17), RGUI_T(R18), RSFT_T(R19), \
+             L10, LGUI_T(L11), LALT_T(L12), LCTL_T(L13),         L14,  \
+             R15,  RCTL_T(R16), LALT_T(R17), RGUI_T(R18),        R19, \
       __VA_ARGS__
 #define HOME_ROW_MOD_GASC(...) _HOME_ROW_MOD_GASC(__VA_ARGS__)
 
@@ -185,7 +237,7 @@ bool is_mouse_record_user(uint16_t keycode, keyrecord_t* record) {
     ...)                                                          \
             L00,        L01,        L02,        L03,        L04,  \
             R05,        R06,        R07,        R08,        R09,  \
-            L10,        L11,        L12,        L13,        L14,  \
+     MOUSE(L10),        L11,        L12,        L13, MOUSE(L14),  \
             R15,        R16,        R17,        R18,        R19,  \
       MOUSE(L20),       L21,        L22,        L23,        L24,  \
             R25,        R26,        R27,        R28,  MOUSE(R29), \
@@ -222,10 +274,6 @@ void rgb_matrix_update_pwm_buffers(void);
 #endif
 
 
-void pointing_device_init_user(void) {
-    set_auto_mouse_enable(true);
-}
-
 void shutdown_user(void) {
 #ifdef RGBLIGHT_ENABLE
     rgblight_enable_noeeprom();
@@ -237,3 +285,4 @@ void shutdown_user(void) {
     rgb_matrix_update_pwm_buffers();
 #endif // RGB_MATRIX_ENABLE
 }
+

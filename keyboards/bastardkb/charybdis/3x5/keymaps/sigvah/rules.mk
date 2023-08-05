@@ -7,3 +7,6 @@ else ifeq ($(MCU),STM32F411)
 	EEPROM_DRIVER = vendor
 endif
 
+OS_DETECTION_ENABLE = yes
+DEFERRED_EXEC_ENABLE = yes
+CAPS_WORD_ENABLE = yes
