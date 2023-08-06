@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
-//#include "os_detection.h"
+#include "os_detection.h"
 #include "keymap_norwegian.h"
+#include "keymap_norwegian_mac.h"
 
 bool caps_word_press_user(uint16_t keycode) {
     switch (keycode) {
@@ -48,6 +49,26 @@ enum charybdis_keymap_bstiq_layers {
     LAYER_FUN,
 };
 
+// Define custom keycodes
+enum keycodes {
+    // keys that differ between Mac and PC
+    CX_AT,
+    CX_DLR,
+    CX_BSLS,
+    CX_PIPE,
+    CX_LCBR,
+    CX_RCBR,
+    CX_PND,
+    CX_EURO,
+    CX_PVWD,
+    CX_NXWD,
+    CX_UNDO,
+    CX_CUT,
+    CX_COPY,
+    CX_PSTE,
+};
+
+
 // ---------------AUTO MOUSE----------------
 // bool is_mouse_record_user(uint16_t keycode, keyrecord_t* record) {
 //     switch(keycode) {
@@ -64,31 +85,78 @@ enum charybdis_keymap_bstiq_layers {
 // -----------------------------------------
 
 // ---------------OS CHECKER----------------
-// void keyboard_post_init_user(void) {
+#if defined(OS_DETECTION_ENABLE) && defined(DEFERRED_EXEC_ENABLE)
 
-// #if defined(OS_DETECTION_ENABLE) && defined(DEFERRED_EXEC_ENABLE)
+os_variant_t os_type;
 
-// os_variant_t os_type;
+uint32_t startup_exec(uint32_t trigger_time, void *cb_arg) {
+    if (is_keyboard_master()) {
+        os_type = detected_host_os();
+        if (os_type) {
+            bool is_mac = (os_type == OS_MACOS) || (os_type == OS_IOS);
+            if (keymap_config.swap_lctl_lgui != is_mac) {
+                keymap_config.swap_lctl_lgui = keymap_config.swap_rctl_rgui = is_mac;
+                eeconfig_update_keymap(keymap_config.raw);
+            }
 
-// uint32_t startup_exec(uint32_t trigger_time, void *cb_arg) {
-//     if (is_keyboard_master()) {
-//         os_type = detected_host_os();
-//         if (os_type) {
-//             bool is_mac = (os_type == OS_MACOS) || (os_type == OS_IOS);
-//             if (keymap_config.swap_lctl_lgui != is_mac) {
-//                 keymap_config.swap_lctl_lgui = keymap_config.swap_rctl_rgui = is_mac;
-//                 eeconfig_update_keymap(keymap_config.raw);
-//             }
-//     return os_type ? 0 : 500;
-// }
 
-// #endif
-// #if defined(OS_DETECTION_ENABLE) && defined(DEFERRED_EXEC_ENABLE)
-//     defer_exec(100, startup_exec, NULL);
-// #endif
-// }
+#    ifdef UNICODE_COMMON_ENABLE
+            set_unicode_input_mode_soft(keymap_config.swap_lctl_lgui ? UNICODE_MODE_MACOS : UNICODE_MODE_WINCOMPOSE);
+#    endif
+            switch (os_type) {
+                case OS_UNSURE:
+                    break;
+                case OS_LINUX:
+                    break;
+                case OS_WINDOWS:
+                    break;
+#    if 0
+                case OS_WINDOWS_UNSURE:
+                    break;
+#    endif
+                case OS_MACOS:
+                    break;
+                case OS_IOS:
+                    break;
+#    if 0
+                case OS_PS5:
+                    break;
+                case OS_HANDHELD:
+                    break;
+#    endif
+            }
+        }
+    }
+
+    return os_type ? 0 : 500;
+}
+#endif
+void keyboard_post_init_user(void) {
+
+
+#if defined(OS_DETECTION_ENABLE) && defined(DEFERRED_EXEC_ENABLE)
+    defer_exec(100, startup_exec, NULL);
+#endif
+}
+
 // -----------------------------------------
 
+
+enum combos {
+  NN_AA,
+  GO_AE,
+  GI_OE,
+};
+
+const uint16_t PROGMEM ab_combo[] = {KC_G, KC_MINS, COMBO_END};
+const uint16_t PROGMEM jk_combo[] = {KC_G, KC_O, COMBO_END};
+const uint16_t PROGMEM qw_combo[] = {KC_G, KC_I, COMBO_END};
+
+combo_t key_combos[] = {
+  [NN_AA] = COMBO(ab_combo, KC_LBRC),
+  [GO_AE] = COMBO(jk_combo, KC_QUOT),
+  [GI_OE] = COMBO(qw_combo, KC_SCLN),
+};
 
 // Automatically enable sniping when the mouse layer is on.
 #define CHARYBDIS_AUTO_SNIPING_ON_LAYER LAYER_MOUSE
@@ -180,15 +248,15 @@ enum charybdis_keymap_bstiq_layers {
 
 // Symbols.
 #define LAYOUT_LAYER_SYM                                                                      \
-    __________________RESET_L__________________, NO_PERC,   NO_AT, NO_DQUO, NO_AMPR,  NO_GRV, \
-    ______________HOME_ROW_GASC_L______________, NO_HASH, NO_LPRN, NO_LCBR, NO_LBRC, NO_QUOT, \
-    KC_F12,   KC_F12,   KC_F2,   KC_F5, CW_TOGG, NO_RBRC, NO_RPRN, NO_RCBR, NO_RBRC, NO_TILD, \
+    __________________RESET_L__________________, NO_PERC,   CX_AT, NO_DQUO, NO_AMPR,  NO_GRV, \
+    ______________HOME_ROW_GASC_L______________, NO_HASH, NO_LPRN, CX_LCBR, NO_LBRC, NO_QUOT, \
+    KC_F12,   KC_F12,   KC_F2,   KC_F5, CW_TOGG,  CX_DLR, NO_RPRN, CX_RCBR, NO_RBRC, NO_TILD, \
                                U_NA, U_NA, U_NA,    U_NA,    U_NA
 
 // Numerals.
 #define LAYOUT_LAYER_NUM                                                                      \
-    NO_BSLS,    NO_7,    NO_8,    NO_9, NO_EXLM, __________________RESET_R__________________, \
-    NO_PIPE,    NO_4,    NO_5,    NO_6,  NO_EQL, ______________HOME_ROW_GASC_R______________, \
+    CX_BSLS,    NO_7,    NO_8,    NO_9, NO_EXLM, __________________RESET_R__________________, \
+    CX_PIPE,    NO_4,    NO_5,    NO_6,  NO_EQL, ______________HOME_ROW_GASC_R______________, \
     NO_SLSH,    NO_1,    NO_2,    NO_3, NO_ASTR,  KC_F12,   NO_AE, NO_OSTR, NO_ARNG, NO_PLUS, \
                       NO_LABK,    NO_0, NO_RABK,    U_NA,    U_NA
 
@@ -286,3 +354,126 @@ void shutdown_user(void) {
 #endif // RGB_MATRIX_ENABLE
 }
 
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    bool is_apple;
+    is_apple = (os_type == OS_MACOS) || (os_type == OS_IOS);
+    switch (keycode) {
+
+        // Handle keycodes that differ between Mac and PC
+        case CX_AT:
+            if(record->event.pressed) {
+                register_code16((is_apple) ? MAC_AT : PC_AT);
+            } else {
+                unregister_code16((is_apple) ? MAC_AT : PC_AT);
+            }
+            return false;
+        break;
+        case CX_DLR:
+            if(record->event.pressed) {
+                register_code16((is_apple) ? MAC_DLR : PC_DLR);
+            } else {
+                unregister_code16((is_apple) ? MAC_DLR : PC_DLR);
+            }
+            return false;
+        break;
+        case CX_BSLS:
+            if(record->event.pressed) {
+                register_code16((is_apple) ? MAC_BSLS : PC_BSLS);
+            } else {
+                unregister_code16((is_apple) ? MAC_BSLS : PC_BSLS);
+            }
+            return false;
+        break;
+        case CX_PIPE:
+            if(record->event.pressed) {
+                register_code16((is_apple) ? MAC_PIPE : PC_PIPE);
+            } else {
+                unregister_code16((is_apple) ? MAC_PIPE : PC_PIPE);
+            }
+            return false;
+        break;
+        case CX_LCBR:
+            if(record->event.pressed) {
+                register_code16((is_apple) ? MAC_LCBR : PC_LCBR);
+            } else {
+                unregister_code16((is_apple) ? MAC_LCBR : PC_LCBR);
+            }
+            return false;
+        break;
+        case CX_RCBR:
+            if(record->event.pressed) {
+                register_code16((is_apple) ? MAC_RCBR : PC_RCBR);
+            } else {
+                unregister_code16((is_apple) ? MAC_RCBR : PC_RCBR);
+            }
+            return false;
+        break;
+        case CX_PND:
+            if(record->event.pressed) {
+                register_code16((is_apple) ? MAC_PND : PC_PND);
+            } else {
+                unregister_code16((is_apple) ? MAC_PND : PC_PND);
+            }
+            return false;
+        break;
+        case CX_EURO:
+            if(record->event.pressed) {
+                register_code16((is_apple) ? MAC_EURO : PC_EURO);
+            } else {
+                unregister_code16((is_apple) ? MAC_EURO : PC_EURO);
+            }
+            return false;
+        break;
+        case CX_PVWD:
+            if(record->event.pressed) {
+                register_code16((is_apple) ? MAC_PRV_WRD : PC_PRV_WRD);
+            } else {
+                unregister_code16((is_apple) ? MAC_PRV_WRD : PC_PRV_WRD);
+            }
+            return false;
+        break;
+        case CX_NXWD:
+            if(record->event.pressed) {
+                register_code16((is_apple) ? MAC_NXT_WRD : PC_NXT_WRD);
+            } else {
+                unregister_code16((is_apple) ? MAC_NXT_WRD : PC_NXT_WRD);
+            }
+            return false;
+        break;
+        case CX_UNDO:
+            if(record->event.pressed) {
+                register_code16((is_apple) ? MAC_UNDO : PC_UNDO);
+            } else {
+                unregister_code16((is_apple) ? MAC_UNDO : PC_UNDO);
+            }
+            return false;
+        break;
+        case CX_CUT:
+            if(record->event.pressed) {
+                register_code16((is_apple) ? MAC_CUT : PC_CUT);
+            } else {
+                unregister_code16((is_apple) ? MAC_CUT : PC_CUT);
+            }
+            return false;
+        break;
+                case CX_COPY:
+            if(record->event.pressed) {
+                register_code16((is_apple) ? MAC_COPY : PC_COPY);
+            } else {
+                unregister_code16((is_apple) ? MAC_COPY : PC_COPY);
+            }
+            return false;
+        break;
+                case CX_PSTE:
+            if(record->event.pressed) {
+                register_code16((is_apple) ? MAC_PSTE : PC_PSTE);
+            } else {
+                unregister_code16((is_apple) ? MAC_PSTE : PC_PSTE);
+            }
+            return false;
+        break;
+
+    }
+
+    return true;
+}
