@@ -7,8 +7,8 @@
 #define MAC_RCBR   LSFT(LALT(KC_9))   // }
 #define MAC_PND    LALT(KC_3)         // £
 #define MAC_EURO   LALT(KC_4)         // €
-#define MAC_TILD   LALT(KC_NUBS)      // ~
-#define MAC_GRV    KC_GRV             // `
+#define MAC_TILD   LALT(KC_RBRC)      // ~
+#define MAC_QUOT   KC_GRV             // '
 
 #define MAC_PRV_WRD LALT(KC_LEFT)
 #define MAC_NXT_WRD LALT(KC_RIGHT)
@@ -28,7 +28,7 @@
 #define PC_PND     ALGR(KC_3)         // £
 #define PC_EURO    ALGR(KC_5)         // €
 #define PC_TILD    ALGR(KC_RBRC)      // ~
-#define PC_GRV     KC_NUHS             // `
+#define PC_QUOT     KC_NUHS            // '
 
 #define PC_PRV_WRD LCTL(KC_LEFT)
 #define PC_NXT_WRD LCTL(KC_RIGHT)

@@ -52,12 +52,14 @@ enum charybdis_keymap_bstiq_layers {
 // Define custom keycodes
 enum keycodes {
     // keys that differ between Mac and PC
-    CX_AT,
+    CX_AT = QK_USER,
     CX_DLR,
     CX_BSLS,
     CX_PIPE,
     CX_LCBR,
     CX_RCBR,
+    CX_TILD,
+    CX_QUOT,
     CX_PND,
     CX_EURO,
     CX_PVWD,
@@ -148,14 +150,15 @@ enum combos {
   GI_OE,
 };
 
-const uint16_t PROGMEM ab_combo[] = {KC_G, KC_MINS, COMBO_END};
-const uint16_t PROGMEM jk_combo[] = {KC_G, KC_O, COMBO_END};
-const uint16_t PROGMEM qw_combo[] = {KC_G, KC_I, COMBO_END};
+const uint16_t PROGMEM ae_combo[] = {LGUI(KC_R), RGUI_T(KC_E), COMBO_END};
+const uint16_t PROGMEM ai_combo[] = {LGUI(KC_R), LALT_T(KC_L), COMBO_END};
+const uint16_t PROGMEM ao_combo[] = {LGUI(KC_R), RCTL_T(KC_U), COMBO_END};
+
 
 combo_t key_combos[] = {
-  [NN_AA] = COMBO(ab_combo, KC_LBRC),
-  [GO_AE] = COMBO(jk_combo, KC_QUOT),
-  [GI_OE] = COMBO(qw_combo, KC_SCLN),
+  [NN_AA] = COMBO(ae_combo, KC_LBRC),
+  [GO_AE] = COMBO(ai_combo, KC_QUOT),
+  [GI_OE] = COMBO(ao_combo, KC_SCLN),
 };
 
 // Automatically enable sniping when the mouse layer is on.
@@ -244,20 +247,20 @@ combo_t key_combos[] = {
     QK_BOOT,  EE_CLR, XXXXXXX, DPI_MOD, DPI_RMOD, S_D_MOD, DPI_MOD, XXXXXXX, EE_CLR,  QK_BOOT, \
     _______, DRGSCRL, SNIPING, KC_LCTL,    U_NA, ______________HOME_ROW_GASC_R______________, \
     _______, DRGSCRL, SNIPING, QK_BOOT,  EE_CLR, EE_CLR,  QK_BOOT, SNIPING, DRGSCRL, _______, \
-                      DRGSCRL, KC_BTN1, KC_BTN2, KC_BSPC, U_NA
+                      DRGSCRL, KC_BTN1, KC_BTN2, KC_BTN2, KC_BTN1
 
 // Symbols.
 #define LAYOUT_LAYER_SYM                                                                      \
     __________________RESET_L__________________, NO_PERC,   CX_AT, NO_DQUO, NO_AMPR,  NO_GRV, \
-    ______________HOME_ROW_GASC_L______________, NO_HASH, NO_LPRN, CX_LCBR, NO_LBRC, NO_QUOT, \
-    KC_F12,   KC_F12,   KC_F2,   KC_F5, CW_TOGG,  CX_DLR, NO_RPRN, CX_RCBR, NO_RBRC, NO_TILD, \
+    ______________HOME_ROW_GASC_L______________, NO_HASH, NO_LPRN, CX_LCBR, NO_LBRC, CX_QUOT, \
+    KC_F12,   KC_F12,   KC_F2,   KC_F5, CW_TOGG,  CX_DLR, NO_RPRN, CX_RCBR, NO_RBRC, CX_TILD, \
                                U_NA, U_NA, U_NA,    U_NA,    U_NA
 
 // Numerals.
 #define LAYOUT_LAYER_NUM                                                                      \
     CX_BSLS,    NO_7,    NO_8,    NO_9, NO_EXLM, __________________RESET_R__________________, \
     CX_PIPE,    NO_4,    NO_5,    NO_6,  NO_EQL, ______________HOME_ROW_GASC_R______________, \
-    NO_SLSH,    NO_1,    NO_2,    NO_3, NO_ASTR,  KC_F12,   NO_AE, NO_OSTR, NO_ARNG, NO_PLUS, \
+    NO_SLSH,    NO_1,    NO_2,    NO_3, NO_ASTR,  KC_F12,   NO_AE, NO_OSTR, NO_ARNG, NO_ARNG, \
                       NO_LABK,    NO_0, NO_RABK,    U_NA,    U_NA
 
 // Function keys.
@@ -306,9 +309,9 @@ combo_t key_combos[] = {
             L00,        L01,        L02,        L03,        L04,  \
             R05,        R06,        R07,        R08,        R09,  \
      MOUSE(L10),        L11,        L12,        L13, MOUSE(L14),  \
-            R15,        R16,        R17,        R18,        R19,  \
-      MOUSE(L20),       L21,        L22,        L23,        L24,  \
-            R25,        R26,        R27,        R28,  MOUSE(R29), \
+            R15,        R16,        R17,        R18, MOUSE(R19),  \
+            L20,       L21,         L22,        L23,        L24,  \
+            R25,        R26,        R27,        R28, MOUSE(R29), \
       __VA_ARGS__
 #define MOUSE_MOD(...) _MOUSE_MOD(__VA_ARGS__)
 
@@ -421,6 +424,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 register_code16((is_apple) ? MAC_EURO : PC_EURO);
             } else {
                 unregister_code16((is_apple) ? MAC_EURO : PC_EURO);
+            }
+            return false;
+        break;
+        case CX_TILD:
+            if(record->event.pressed) {
+                register_code16((is_apple) ? MAC_TILD : PC_TILD);
+            } else {
+                unregister_code16((is_apple) ? MAC_TILD : PC_TILD);
+            }
+            return false;
+        break;
+        case CX_QUOT:
+            if(record->event.pressed) {
+                register_code16((is_apple) ? MAC_QUOT : PC_QUOT);
+            } else {
+                unregister_code16((is_apple) ? MAC_QUOT : PC_QUOT);
             }
             return false;
         break;
