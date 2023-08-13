@@ -158,7 +158,7 @@ const uint16_t PROGMEM ae_combo[] = {KC_H, KC_COMM, COMBO_END};
 const uint16_t PROGMEM ai_combo[] = {KC_F, KC_P, COMBO_END};
 const uint16_t PROGMEM ao_combo[] = {KC_C, KC_D, COMBO_END};
 const uint16_t PROGMEM bk_combo[] = {RSFT_T(KC_BSPC), LT(LAYER_NUM, KC_SPC), COMBO_END};
-const uint16_t PROGMEM es_combo[] = {LT(LAYER_SYM, KC_ENT), OSM(MOD_LSFT), COMBO_END};
+const uint16_t PROGMEM es_combo[] = {LT(LAYER_SYM, KC_ENT), LT(LAYER_NAV, KC_TAB), COMBO_END};
 const uint16_t PROGMEM zx_combo[] = {KC_Z, KC_X, COMBO_END};
 const uint16_t PROGMEM xc_combo[] = {KC_X, KC_C, COMBO_END};
 
@@ -252,7 +252,7 @@ combo_t key_combos[] = {
     __________________RESET_L__________________,    U_NU, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, \
     KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, KC_CAPS, ______________HOME_ROW_GASC_R______________, \
     KC_HOME, KC_PGDN, KC_PGUP,  KC_END,  KC_DEL,    U_NU, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, \
-                         U_NA,    U_NA,    U_NA, KC_MSTP, KC_MPLY
+                         U_NA,    U_NA,    U_NA, KC_MUTE, KC_MPLY
 
 // Mouse.
 #define LAYOUT_LAYER_MOUSE                                                                    \
@@ -270,7 +270,7 @@ combo_t key_combos[] = {
 
 // Numerals.
 #define LAYOUT_LAYER_NUM                                                                      \
-    CX_BSLS,    NO_7,    NO_8,    NO_9, NO_EXLM, __________________RESET_R__________________, \
+    CX_BSLS,    NO_7,    NO_8,    NO_9, NO_EXLM, CX_EURO,   CX_PND, CX_DLR, KC_SLEP, NO_ARNG, \
     CX_PIPE,    NO_4,    NO_5,    NO_6,  NO_EQL, ______________HOME_ROW_GASC_R______________, \
     NO_SLSH,    NO_1,    NO_2,    NO_3, NO_ASTR,  KC_F12,   NO_AE, NO_OSTR, NO_ARNG, NO_ARNG, \
                       NO_LABK,    NO_0, NO_RABK,    U_NA,    U_NA
@@ -320,8 +320,8 @@ combo_t key_combos[] = {
     ...)                                                          \
             L00,        L01,        L02,        L03,        L04,  \
             R05,        R06,        R07,        R08,        R09,  \
-     MOUSE(L10),        L11,        L12,        L13, MOUSE(L14),  \
-            R15,        R16,        R17,        R18, MOUSE(R19),  \
+     MOUSE(L10),        L11,        L12,        L13,        L14,  \
+            R15,        R16,        R17,        R18,        R19,  \
             L20,       L21,         L22,        L23,        L24,  \
             R25,        R26,        R27,        R28, MOUSE(R29), \
       __VA_ARGS__

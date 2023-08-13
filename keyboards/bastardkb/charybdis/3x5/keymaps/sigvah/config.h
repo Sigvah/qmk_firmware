@@ -34,7 +34,7 @@
  * See docs.qmk.fm/using-qmk/software-features/tap_hold#tapping-term
  */
 #ifndef TAPPING_TERM
-#    define TAPPING_TERM 170
+#    define TAPPING_TERM 150
 #endif // TAPPING_TERM
 
 /**
