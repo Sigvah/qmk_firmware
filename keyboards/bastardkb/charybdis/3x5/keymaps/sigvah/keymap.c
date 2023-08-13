@@ -148,13 +148,19 @@ enum combos {
   NN_AA,
   GO_AE,
   GI_OE,
-  BK_SP_DEL
+  BK_SP_DEL,
+  ENT_SFT_ESC,
+  ZX_F2,
+  XC_F12,
 };
 
 const uint16_t PROGMEM ae_combo[] = {KC_H, KC_COMM, COMBO_END};
 const uint16_t PROGMEM ai_combo[] = {KC_F, KC_P, COMBO_END};
 const uint16_t PROGMEM ao_combo[] = {KC_C, KC_D, COMBO_END};
-const uint16_t PROGMEM bk_combo[] = {KC_BSPC, KC_SPC, COMBO_END};
+const uint16_t PROGMEM bk_combo[] = {RSFT_T(KC_BSPC), LT(LAYER_NUM, KC_SPC), COMBO_END};
+const uint16_t PROGMEM es_combo[] = {LT(LAYER_SYM, KC_ENT), OSM(MOD_LSFT), COMBO_END};
+const uint16_t PROGMEM zx_combo[] = {KC_Z, KC_X, COMBO_END};
+const uint16_t PROGMEM xc_combo[] = {KC_X, KC_C, COMBO_END};
 
 
 combo_t key_combos[] = {
@@ -162,6 +168,9 @@ combo_t key_combos[] = {
   [GO_AE] = COMBO(ai_combo, KC_QUOT),
   [GI_OE] = COMBO(ao_combo, KC_SCLN),
   [BK_SP_DEL] = COMBO(bk_combo, KC_DEL),
+  [ENT_SFT_ESC] = COMBO(es_combo, KC_ESC),
+  [ZX_F2] = COMBO(zx_combo, KC_F2),
+  [XC_F12] = COMBO(xc_combo, KC_F12),
 };
 
 // Automatically enable sniping when the mouse layer is on.
