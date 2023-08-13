@@ -34,7 +34,7 @@
  * See docs.qmk.fm/using-qmk/software-features/tap_hold#tapping-term
  */
 #ifndef TAPPING_TERM
-#    define TAPPING_TERM 200
+#    define TAPPING_TERM 170
 #endif // TAPPING_TERM
 
 /**
@@ -71,7 +71,6 @@
  *
  * See docs.qmk.fm/using-qmk/software-features/tap_hold#permissive-hold
  */
-#define PERMISSIVE_HOLD
 
 /** Charybdis-specific features. */
 

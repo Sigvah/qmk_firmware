@@ -148,24 +148,27 @@ enum combos {
   NN_AA,
   GO_AE,
   GI_OE,
+  BK_SP_DEL
 };
 
-const uint16_t PROGMEM ae_combo[] = {LGUI(KC_R), RGUI_T(KC_E), COMBO_END};
-const uint16_t PROGMEM ai_combo[] = {LGUI(KC_R), LALT_T(KC_L), COMBO_END};
-const uint16_t PROGMEM ao_combo[] = {LGUI(KC_R), RCTL_T(KC_U), COMBO_END};
+const uint16_t PROGMEM ae_combo[] = {KC_H, KC_COMM, COMBO_END};
+const uint16_t PROGMEM ai_combo[] = {KC_F, KC_P, COMBO_END};
+const uint16_t PROGMEM ao_combo[] = {KC_C, KC_D, COMBO_END};
+const uint16_t PROGMEM bk_combo[] = {KC_BSPC, KC_SPC, COMBO_END};
 
 
 combo_t key_combos[] = {
   [NN_AA] = COMBO(ae_combo, KC_LBRC),
   [GO_AE] = COMBO(ai_combo, KC_QUOT),
   [GI_OE] = COMBO(ao_combo, KC_SCLN),
+  [BK_SP_DEL] = COMBO(bk_combo, KC_DEL),
 };
 
 // Automatically enable sniping when the mouse layer is on.
 #define CHARYBDIS_AUTO_SNIPING_ON_LAYER LAYER_MOUSE
 
-#define ESC_NAV LT(LAYER_NAV, KC_ESC)
-#define TAB_SYM LT(LAYER_SYM, KC_TAB)
+#define TAB_NAV LT(LAYER_NAV, KC_TAB)
+#define ENT_SYM LT(LAYER_SYM, KC_ENT)
 #define ENT_SFT LSFT_T(KC_ENT)
 #define BAC_SFT RSFT_T(KC_BSPC)
 #define SPC_NUM LT(LAYER_NUM, KC_SPC)
@@ -205,7 +208,7 @@ combo_t key_combos[] = {
        Q,    W,    F,    P,    B,    J,    L,    U,    Y, PLUS, \
        A,    R,    S,    T,    G,    M,    N,    E,    I,    O, \
        Z,    X,    C,    D,    V,    K,    H, COMM,  DOT, MINS, \
-       ESC_NAV, TAB_SYM, ENT_SFT,    BAC_SFT, SPC_NUM)
+       TAB_NAV, ENT_SYM, OSM(MOD_LSFT),    BAC_SFT, SPC_NUM)
 
 /** Convenience key shorthands. */
 #define U_NA KC_NO // Present but not available for use.
