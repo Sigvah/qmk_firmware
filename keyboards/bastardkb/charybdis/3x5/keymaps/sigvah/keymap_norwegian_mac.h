@@ -21,7 +21,7 @@
 // PC version of keycodes
 #define PC_AT      ALGR(KC_2)         // @
 #define PC_DLR     ALGR(KC_4)         // $
-#define PC_BSLS    ALGR(KC_NUBS)      // (backslash)
+#define PC_BSLS    KC_EQL             // (backslash)
 #define PC_PIPE    KC_GRV             // |
 #define PC_LCBR    ALGR(KC_7)         // {
 #define PC_RCBR    ALGR(KC_0)         // }

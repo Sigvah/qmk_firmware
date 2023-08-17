@@ -152,6 +152,7 @@ enum combos {
   ENT_SFT_ESC,
   ZX_F2,
   XC_F12,
+  GM_CWT
 };
 
 const uint16_t PROGMEM ae_combo[] = {KC_H, KC_COMM, COMBO_END};
@@ -161,6 +162,7 @@ const uint16_t PROGMEM bk_combo[] = {RSFT_T(KC_BSPC), LT(LAYER_NUM, KC_SPC), COM
 const uint16_t PROGMEM es_combo[] = {LT(LAYER_SYM, KC_ENT), LT(LAYER_NAV, KC_TAB), COMBO_END};
 const uint16_t PROGMEM zx_combo[] = {KC_Z, KC_X, COMBO_END};
 const uint16_t PROGMEM xc_combo[] = {KC_X, KC_C, COMBO_END};
+const uint16_t PROGMEM gm_combo[] = {KC_G, KC_M, COMBO_END};
 
 
 combo_t key_combos[] = {
@@ -171,15 +173,16 @@ combo_t key_combos[] = {
   [ENT_SFT_ESC] = COMBO(es_combo, KC_ESC),
   [ZX_F2] = COMBO(zx_combo, KC_F2),
   [XC_F12] = COMBO(xc_combo, KC_F12),
+    [GM_CWT] = COMBO(gm_combo, CW_TOGG),
 };
 
 // Automatically enable sniping when the mouse layer is on.
 #define CHARYBDIS_AUTO_SNIPING_ON_LAYER LAYER_MOUSE
 
 #define TAB_NAV LT(LAYER_NAV, KC_TAB)
-#define ENT_SYM LT(LAYER_SYM, KC_ENT)
+#define BAC_SYM LT(LAYER_SYM, KC_BSPC)
 #define ENT_SFT LSFT_T(KC_ENT)
-#define BAC_SFT RSFT_T(KC_BSPC)
+#define ESC_SFT RSFT_T(KC_ESC)
 #define SPC_NUM LT(LAYER_NUM, KC_SPC)
 #define MOUSE(KC) LT(LAYER_MOUSE, KC)
 
@@ -217,7 +220,7 @@ combo_t key_combos[] = {
        Q,    W,    F,    P,    B,    J,    L,    U,    Y, PLUS, \
        A,    R,    S,    T,    G,    M,    N,    E,    I,    O, \
        Z,    X,    C,    D,    V,    K,    H, COMM,  DOT, MINS, \
-       TAB_NAV, ENT_SYM, OSM(MOD_LSFT),    BAC_SFT, SPC_NUM)
+       TAB_NAV, BAC_SYM, ENT_SFT,    ESC_SFT, SPC_NUM)
 
 /** Convenience key shorthands. */
 #define U_NA KC_NO // Present but not available for use.
@@ -258,8 +261,8 @@ combo_t key_combos[] = {
 #define LAYOUT_LAYER_MOUSE                                                                    \
     QK_BOOT,  EE_CLR, XXXXXXX, DPI_MOD, DPI_RMOD, S_D_MOD, DPI_MOD, XXXXXXX, EE_CLR,  QK_BOOT, \
     _______, DRGSCRL, SNIPING, KC_LCTL,    U_NA, ______________HOME_ROW_GASC_R______________, \
-    _______, DRGSCRL, SNIPING, QK_BOOT,  EE_CLR, EE_CLR,  QK_BOOT, SNIPING, DRGSCRL, _______, \
-                      DRGSCRL, KC_BTN1, KC_BTN2, KC_BTN2, KC_BTN1
+    _______, DRGSCRL, SNIPING, QK_BOOT,  EE_CLR, KC_BTN2,  KC_BTN1, KC_BTN2, DRGSCRL, _______, \
+                      DRGSCRL, KC_BTN1, KC_BTN2, OSM(MOD_LSFT), KC_BTN1
 
 // Symbols.
 #define LAYOUT_LAYER_SYM                                                                      \
@@ -377,129 +380,81 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // Handle keycodes that differ between Mac and PC
         case CX_AT:
             if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_AT : PC_AT);
+                register_code16((is_apple) ? MAC_AT : NO_AT);
             } else {
-                unregister_code16((is_apple) ? MAC_AT : PC_AT);
+                unregister_code16((is_apple) ? MAC_AT : NO_AT);
             }
             return false;
         break;
         case CX_DLR:
             if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_DLR : PC_DLR);
+                register_code16((is_apple) ? MAC_DLR : NO_DLR);
             } else {
-                unregister_code16((is_apple) ? MAC_DLR : PC_DLR);
+                unregister_code16((is_apple) ? MAC_DLR : NO_DLR);
             }
             return false;
         break;
         case CX_BSLS:
             if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_BSLS : PC_BSLS);
+                register_code16((is_apple) ? MAC_BSLS : NO_BSLS);
             } else {
-                unregister_code16((is_apple) ? MAC_BSLS : PC_BSLS);
+                unregister_code16((is_apple) ? MAC_BSLS : NO_BSLS);
             }
             return false;
         break;
         case CX_PIPE:
             if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_PIPE : PC_PIPE);
+                register_code16((is_apple) ? MAC_PIPE : NO_PIPE);
             } else {
-                unregister_code16((is_apple) ? MAC_PIPE : PC_PIPE);
+                unregister_code16((is_apple) ? MAC_PIPE : NO_PIPE);
             }
             return false;
         break;
         case CX_LCBR:
             if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_LCBR : PC_LCBR);
+                register_code16((is_apple) ? MAC_LCBR : NO_LCBR);
             } else {
-                unregister_code16((is_apple) ? MAC_LCBR : PC_LCBR);
+                unregister_code16((is_apple) ? MAC_LCBR : NO_LCBR);
             }
             return false;
         break;
         case CX_RCBR:
             if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_RCBR : PC_RCBR);
+                register_code16((is_apple) ? MAC_RCBR : NO_RCBR);
             } else {
-                unregister_code16((is_apple) ? MAC_RCBR : PC_RCBR);
+                unregister_code16((is_apple) ? MAC_RCBR : NO_RCBR);
             }
             return false;
         break;
         case CX_PND:
             if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_PND : PC_PND);
+                register_code16((is_apple) ? MAC_PND : NO_PND);
             } else {
-                unregister_code16((is_apple) ? MAC_PND : PC_PND);
+                unregister_code16((is_apple) ? MAC_PND : NO_PND);
             }
             return false;
         break;
         case CX_EURO:
             if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_EURO : PC_EURO);
+                register_code16((is_apple) ? MAC_EURO : NO_EURO);
             } else {
-                unregister_code16((is_apple) ? MAC_EURO : PC_EURO);
+                unregister_code16((is_apple) ? MAC_EURO : NO_EURO);
             }
             return false;
         break;
         case CX_TILD:
             if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_TILD : PC_TILD);
+                register_code16((is_apple) ? MAC_TILD : NO_TILD);
             } else {
-                unregister_code16((is_apple) ? MAC_TILD : PC_TILD);
+                unregister_code16((is_apple) ? MAC_TILD : NO_TILD);
             }
             return false;
         break;
         case CX_QUOT:
             if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_QUOT : PC_QUOT);
+                register_code16((is_apple) ? MAC_QUOT : NO_QUOT);
             } else {
-                unregister_code16((is_apple) ? MAC_QUOT : PC_QUOT);
-            }
-            return false;
-        break;
-        case CX_PVWD:
-            if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_PRV_WRD : PC_PRV_WRD);
-            } else {
-                unregister_code16((is_apple) ? MAC_PRV_WRD : PC_PRV_WRD);
-            }
-            return false;
-        break;
-        case CX_NXWD:
-            if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_NXT_WRD : PC_NXT_WRD);
-            } else {
-                unregister_code16((is_apple) ? MAC_NXT_WRD : PC_NXT_WRD);
-            }
-            return false;
-        break;
-        case CX_UNDO:
-            if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_UNDO : PC_UNDO);
-            } else {
-                unregister_code16((is_apple) ? MAC_UNDO : PC_UNDO);
-            }
-            return false;
-        break;
-        case CX_CUT:
-            if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_CUT : PC_CUT);
-            } else {
-                unregister_code16((is_apple) ? MAC_CUT : PC_CUT);
-            }
-            return false;
-        break;
-                case CX_COPY:
-            if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_COPY : PC_COPY);
-            } else {
-                unregister_code16((is_apple) ? MAC_COPY : PC_COPY);
-            }
-            return false;
-        break;
-                case CX_PSTE:
-            if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_PSTE : PC_PSTE);
-            } else {
-                unregister_code16((is_apple) ? MAC_PSTE : PC_PSTE);
+                unregister_code16((is_apple) ? MAC_QUOT : NO_QUOT);
             }
             return false;
         break;

@@ -34,7 +34,7 @@
  * See docs.qmk.fm/using-qmk/software-features/tap_hold#tapping-term
  */
 #ifndef TAPPING_TERM
-#    define TAPPING_TERM 150
+#    define TAPPING_TERM 165
 #endif // TAPPING_TERM
 
 /**
@@ -50,6 +50,7 @@
 // #define AUTO_MOUSE_DELAY 1000
 
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+
 
 /*
  * Tap-or-Hold decision modes.
