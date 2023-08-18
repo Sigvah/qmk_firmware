@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "config.h"
 #include QMK_KEYBOARD_H
 #include "os_detection.h"
 #include "keymap_norwegian.h"
@@ -179,11 +180,11 @@ combo_t key_combos[] = {
 // Automatically enable sniping when the mouse layer is on.
 #define CHARYBDIS_AUTO_SNIPING_ON_LAYER LAYER_MOUSE
 
-#define TAB_NAV LT(LAYER_NAV, KC_TAB)
-#define BAC_SYM LT(LAYER_SYM, KC_BSPC)
-#define ENT_SFT LSFT_T(KC_ENT)
-#define ESC_SFT RSFT_T(KC_ESC)
-#define SPC_NUM LT(LAYER_NUM, KC_SPC)
+#define ESC_NAV LT(LAYER_NAV, KC_ESC)
+#define BAC_SFT LSFT_T(KC_BSPC)
+#define TAB_SYM LT(LAYER_SYM, KC_TAB)
+#define ENT_NUM LT(LAYER_NUM, KC_ENT)
+#define SPC_SFT LSFT_T(KC_SPC)
 #define MOUSE(KC) LT(LAYER_MOUSE, KC)
 
 #define USR_RDO KC_AGAIN
@@ -220,7 +221,7 @@ combo_t key_combos[] = {
        Q,    W,    F,    P,    B,    J,    L,    U,    Y, PLUS, \
        A,    R,    S,    T,    G,    M,    N,    E,    I,    O, \
        Z,    X,    C,    D,    V,    K,    H, COMM,  DOT, MINS, \
-       TAB_NAV, BAC_SYM, ENT_SFT,    ESC_SFT, SPC_NUM)
+       ESC_NAV, SPC_SFT, TAB_SYM,    ENT_NUM, BAC_SFT)
 
 /** Convenience key shorthands. */
 #define U_NA KC_NO // Present but not available for use.
@@ -462,4 +463,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 
     return true;
+}
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case LT(LAYER_MOUSE, KC_A):
+            return TAPPING_TERM + 30;
+        case LGUI_T(KC_R):
+            return TAPPING_TERM + 25;
+        case LALT_T(KC_S):
+            return TAPPING_TERM + 15;
+        case LGUI_T(KC_O):
+            return TAPPING_TERM + 25;
+        case LALT_T(KC_I):
+            return TAPPING_TERM + 15;
+        default:
+            return TAPPING_TERM;
+    }
 }
