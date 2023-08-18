@@ -181,10 +181,10 @@ combo_t key_combos[] = {
 #define CHARYBDIS_AUTO_SNIPING_ON_LAYER LAYER_MOUSE
 
 #define ESC_NAV LT(LAYER_NAV, KC_ESC)
-#define BAC_SFT LSFT_T(KC_BSPC)
-#define TAB_SYM LT(LAYER_SYM, KC_TAB)
-#define ENT_NUM LT(LAYER_NUM, KC_ENT)
-#define SPC_SFT LSFT_T(KC_SPC)
+#define BAC_NUM LT(LAYER_NUM, KC_BSPC)
+#define TAB_SFT LSFT_T(KC_TAB)
+#define ENT_SFT RSFT_T(KC_ENT)
+#define SPC_SYM LT(LAYER_SYM, KC_SPC)
 #define MOUSE(KC) LT(LAYER_MOUSE, KC)
 
 #define USR_RDO KC_AGAIN
@@ -221,7 +221,7 @@ combo_t key_combos[] = {
        Q,    W,    F,    P,    B,    J,    L,    U,    Y, PLUS, \
        A,    R,    S,    T,    G,    M,    N,    E,    I,    O, \
        Z,    X,    C,    D,    V,    K,    H, COMM,  DOT, MINS, \
-       ESC_NAV, SPC_SFT, TAB_SYM,    ENT_NUM, BAC_SFT)
+       ESC_NAV, SPC_SYM, TAB_SFT,    ENT_SFT, BAC_NUM)
 
 /** Convenience key shorthands. */
 #define U_NA KC_NO // Present but not available for use.
