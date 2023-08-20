@@ -50,7 +50,7 @@
 // #define AUTO_MOUSE_DELAY 1000
 
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
-
+#define COMBO_TERM 25
 
 /*
  * Tap-or-Hold decision modes.

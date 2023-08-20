@@ -467,15 +467,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LT(LAYER_MOUSE, KC_A):
-            return TAPPING_TERM + 30;
+            return TAPPING_TERM + 40;
         case LGUI_T(KC_R):
-            return TAPPING_TERM + 25;
+            return TAPPING_TERM + 35;
         case LALT_T(KC_S):
-            return TAPPING_TERM + 15;
+            return TAPPING_TERM + 30;
         case LGUI_T(KC_O):
-            return TAPPING_TERM + 25;
+            return TAPPING_TERM + 35;
         case LALT_T(KC_I):
-            return TAPPING_TERM + 15;
+            return TAPPING_TERM + 30;
         default:
             return TAPPING_TERM;
     }
