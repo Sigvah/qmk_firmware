@@ -163,7 +163,7 @@ const uint16_t PROGMEM bk_combo[] = {RSFT_T(KC_BSPC), LT(LAYER_NUM, KC_SPC), COM
 const uint16_t PROGMEM es_combo[] = {LT(LAYER_SYM, KC_ENT), LT(LAYER_NAV, KC_TAB), COMBO_END};
 const uint16_t PROGMEM zx_combo[] = {KC_Z, KC_X, COMBO_END};
 const uint16_t PROGMEM xc_combo[] = {KC_X, KC_C, COMBO_END};
-const uint16_t PROGMEM gm_combo[] = {KC_G, KC_M, COMBO_END};
+const uint16_t PROGMEM gm_combo[] = {LT(LAYER_SYM, KC_SPC), LT(LAYER_NUM, KC_BSPC), COMBO_END};
 
 
 combo_t key_combos[] = {
