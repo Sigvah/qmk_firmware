@@ -153,17 +153,22 @@ enum combos {
   ENT_SFT_ESC,
   ZX_F2,
   XC_F12,
-  GM_CWT
+  GM_CWT,
+  DH_CWT,
+  WF_F4,
+  UY_DEL,
 };
 
 const uint16_t PROGMEM ae_combo[] = {KC_H, KC_COMM, COMBO_END};
 const uint16_t PROGMEM ai_combo[] = {KC_F, KC_P, COMBO_END};
 const uint16_t PROGMEM ao_combo[] = {KC_C, KC_D, COMBO_END};
 const uint16_t PROGMEM bk_combo[] = {RSFT_T(KC_BSPC), LT(LAYER_NUM, KC_SPC), COMBO_END};
-const uint16_t PROGMEM es_combo[] = {LT(LAYER_SYM, KC_ENT), LT(LAYER_NAV, KC_TAB), COMBO_END};
 const uint16_t PROGMEM zx_combo[] = {KC_Z, KC_X, COMBO_END};
 const uint16_t PROGMEM xc_combo[] = {KC_X, KC_C, COMBO_END};
 const uint16_t PROGMEM gm_combo[] = {LT(LAYER_SYM, KC_SPC), LT(LAYER_NUM, KC_BSPC), COMBO_END};
+const uint16_t PROGMEM dh_combo[] = {KC_D, KC_H, COMBO_END};
+const uint16_t PROGMEM wf_combo[] = {KC_W, KC_F, COMBO_END};
+const uint16_t PROGMEM uy_combo[] = {KC_U, KC_Y, COMBO_END};
 
 
 combo_t key_combos[] = {
@@ -171,10 +176,12 @@ combo_t key_combos[] = {
   [GO_AE] = COMBO(ai_combo, KC_QUOT),
   [GI_OE] = COMBO(ao_combo, KC_SCLN),
   [BK_SP_DEL] = COMBO(bk_combo, KC_DEL),
-  [ENT_SFT_ESC] = COMBO(es_combo, KC_ESC),
   [ZX_F2] = COMBO(zx_combo, KC_F2),
   [XC_F12] = COMBO(xc_combo, KC_F12),
-    [GM_CWT] = COMBO(gm_combo, CW_TOGG),
+  [GM_CWT] = COMBO(gm_combo, CW_TOGG),
+  [DH_CWT] = COMBO(dh_combo, CW_TOGG),
+  [WF_F4] = COMBO(qw_combo, KC_F4),
+  [UY_DEL] = COMBO(uy_combo, KC_DEL),
 };
 
 // Automatically enable sniping when the mouse layer is on.
@@ -267,8 +274,8 @@ combo_t key_combos[] = {
 
 // Symbols.
 #define LAYOUT_LAYER_SYM                                                                      \
-    __________________RESET_L__________________, NO_PERC,   CX_AT, NO_DQUO, NO_AMPR,  NO_GRV, \
-    ______________HOME_ROW_GASC_L______________, NO_HASH, NO_LPRN, CX_LCBR, NO_LBRC, CX_QUOT, \
+    __________________RESET_L__________________, NO_HASH,   CX_AT, NO_DQUO, NO_AMPR,  NO_GRV, \
+    ______________HOME_ROW_GASC_L______________, NO_PERC, NO_LPRN, CX_LCBR, NO_LBRC, CX_QUOT, \
     KC_F12,   KC_F12,   KC_F2,   KC_F5, CW_TOGG,  CX_DLR, NO_RPRN, CX_RCBR, NO_RBRC, CX_TILD, \
                                U_NA, U_NA, U_NA,    U_NA,    U_NA
 

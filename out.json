@@ -1,0 +1,15 @@
+{
+    "keyboard": "bastardkb/charybdis/3x5/v2/splinky_3",
+    "keymap": "sigvah",
+    "layers": [
+        ["LAYOUT_LAYER_BASE_BEPO"],
+        ["LAYOUT_LAYER_MBO"],
+        ["LAYOUT_LAYER_MEDIA"],
+        ["LAYOUT_LAYER_NAV"],
+        ["LAYOUT_LAYER_MOUSE"],
+        ["LAYOUT_LAYER_SYM"],
+        ["LAYOUT_LAYER_NUM"],
+        ["LAYOUT_LAYER_FUN"]
+    ],
+    "layout": "LAYOUT_wrapper"
+}
