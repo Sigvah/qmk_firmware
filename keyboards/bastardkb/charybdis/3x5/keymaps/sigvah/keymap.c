@@ -180,7 +180,7 @@ combo_t key_combos[] = {
   [XC_F12] = COMBO(xc_combo, KC_F12),
   [GM_CWT] = COMBO(gm_combo, CW_TOGG),
   [DH_CWT] = COMBO(dh_combo, CW_TOGG),
-  [WF_F4] = COMBO(qw_combo, KC_F4),
+  [WF_F4] = COMBO(wf_combo, KC_F4),
   [UY_DEL] = COMBO(uy_combo, KC_DEL),
 };
 
