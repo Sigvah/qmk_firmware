@@ -238,10 +238,8 @@ combo_t key_combos[] = {
 /** Convenience row shorthands. */
 #define __________________RESET_L__________________ QK_BOOT,    U_NA,    U_NA,    U_NA,    U_NA
 #define __________________RESET_R__________________    U_NA,    U_NA,    U_NA,    U_NA, QK_BOOT
-#define ______________HOME_ROW_GASC_L______________ KC_LSFT, KC_LGUI, KC_LALT, KC_LCTL,    U_NA
-#define ______________HOME_ROW_GASC_L_MAC__________ KC_LCTL, KC_LALT, KC_LSFT, KC_LGUI,    U_NA
-#define ______________HOME_ROW_GASC_R______________    U_NA, KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT
-#define ______________HOME_ROW_GASC_R_MAC__________    U_NA, KC_LGUI, KC_LSFT,  KC_CTL, KC_LGUI
+#define ______________HOME_ROW_GASC_L______________ KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT,    U_NA
+#define ______________HOME_ROW_GASC_R______________ KC_RSFT, KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT
 
 /** Layers. */
 
@@ -310,8 +308,8 @@ combo_t key_combos[] = {
     ...)                                                               \
              L00,         L01,         L02,         L03,         L04,  \
              R05,         R06,         R07,         R08,         R09,  \
-             L10, LGUI_T(L11), LALT_T(L12), LCTL_T(L13),         L14,  \
-             R15,  RCTL_T(R16), LALT_T(R17), RGUI_T(R18),        R19, \
+             L10, LALT_T(L11), LSFT_T(L12), LCTL_T(L13),        L14,  \
+             R15,  RCTL_T(R16), RSFT_T(R17), LALT_T(R18), RGUI_T(R19), \
       __VA_ARGS__
 #define HOME_ROW_MOD_GASC(...) _HOME_ROW_MOD_GASC(__VA_ARGS__)
 
