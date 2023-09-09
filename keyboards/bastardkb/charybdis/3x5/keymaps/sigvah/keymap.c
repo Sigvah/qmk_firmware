@@ -189,10 +189,11 @@ combo_t key_combos[] = {
 
 #define ESC_NAV LT(LAYER_NAV, KC_ESC)
 #define BAC_NUM LT(LAYER_NUM, KC_BSPC)
-#define TAB_SFT LSFT_T(KC_TAB)
-#define ENT_SFT RSFT_T(KC_ENT)
+#define TAB_FUN LT(LAYER_FUN, KC_TAB)
+#define ENT_NAV LT(LAYER_NAV, KC_ENT)
 #define SPC_SYM LT(LAYER_SYM, KC_SPC)
 #define MOUSE(KC) LT(LAYER_MOUSE, KC)
+#define ESC_SLP LT(KC_SLEP, KC_ESC)
 
 #define USR_RDO KC_AGAIN
 #define USR_PST LCTL(KC_V)
@@ -217,7 +218,7 @@ combo_t key_combos[] = {
          k10,      k11,      k12,      k13,      k14,      k15,      k16,      k17,      k18,      k19, \
          k20,      k21,      k22,      k23,      k24,      k25,      k26,      k27,      k28,      k29, \
          ...)                                                                                           \
-    NO_##k00, NO_##k01, NO_##k02, NO_##k03, NO_##k04, NO_##k05, NO_##k06, NO_##k07, NO_##k08, NO_##k09, \
+    NO_##k00, NO_##k01, NO_##k02, NO_##k03, NO_##k04, NO_##k05, NO_##k06, NO_##k07, NO_##k08,      k09, \
     NO_##k10, NO_##k11, NO_##k12, NO_##k13, NO_##k14, NO_##k15, NO_##k16, NO_##k17, NO_##k18, NO_##k19, \
     NO_##k20, NO_##k21, NO_##k22, NO_##k23, NO_##k24, NO_##k25, NO_##k26, NO_##k27, NO_##k28, NO_##k29, \
     __VA_ARGS__
@@ -225,10 +226,10 @@ combo_t key_combos[] = {
 
 /** Base layer with BÉPO layout. */
 #define LAYOUT_LAYER_BASE_BEPO KC_LAYOUT_wrapper(               \
-       Q,    W,    F,    P,    B,    J,    L,    U,    Y, PLUS, \
+       Q,    W,    F,    P,    B,    J,    L,    U,    Y, ESC_SLP, \
        A,    R,    S,    T,    G,    M,    N,    E,    I,    O, \
        Z,    X,    C,    D,    V,    K,    H, COMM,  DOT, MINS, \
-       ESC_NAV, SPC_SYM, TAB_SFT,    ENT_SFT, BAC_NUM)
+       OSM(MOD_LSFT), SPC_SYM, TAB_FUN,    ENT_NAV, BAC_NUM)
 
 /** Convenience key shorthands. */
 #define U_NA KC_NO // Present but not available for use.
@@ -263,25 +264,25 @@ combo_t key_combos[] = {
     __________________RESET_L__________________,    U_NU, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, \
     KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, KC_CAPS, ______________HOME_ROW_GASC_R______________, \
     KC_HOME, KC_PGDN, KC_PGUP,  KC_END,  KC_DEL,    U_NU, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, \
-                         U_NA,    U_NA,    U_NA, KC_MUTE, KC_MPLY
+                OSM(MOD_LSFT), KC_MPLY, KC_MUTE,    U_NA,    U_NA
 
 // Mouse.
 #define LAYOUT_LAYER_MOUSE                                                                    \
     QK_BOOT,  EE_CLR, XXXXXXX, DPI_MOD, DPI_RMOD, S_D_MOD, DPI_MOD, XXXXXXX, EE_CLR,  QK_BOOT, \
     _______, DRGSCRL, SNIPING, KC_LCTL,    U_NA, ______________HOME_ROW_GASC_R______________, \
     _______, DRGSCRL, SNIPING, QK_BOOT,  EE_CLR, KC_BTN2,  KC_BTN1, KC_BTN2, DRGSCRL, _______, \
-                      DRGSCRL, KC_BTN1, KC_BTN2, OSM(MOD_LSFT), KC_BTN1
+                OSM(MOD_LSFT), KC_BTN1, KC_BTN2, OSM(MOD_LSFT), KC_BTN1
 
 // Symbols.
 #define LAYOUT_LAYER_SYM                                                                      \
     __________________RESET_L__________________, NO_HASH,   CX_AT, NO_DQUO, NO_AMPR,  NO_GRV, \
     ______________HOME_ROW_GASC_L______________, NO_PERC, NO_LPRN, CX_LCBR, NO_LBRC, CX_QUOT, \
     KC_F12,   KC_F12,   KC_F2,   KC_F5, CW_TOGG,  CX_DLR, NO_RPRN, CX_RCBR, NO_RBRC, CX_TILD, \
-                               U_NA, U_NA, U_NA,    U_NA,    U_NA
+                               U_NA, U_NA, U_NA, NO_EXLM, NO_QUES
 
 // Numerals.
 #define LAYOUT_LAYER_NUM                                                                      \
-    CX_BSLS,    NO_7,    NO_8,    NO_9, NO_EXLM, CX_EURO,   CX_PND, CX_DLR, KC_SLEP, NO_ARNG, \
+    CX_BSLS,    NO_7,    NO_8,    NO_9, NO_PLUS, CX_EURO,   CX_PND, CX_DLR, KC_SLEP, NO_ARNG, \
     CX_PIPE,    NO_4,    NO_5,    NO_6,  NO_EQL, ______________HOME_ROW_GASC_R______________, \
     NO_SLSH,    NO_1,    NO_2,    NO_3, NO_ASTR,  KC_F12,   NO_AE, NO_OSTR, NO_ARNG, NO_ARNG, \
                       NO_LABK,    NO_0, NO_RABK,    U_NA,    U_NA
@@ -479,10 +480,20 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
             return TAPPING_TERM + 35;
         case LALT_T(KC_S):
             return TAPPING_TERM + 30;
-        case LGUI_T(KC_O):
+        case LGUI_T(KC_I):
             return TAPPING_TERM + 35;
-        case LALT_T(KC_I):
+        case LALT_T(KC_E):
             return TAPPING_TERM + 30;
+        case  LT(LAYER_NAV, KC_ESC):
+            return TAPPING_TERM - 20;
+        // case LT(LAYER_NUM, KC_BSPC):
+        //     return TAPPING_TERM - 20;
+        // case LT(LAYER_SYM, KC_SPC):
+        //     return TAPPING_TERM - 20;
+        case LSFT_T(KC_TAB):
+            return TAPPING_TERM - 20;
+        case RSFT_T(KC_ENT):
+            return TAPPING_TERM - 20;
         default:
             return TAPPING_TERM;
     }
