@@ -72,6 +72,7 @@ enum keycodes {
 };
 
 
+
 // ---------------AUTO MOUSE----------------
 // bool is_mouse_record_user(uint16_t keycode, keyrecord_t* record) {
 //     switch(keycode) {
@@ -144,7 +145,7 @@ void keyboard_post_init_user(void) {
 
 // -----------------------------------------
 
-
+// ---------------COMBOS----------------
 enum combos {
   NN_AA,
   GO_AE,
@@ -154,7 +155,7 @@ enum combos {
   ZX_F2,
   XC_F12,
   GM_CWT,
-  DH_CWT,
+  DH_ESC,
   WF_F4,
   UY_DEL,
 };
@@ -179,10 +180,11 @@ combo_t key_combos[] = {
   [ZX_F2] = COMBO(zx_combo, KC_F2),
   [XC_F12] = COMBO(xc_combo, KC_F12),
   [GM_CWT] = COMBO(gm_combo, CW_TOGG),
-  [DH_CWT] = COMBO(dh_combo, CW_TOGG),
+  [DH_ESC] = COMBO(dh_combo, KC_ESC),
   [WF_F4] = COMBO(wf_combo, KC_F4),
   [UY_DEL] = COMBO(uy_combo, KC_DEL),
 };
+// -----------------------------------------
 
 // Automatically enable sniping when the mouse layer is on.
 #define CHARYBDIS_AUTO_SNIPING_ON_LAYER LAYER_MOUSE
@@ -190,10 +192,11 @@ combo_t key_combos[] = {
 #define ESC_NAV LT(LAYER_NAV, KC_ESC)
 #define BAC_NUM LT(LAYER_NUM, KC_BSPC)
 #define TAB_FUN LT(LAYER_FUN, KC_TAB)
-#define ENT_NAV LT(LAYER_NAV, KC_ENT)
-#define SPC_SYM LT(LAYER_SYM, KC_SPC)
+#define ENT_SYM LT(LAYER_SYM, KC_ENT)
+#define SPC_NAV LT(LAYER_NAV, KC_SPC)
 #define MOUSE(KC) LT(LAYER_MOUSE, KC)
 #define ESC_SLP LT(KC_SLEP, KC_ESC)
+#define HYP_ESC LCMD_T(LCTL_T(LALT_T(KC_ESC)))
 
 #define USR_RDO KC_AGAIN
 #define USR_PST LCTL(KC_V)
@@ -218,7 +221,7 @@ combo_t key_combos[] = {
          k10,      k11,      k12,      k13,      k14,      k15,      k16,      k17,      k18,      k19, \
          k20,      k21,      k22,      k23,      k24,      k25,      k26,      k27,      k28,      k29, \
          ...)                                                                                           \
-    NO_##k00, NO_##k01, NO_##k02, NO_##k03, NO_##k04, NO_##k05, NO_##k06, NO_##k07, NO_##k08,      k09, \
+    NO_##k00, NO_##k01, NO_##k02, NO_##k03, NO_##k04, NO_##k05, NO_##k06, NO_##k07, NO_##k08, CX_##k09, \
     NO_##k10, NO_##k11, NO_##k12, NO_##k13, NO_##k14, NO_##k15, NO_##k16, NO_##k17, NO_##k18, NO_##k19, \
     NO_##k20, NO_##k21, NO_##k22, NO_##k23, NO_##k24, NO_##k25, NO_##k26, NO_##k27, NO_##k28, NO_##k29, \
     __VA_ARGS__
@@ -226,10 +229,10 @@ combo_t key_combos[] = {
 
 /** Base layer with BÉPO layout. */
 #define LAYOUT_LAYER_BASE_BEPO KC_LAYOUT_wrapper(               \
-       Q,    W,    F,    P,    B,    J,    L,    U,    Y, ESC_SLP, \
+       Q,    W,    F,    P,    B,    J,    L,    U,    Y, QUOT, \
        A,    R,    S,    T,    G,    M,    N,    E,    I,    O, \
        Z,    X,    C,    D,    V,    K,    H, COMM,  DOT, MINS, \
-       OSM(MOD_LSFT), SPC_SYM, TAB_FUN,    ENT_NAV, BAC_NUM)
+       KC_ESC, SPC_NAV, TAB_FUN,    ENT_SYM, BAC_NUM)
 
 /** Convenience key shorthands. */
 #define U_NA KC_NO // Present but not available for use.
@@ -239,7 +242,7 @@ combo_t key_combos[] = {
 #define __________________RESET_L__________________ QK_BOOT,    U_NA,    U_NA,    U_NA,    U_NA
 #define __________________RESET_R__________________    U_NA,    U_NA,    U_NA,    U_NA, QK_BOOT
 #define ______________HOME_ROW_GASC_L______________ KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT,    U_NA
-#define ______________HOME_ROW_GASC_R______________ KC_RSFT, KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT
+#define ______________HOME_ROW_GASC_R______________    U_NA, KC_RSFT, KC_LCTL, KC_LALT, KC_LGUI
 
 /** Layers. */
 
@@ -259,24 +262,24 @@ combo_t key_combos[] = {
 
 // Navigation.
 #define LAYOUT_LAYER_NAV                                                                      \
-    __________________RESET_L__________________,    U_NU, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, \
-    KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, KC_CAPS, ______________HOME_ROW_GASC_R______________, \
-    KC_HOME, KC_PGDN, KC_PGUP,  KC_END,  KC_DEL,    U_NU, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, \
-                OSM(MOD_LSFT), KC_MPLY, KC_MUTE,    U_NA,    U_NA
+    KC_MNXT, KC_VOLU, KC_VOLD,    U_NU, KC_MPRV, USR_RDO, USR_PST, USR_CPY, USR_CUT, USR_UND, \
+    ______________HOME_ROW_GASC_L______________, KC_CAPS, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, \
+    USR_UND, USR_CUT, USR_CPY,    U_NA, USR_PST, KC_INS, KC_HOME, KC_PGDN, KC_PGUP,  KC_END, \
+                U_NA,    U_NA,    U_NA,                 KC_MUTE, KC_MPLY
 
 // Mouse.
 #define LAYOUT_LAYER_MOUSE                                                                    \
     QK_BOOT,  EE_CLR, XXXXXXX, DPI_MOD, DPI_RMOD, S_D_MOD, DPI_MOD, XXXXXXX, EE_CLR,  QK_BOOT, \
-    _______, DRGSCRL, SNIPING, KC_LCTL,    U_NA, ______________HOME_ROW_GASC_R______________, \
-    _______, DRGSCRL, SNIPING, QK_BOOT,  EE_CLR, KC_BTN2,  KC_BTN1, KC_BTN2, DRGSCRL, _______, \
+    _______, DRGSCRL, KC_LCTL, KC_LSFT,     U_NA, ______________HOME_ROW_GASC_R______________, \
+    _______, USR_CUT, USR_CPY,    U_NA,  USR_PST, KC_BTN2,  KC_BTN1, KC_BTN2, DRGSCRL, _______, \
                 OSM(MOD_LSFT), KC_BTN1, KC_BTN2, OSM(MOD_LSFT), KC_BTN1
 
 // Symbols.
 #define LAYOUT_LAYER_SYM                                                                      \
-    __________________RESET_L__________________, NO_HASH,   CX_AT, NO_DQUO, NO_AMPR,  NO_GRV, \
-    ______________HOME_ROW_GASC_L______________, NO_PERC, NO_LPRN, CX_LCBR, NO_LBRC, CX_QUOT, \
-    KC_F12,   KC_F12,   KC_F2,   KC_F5, CW_TOGG,  CX_DLR, NO_RPRN, CX_RCBR, NO_RBRC, CX_TILD, \
-                               U_NA, U_NA, U_NA, NO_EXLM, NO_QUES
+    NO_GRV, NO_AMPR, NO_DQUO,   CX_AT, NO_HASH, __________________RESET_R__________________, \
+    CX_QUOT, NO_LBRC, CX_LCBR, NO_LPRN, NO_PERC, ______________HOME_ROW_GASC_R______________, \
+    CX_TILD, NO_RBRC, CX_RCBR, NO_RPRN,  CX_DLR,   KC_F5,   KC_F2,  KC_F12,  KC_F12, CW_TOGG, \
+                               U_NA, NO_EXLM, NO_QUES, U_NA, U_NA
 
 // Numerals.
 #define LAYOUT_LAYER_NUM                                                                      \
@@ -287,10 +290,10 @@ combo_t key_combos[] = {
 
 // Function keys.
 #define LAYOUT_LAYER_FUN                                                                      \
-     KC_F12,   KC_F7,   KC_F8,   KC_F9, KC_PSCR, __________________RESET_R__________________, \
-     KC_F11,   KC_F4,   KC_F5,   KC_F6, KC_SCRL, ______________HOME_ROW_GASC_R______________, \
-     KC_F10,   KC_F1,   KC_F2,   KC_F3, KC_PAUS, ______________HOME_ROW_GASC_R______________,\
-                       KC_APP,  KC_SPC,  KC_TAB,    U_NA,    U_NA
+    __________________RESET_L__________________, KC_PSCR, KC_F7,   KC_F8,   KC_F9,   KC_F12, \
+    ______________HOME_ROW_GASC_L______________, KC_SCRL, KC_F4,   KC_F5,   KC_F6,   KC_F11, \
+    ______________HOME_ROW_GASC_L______________, KC_PAUS, KC_F1,   KC_F2,   KC_F3,   KC_F10, \
+                         U_NA,    U_NA,    U_NA,  KC_SPC,  KC_APP
 
 /**
  * Add Home Row mod to a layout.
@@ -332,7 +335,7 @@ combo_t key_combos[] = {
             R05,        R06,        R07,        R08,        R09,  \
      MOUSE(L10),        L11,        L12,        L13,        L14,  \
             R15,        R16,        R17,        R18,        R19,  \
-            L20,       L21,         L22,        L23,        L24,  \
+     MOUSE(L20),        L21,        L22,        L23,        L24,  \
             R25,        R26,        R27,        R28, MOUSE(R29), \
       __VA_ARGS__
 #define MOUSE_MOD(...) _MOUSE_MOD(__VA_ARGS__)
@@ -381,6 +384,7 @@ void shutdown_user(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     bool is_apple;
+    const uint16_t mod_shift = get_mods() & MOD_MASK_SHIFT; //track shift
     is_apple = (os_type == OS_MACOS) || (os_type == OS_IOS);
     switch (keycode) {
 
@@ -459,7 +463,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
         case CX_QUOT:
             if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_QUOT : NO_QUOT);
+               if (mod_shift) {
+                    tap_code16(KC_2); // (")
+                }
+                else {
+                tap_code16((is_apple) ? MAC_QUOT : NO_QUOT);
+                }
             } else {
                 unregister_code16((is_apple) ? MAC_QUOT : NO_QUOT);
             }
@@ -470,17 +479,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     return true;
 }
+
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LT(LAYER_MOUSE, KC_A):
             return TAPPING_TERM + 40;
-        case LGUI_T(KC_R):
+        case LALT_T(KC_R):
             return TAPPING_TERM + 35;
-        case LALT_T(KC_S):
+        case LCTL_T(KC_S):
             return TAPPING_TERM + 30;
-        case LGUI_T(KC_I):
+        case RGUI_T(KC_O):
+            return TAPPING_TERM + 40;
+        case LALT_T(KC_I):
             return TAPPING_TERM + 35;
-        case LALT_T(KC_E):
+        case RCTL_T(KC_E):
             return TAPPING_TERM + 30;
         case  LT(LAYER_NAV, KC_ESC):
             return TAPPING_TERM - 20;
@@ -496,3 +508,4 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
             return TAPPING_TERM;
     }
 }
+
