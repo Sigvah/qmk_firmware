@@ -143,7 +143,7 @@ void keyboard_post_init_user(void) {
 #endif
 }
 
-// -----------------------------------------
+// ---------------OS CHECKER----------------
 
 // ---------------COMBOS----------------
 enum combos {
@@ -197,6 +197,7 @@ combo_t key_combos[] = {
 #define MOUSE(KC) LT(LAYER_MOUSE, KC)
 #define ESC_SLP LT(KC_SLEP, KC_ESC)
 #define HYP_ESC LCMD_T(LCTL_T(LALT_T(KC_ESC)))
+#define X_DRG LT(DRGSCRL, KC_X)
 
 #define USR_RDO KC_AGAIN
 #define USR_PST LCTL(KC_V)
@@ -262,31 +263,31 @@ combo_t key_combos[] = {
 
 // Navigation.
 #define LAYOUT_LAYER_NAV                                                                      \
-    KC_MNXT, KC_VOLU, KC_VOLD,    U_NU, KC_MPRV, USR_RDO, USR_PST, USR_CPY, USR_CUT, USR_UND, \
-    ______________HOME_ROW_GASC_L______________, KC_CAPS, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, \
-    USR_UND, USR_CUT, USR_CPY,    U_NA, USR_PST, KC_INS, KC_HOME, KC_PGDN, KC_PGUP,  KC_END, \
-                U_NA,    U_NA,    U_NA,                 KC_MUTE, KC_MPLY
+    KC_MPRV, KC_VOLD, KC_VOLU, KC_VOLD, KC_MNXT, USR_UND, USR_CUT, USR_CPY, USR_PST, USR_RDO, \
+    KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, KC_CAPS, ______________HOME_ROW_GASC_R______________, \
+    KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_INS,  KC_MPRV, KC_VOLU, KC_VOLD, KC_VOLD, KC_MNXT, \
+                U_NA,    U_NA,    U_NA,                 NO_EXLM, NO_QUES
 
 // Mouse.
 #define LAYOUT_LAYER_MOUSE                                                                    \
     QK_BOOT,  EE_CLR, XXXXXXX, DPI_MOD, DPI_RMOD, S_D_MOD, DPI_MOD, XXXXXXX, EE_CLR,  QK_BOOT, \
     _______, DRGSCRL, KC_LCTL, KC_LSFT,     U_NA, ______________HOME_ROW_GASC_R______________, \
-    _______, USR_CUT, USR_CPY,    U_NA,  USR_PST, KC_BTN2,  KC_BTN1, KC_BTN2, DRGSCRL, _______, \
-                OSM(MOD_LSFT), KC_BTN1, KC_BTN2, OSM(MOD_LSFT), KC_BTN1
+    _______, DRGSCRL, KC_LCTL, KC_LSFT,     U_NA, KC_BTN2,  KC_BTN1, KC_BTN2, DRGSCRL, _______, \
+                OSM(MOD_LSFT), KC_BTN1, KC_BTN2, KC_ENT, KC_BSPC
 
 // Symbols.
 #define LAYOUT_LAYER_SYM                                                                      \
-    NO_GRV, NO_AMPR, NO_DQUO,   CX_AT, NO_HASH, __________________RESET_R__________________, \
-    CX_QUOT, NO_LBRC, CX_LCBR, NO_LPRN, NO_PERC, ______________HOME_ROW_GASC_R______________, \
+    NO_GRV, NO_AMPR, CX_AT,   CX_AT, NO_HASH, __________________RESET_R__________________, \
+    NO_AMPR, NO_LBRC, CX_LCBR, NO_LPRN, NO_PERC, ______________HOME_ROW_GASC_R______________, \
     CX_TILD, NO_RBRC, CX_RCBR, NO_RPRN,  CX_DLR,   KC_F5,   KC_F2,  KC_F12,  KC_F12, CW_TOGG, \
-                               U_NA, NO_EXLM, NO_QUES, U_NA, U_NA
+                         U_NA, KC_MUTE, KC_MPLY,    U_NA, U_NA
 
 // Numerals.
 #define LAYOUT_LAYER_NUM                                                                      \
     CX_BSLS,    NO_7,    NO_8,    NO_9, NO_PLUS, CX_EURO,   CX_PND, CX_DLR, KC_SLEP, NO_ARNG, \
     CX_PIPE,    NO_4,    NO_5,    NO_6,  NO_EQL, ______________HOME_ROW_GASC_R______________, \
     NO_SLSH,    NO_1,    NO_2,    NO_3, NO_ASTR,  KC_F12,   NO_AE, NO_OSTR, NO_ARNG, NO_ARNG, \
-                      NO_LABK,    NO_0, NO_RABK,    U_NA,    U_NA
+                      NO_LABK,    NO_0, NO_LABK,    U_NA,    U_NA
 
 // Function keys.
 #define LAYOUT_LAYER_FUN                                                                      \
@@ -308,11 +309,14 @@ combo_t key_combos[] = {
 #define _HOME_ROW_MOD_GASC(                                            \
     L00, L01, L02, L03, L04, R05, R06, R07, R08, R09,                  \
     L10, L11, L12, L13, L14, R15, R16, R17, R18, R19,                  \
+    L20, L21, L22, L23, L24, R25, R26, R27, R28, R29,                  \
     ...)                                                               \
              L00,         L01,         L02,         L03,         L04,  \
              R05,         R06,         R07,         R08,         R09,  \
              L10, LALT_T(L11), LCTL_T(L12), LSFT_T(L13),        L14,  \
              R15,  RSFT_T(R16), RCTL_T(R17), LALT_T(R18), RGUI_T(R19), \
+     LGUI_T(L20),         L21,         L22,         L23,         L24,  \
+             R25,         R26,         R27,         R28,         R29,  \
       __VA_ARGS__
 #define HOME_ROW_MOD_GASC(...) _HOME_ROW_MOD_GASC(__VA_ARGS__)
 
@@ -335,7 +339,7 @@ combo_t key_combos[] = {
             R05,        R06,        R07,        R08,        R09,  \
      MOUSE(L10),        L11,        L12,        L13,        L14,  \
             R15,        R16,        R17,        R18,        R19,  \
-     MOUSE(L20),        L21,        L22,        L23,        L24,  \
+            L20,        L21,        L22,        L23,        L24,  \
             R25,        R26,        R27,        R28, MOUSE(R29), \
       __VA_ARGS__
 #define MOUSE_MOD(...) _MOUSE_MOD(__VA_ARGS__)
@@ -385,9 +389,12 @@ void shutdown_user(void) {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     bool is_apple;
     const uint16_t mod_shift = get_mods() & MOD_MASK_SHIFT; //track shift
+    const uint16_t mod_ctrl = get_mods() & MOD_MASK_CTRL; //track ctrl
+    const uint16_t mod_alt = get_mods() & MOD_MASK_ALT; //track alt
+    const uint16_t mod_gui = get_mods() & MOD_MASK_GUI; //track gui
     is_apple = (os_type == OS_MACOS) || (os_type == OS_IOS);
-    switch (keycode) {
 
+    switch (keycode) {
         // Handle keycodes that differ between Mac and PC
         case CX_AT:
             if(record->event.pressed) {
@@ -466,8 +473,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                if (mod_shift) {
                     tap_code16(KC_2); // (")
                 }
+                else if (mod_alt) {
+                    unregister_mods(mod_alt);
+                    tap_code16(NO_GRV); // (`)
+                    register_mods(mod_alt);
+                }
+                else if (mod_ctrl && !is_apple) {
+                    unregister_mods(mod_ctrl);
+                    tap_code16(NO_ACUT); // (´)
+                    register_mods(mod_ctrl);
+                }
+                else if (mod_gui && is_apple) {
+                    unregister_mods(mod_gui);
+                    tap_code16(MAC_ACUT); // (´)
+                    register_mods(mod_gui);
+                }
                 else {
-                tap_code16((is_apple) ? MAC_QUOT : NO_QUOT);
+                    tap_code16((is_apple) ? MAC_QUOT : NO_QUOT);
                 }
             } else {
                 unregister_code16((is_apple) ? MAC_QUOT : NO_QUOT);
@@ -508,4 +530,12 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
             return TAPPING_TERM;
     }
 }
+
+const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, BAC_NUM, KC_DEL);
+
+// This globally defines all key overrides to be used
+const key_override_t **key_overrides = (const key_override_t *[]){
+	&delete_key_override,
+	NULL // Null terminate the array of overrides!
+};
 

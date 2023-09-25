@@ -9,6 +9,7 @@
 #define MAC_EURO   LALT(KC_4)         // €
 #define MAC_TILD   LALT(KC_RBRC)      // ~
 #define MAC_QUOT   KC_GRV             // '
+#define MAC_ACUT   KC_PLUS            // ´
 
 #define MAC_PRV_WRD LALT(KC_LEFT)
 #define MAC_NXT_WRD LALT(KC_RIGHT)
