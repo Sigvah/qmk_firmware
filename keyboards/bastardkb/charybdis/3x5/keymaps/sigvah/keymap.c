@@ -273,11 +273,11 @@ combo_t key_combos[] = {
     QK_BOOT,  EE_CLR, XXXXXXX, DPI_MOD, DPI_RMOD, S_D_MOD, DPI_MOD, XXXXXXX, EE_CLR,  QK_BOOT, \
     _______, DRGSCRL, KC_LCTL, KC_LSFT,     U_NA, ______________HOME_ROW_GASC_R______________, \
     _______, DRGSCRL, KC_LCTL, KC_LSFT,     U_NA, KC_BTN2,  KC_BTN1, KC_BTN2, DRGSCRL, _______, \
-                OSM(MOD_LSFT), KC_BTN1, KC_BTN2, KC_ENT, KC_BSPC
+                        U_NA, KC_BTN1, KC_BTN2,       KC_ENT, KC_BSPC
 
 // Symbols.
 #define LAYOUT_LAYER_SYM                                                                      \
-    NO_GRV, NO_AMPR, CX_AT,   CX_AT, NO_HASH, __________________RESET_R__________________, \
+    NO_GRV, NO_AMPR,    CX_AT,   CX_AT, NO_HASH, __________________RESET_R__________________, \
     NO_AMPR, NO_LBRC, CX_LCBR, NO_LPRN, NO_PERC, ______________HOME_ROW_GASC_R______________, \
     CX_TILD, NO_RBRC, CX_RCBR, NO_RPRN,  CX_DLR,   KC_F5,   KC_F2,  KC_F12,  KC_F12, CW_TOGG, \
                          U_NA, KC_MUTE, KC_MPLY,    U_NA, U_NA
@@ -287,7 +287,7 @@ combo_t key_combos[] = {
     CX_BSLS,    NO_7,    NO_8,    NO_9, NO_PLUS, CX_EURO,   CX_PND, CX_DLR, KC_SLEP, NO_ARNG, \
     CX_PIPE,    NO_4,    NO_5,    NO_6,  NO_EQL, ______________HOME_ROW_GASC_R______________, \
     NO_SLSH,    NO_1,    NO_2,    NO_3, NO_ASTR,  KC_F12,   NO_AE, NO_OSTR, NO_ARNG, NO_ARNG, \
-                      NO_LABK,    NO_0, NO_LABK,    U_NA,    U_NA
+                      U_NA,    NO_0, NO_RABK,    U_NA,    U_NA
 
 // Function keys.
 #define LAYOUT_LAYER_FUN                                                                      \
@@ -395,6 +395,37 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     is_apple = (os_type == OS_MACOS) || (os_type == OS_IOS);
 
     switch (keycode) {
+        // ------HOME and END with Alt+Ctrl+Arrow------
+        // case KC_LEFT:
+        //     if (record->event.pressed) {
+        //         if (mod_alt && mod_ctrl && !is_apple && !mod_gui) {
+        //             unregister_mods(mod_alt);
+        //             unregister_mods(mod_ctrl);
+        //             tap_code16(KC_HOME);
+        //             register_mods(mod_alt);
+        //             register_mods(mod_ctrl);
+        //         }
+        //         else {
+        //             tap_code16(KC_LEFT);
+        //         }
+        //     }
+        //     return false;
+        // break;
+        // case KC_RIGHT:
+        //     if (record->event.pressed) {
+        //         if (mod_alt && mod_ctrl && !is_apple && !mod_gui) {
+        //             unregister_mods(mod_alt);
+        //             unregister_mods(mod_ctrl);
+        //             tap_code16(KC_END);
+        //             register_mods(mod_alt);
+        //             register_mods(mod_ctrl);
+        //         }
+        //         else {
+        //             tap_code16(KC_RIGHT);
+        //         }
+        //     }
+        //     return false;
+        // break;
         // Handle keycodes that differ between Mac and PC
         case CX_AT:
             if(record->event.pressed) {
@@ -516,26 +547,22 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
             return TAPPING_TERM + 35;
         case RCTL_T(KC_E):
             return TAPPING_TERM + 30;
-        case  LT(LAYER_NAV, KC_ESC):
-            return TAPPING_TERM - 20;
-        // case LT(LAYER_NUM, KC_BSPC):
-        //     return TAPPING_TERM - 20;
-        // case LT(LAYER_SYM, KC_SPC):
-        //     return TAPPING_TERM - 20;
-        case LSFT_T(KC_TAB):
-            return TAPPING_TERM - 20;
-        case RSFT_T(KC_ENT):
-            return TAPPING_TERM - 20;
         default:
             return TAPPING_TERM;
     }
 }
 
-const key_override_t delete_key_override = ko_make_basic(MOD_MASK_SHIFT, BAC_NUM, KC_DEL);
+
+const key_override_t delete_key_override = ko_make_basic(MOD_BIT(KC_LSFT), BAC_NUM, KC_DEL);
+const key_override_t space_key_override = ko_make_basic(MOD_BIT(KC_LSFT), SPC_NAV, KC_ESC);
+const key_override_t tab_key_override = ko_make_basic(MOD_BIT(KC_LSFT), TAB_FUN, NO_LABK);
+const key_override_t ent_key_override = ko_make_basic(MOD_BIT(KC_RSFT), ENT_SYM, NO_RABK);
 
 // This globally defines all key overrides to be used
 const key_override_t **key_overrides = (const key_override_t *[]){
 	&delete_key_override,
+    &space_key_override,
+    &tab_key_override,
+    &ent_key_override,
 	NULL // Null terminate the array of overrides!
 };
-
