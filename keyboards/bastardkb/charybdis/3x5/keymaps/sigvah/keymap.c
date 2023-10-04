@@ -263,9 +263,9 @@ combo_t key_combos[] = {
 
 // Navigation.
 #define LAYOUT_LAYER_NAV                                                                      \
-    KC_MPRV, KC_VOLD, KC_VOLU, KC_VOLD, KC_MNXT, USR_UND, USR_CUT, USR_CPY, USR_PST, USR_RDO, \
-    KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, KC_CAPS, ______________HOME_ROW_GASC_R______________, \
-    KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_INS,  KC_MPRV, KC_VOLU, KC_VOLD, KC_VOLD, KC_MNXT, \
+    USR_RDO, USR_PST, USR_CPY, USR_CUT, USR_UND, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPRV, KC_MNXT, \
+    ______________HOME_ROW_GASC_L______________, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, KC_CAPS, \
+    KC_END, KC_PGUP, KC_PGDN, KC_HOME, KC_INS, KC_MNXT, KC_VOLD, KC_VOLU, KC_VOLD, KC_MPRV, \
                 U_NA,    U_NA,    U_NA,                 NO_EXLM, NO_QUES
 
 // Mouse.
