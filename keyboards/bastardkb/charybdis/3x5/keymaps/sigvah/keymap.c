@@ -150,14 +150,18 @@ enum combos {
   NN_AA,
   GO_AE,
   GI_OE,
-  BK_SP_DEL,
-  ENT_SFT_ESC,
   ZX_F2,
   XC_F12,
   GM_CWT,
   DH_ESC,
   WF_F4,
   UY_DEL,
+  SPC_TAB_ESC,
+  BCK_ENT_DEL,
+  ST_LPRN,
+  NE_RPRN,
+  RS_LCBR,
+  EI_RCBR,
 };
 
 const uint16_t PROGMEM ae_combo[] = {KC_H, KC_COMM, COMBO_END};
@@ -170,19 +174,30 @@ const uint16_t PROGMEM gm_combo[] = {LT(LAYER_SYM, KC_SPC), LT(LAYER_NUM, KC_BSP
 const uint16_t PROGMEM dh_combo[] = {KC_D, KC_H, COMBO_END};
 const uint16_t PROGMEM wf_combo[] = {KC_W, KC_F, COMBO_END};
 const uint16_t PROGMEM uy_combo[] = {KC_U, KC_Y, COMBO_END};
+const uint16_t PROGMEM spc_tab_esc_combo[] = {LT(LAYER_NAV, KC_SPC), LT(LAYER_FUN, KC_TAB), COMBO_END};
+const uint16_t PROGMEM bck_ent_del_combo[] = {LT(LAYER_NUM, KC_BSPC), LT(LAYER_SYM, KC_ENT), COMBO_END};
+const uint16_t PROGMEM st_lprn_combo[] = {LCTL_T(KC_S), LSFT_T(KC_T), COMBO_END};
+const uint16_t PROGMEM ne_rprn_combo[] = {RCTL_T(KC_E), RSFT_T(KC_N), COMBO_END};
+const uint16_t PROGMEM rs_lcbr_combo[] = {LALT_T(KC_R), LCTL_T(KC_S), COMBO_END};
+const uint16_t PROGMEM ei_rcbr_combo[] = {RCTL_T(KC_E), LALT_T(KC_I), COMBO_END};
 
 
 combo_t key_combos[] = {
   [NN_AA] = COMBO(ae_combo, KC_LBRC),
   [GO_AE] = COMBO(ai_combo, KC_QUOT),
   [GI_OE] = COMBO(ao_combo, KC_SCLN),
-  [BK_SP_DEL] = COMBO(bk_combo, KC_DEL),
   [ZX_F2] = COMBO(zx_combo, KC_F2),
   [XC_F12] = COMBO(xc_combo, KC_F12),
   [GM_CWT] = COMBO(gm_combo, CW_TOGG),
   [DH_ESC] = COMBO(dh_combo, KC_ESC),
   [WF_F4] = COMBO(wf_combo, KC_F4),
   [UY_DEL] = COMBO(uy_combo, KC_DEL),
+  [SPC_TAB_ESC] = COMBO(spc_tab_esc_combo, KC_ESC),
+  [BCK_ENT_DEL] = COMBO(bck_ent_del_combo, KC_DEL),
+  [ST_LPRN] = COMBO(st_lprn_combo, NO_LPRN),
+  [NE_RPRN] = COMBO(ne_rprn_combo, NO_RPRN),
+  [RS_LCBR] = COMBO(rs_lcbr_combo, CX_LCBR),
+  [EI_RCBR] = COMBO(ei_rcbr_combo, CX_RCBR),
 };
 // -----------------------------------------
 
@@ -263,9 +278,9 @@ combo_t key_combos[] = {
 
 // Navigation.
 #define LAYOUT_LAYER_NAV                                                                      \
-    USR_RDO, USR_PST, USR_CPY, USR_CUT, USR_UND, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPRV, KC_MNXT, \
-    ______________HOME_ROW_GASC_L______________, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, KC_CAPS, \
-    KC_END, KC_PGUP, KC_PGDN, KC_HOME, KC_INS, KC_MNXT, KC_VOLD, KC_VOLU, KC_VOLD, KC_MPRV, \
+ KC_MPRV, KC_VOLD, KC_VOLU, KC_VOLD, KC_MNXT, USR_UND, USR_CUT, USR_CPY, USR_PST, USR_RDO, \
+    KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, KC_CAPS, ______________HOME_ROW_GASC_R______________, \
+    KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_INS,  KC_MPRV, KC_VOLD, KC_VOLU, KC_VOLD, KC_MNXT, \
                 U_NA,    U_NA,    U_NA,                 NO_EXLM, NO_QUES
 
 // Mouse.
@@ -504,19 +519,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                if (mod_shift) {
                     tap_code16(KC_2); // (")
                 }
-                else if (mod_alt) {
+                else if (mod_alt && !is_apple) {
                     unregister_mods(mod_alt);
-                    tap_code16(NO_GRV); // (`)
+                    tap_code16(NO_ACUT); // (´)
+                    register_mods(mod_alt);
+                }
+                else if (mod_alt && is_apple) {
+                    unregister_mods(mod_alt);
+                    tap_code16(MAC_ACUT); // (´)
                     register_mods(mod_alt);
                 }
                 else if (mod_ctrl && !is_apple) {
                     unregister_mods(mod_ctrl);
-                    tap_code16(NO_ACUT); // (´)
+                    tap_code16(NO_GRV); // (´)
                     register_mods(mod_ctrl);
                 }
                 else if (mod_gui && is_apple) {
                     unregister_mods(mod_gui);
-                    tap_code16(MAC_ACUT); // (´)
+                    tap_code16(NO_GRV); // (´)
                     register_mods(mod_gui);
                 }
                 else {
@@ -557,6 +577,8 @@ const key_override_t delete_key_override = ko_make_basic(MOD_BIT(KC_LSFT), BAC_N
 const key_override_t space_key_override = ko_make_basic(MOD_BIT(KC_LSFT), SPC_NAV, KC_ESC);
 const key_override_t tab_key_override = ko_make_basic(MOD_BIT(KC_LSFT), TAB_FUN, NO_LABK);
 const key_override_t ent_key_override = ko_make_basic(MOD_BIT(KC_RSFT), ENT_SYM, NO_RABK);
+const key_override_t lprn_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_LPRN, NO_LBRC);
+const key_override_t rprn_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_RPRN, NO_RBRC);
 
 // This globally defines all key overrides to be used
 const key_override_t **key_overrides = (const key_override_t *[]){
@@ -564,5 +586,7 @@ const key_override_t **key_overrides = (const key_override_t *[]){
     &space_key_override,
     &tab_key_override,
     &ent_key_override,
+    &lprn_key_override,
+    &rprn_key_override,
 	NULL // Null terminate the array of overrides!
 };
