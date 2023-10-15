@@ -69,6 +69,7 @@ enum keycodes {
     CX_CUT,
     CX_COPY,
     CX_PSTE,
+    CX_ISMAC,
 };
 
 
@@ -158,12 +159,11 @@ enum combos {
   UY_DEL,
   SPC_TAB_ESC,
   BCK_ENT_DEL,
-  ST_LPRN,
-  NE_RPRN,
-  RS_LCBR,
-  EI_RCBR,
+  NE_LPRN,
+  EI_RPRN,
+  LU_QUES,
 };
-
+_Bool isMac = true;
 const uint16_t PROGMEM ae_combo[] = {KC_H, KC_COMM, COMBO_END};
 const uint16_t PROGMEM ai_combo[] = {KC_F, KC_P, COMBO_END};
 const uint16_t PROGMEM ao_combo[] = {KC_C, KC_D, COMBO_END};
@@ -176,10 +176,9 @@ const uint16_t PROGMEM wf_combo[] = {KC_W, KC_F, COMBO_END};
 const uint16_t PROGMEM uy_combo[] = {KC_U, KC_Y, COMBO_END};
 const uint16_t PROGMEM spc_tab_esc_combo[] = {LT(LAYER_NAV, KC_SPC), LT(LAYER_FUN, KC_TAB), COMBO_END};
 const uint16_t PROGMEM bck_ent_del_combo[] = {LT(LAYER_NUM, KC_BSPC), LT(LAYER_SYM, KC_ENT), COMBO_END};
-const uint16_t PROGMEM st_lprn_combo[] = {LCTL_T(KC_S), LSFT_T(KC_T), COMBO_END};
-const uint16_t PROGMEM ne_rprn_combo[] = {RCTL_T(KC_E), RSFT_T(KC_N), COMBO_END};
-const uint16_t PROGMEM rs_lcbr_combo[] = {LALT_T(KC_R), LCTL_T(KC_S), COMBO_END};
-const uint16_t PROGMEM ei_rcbr_combo[] = {RCTL_T(KC_E), LALT_T(KC_I), COMBO_END};
+const uint16_t PROGMEM ne_lprn_combo[] = {RCTL_T(KC_E), RSFT_T(KC_N), COMBO_END};
+const uint16_t PROGMEM ei_rprn_combo[] = {RCTL_T(KC_E), LALT_T(KC_I), COMBO_END};
+const uint16_t PROGMEM lu_ques_combo[] = {KC_L, KC_U, COMBO_END};
 
 
 combo_t key_combos[] = {
@@ -194,10 +193,9 @@ combo_t key_combos[] = {
   [UY_DEL] = COMBO(uy_combo, KC_DEL),
   [SPC_TAB_ESC] = COMBO(spc_tab_esc_combo, KC_ESC),
   [BCK_ENT_DEL] = COMBO(bck_ent_del_combo, KC_DEL),
-  [ST_LPRN] = COMBO(st_lprn_combo, NO_LPRN),
-  [NE_RPRN] = COMBO(ne_rprn_combo, NO_RPRN),
-  [RS_LCBR] = COMBO(rs_lcbr_combo, CX_LCBR),
-  [EI_RCBR] = COMBO(ei_rcbr_combo, CX_RCBR),
+  [NE_LPRN] = COMBO(ne_lprn_combo, NO_LPRN),
+  [EI_RPRN] = COMBO(ei_rprn_combo, NO_RPRN),
+    [LU_QUES] = COMBO(lu_ques_combo, NO_QUES),
 };
 // -----------------------------------------
 
@@ -261,26 +259,11 @@ combo_t key_combos[] = {
 #define ______________HOME_ROW_GASC_R______________    U_NA, KC_RSFT, KC_LCTL, KC_LALT, KC_LGUI
 
 /** Layers. */
-
-// Buttons.
-#define LAYOUT_LAYER_MBO                                                                      \
-    __________________RESET_L__________________, USR_RDO, USR_PST, USR_CPY, USR_CUT, USR_UND, \
-    ______________HOME_ROW_GASC_L______________, KC_CAPS, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, \
-    KC_BTN3, KC_ALGR, KC_BTN2, KC_BTN1,    U_NA,  KC_INS, KC_HOME, KC_PGDN, KC_PGUP,  KC_END, \
-                         U_NA,    U_NA,    U_NA,  KC_ENT,  KC_DEL
-
-// Media. Bytt denne ut.
-#define LAYOUT_LAYER_MEDIA                                                                    \
-    __________________RESET_L__________________, USR_RDO, USR_PST, USR_CPY, USR_CUT, USR_UND, \
-    KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT,  KC_DEL,    U_NU,    MS_L,    MS_D,    MS_U,    MS_R, \
-    KC_HOME, KC_PGDN, KC_PGUP,  KC_END,  KC_DEL,    U_NU,    WH_L,    WH_D,    WH_U,    WH_R, \
-                         U_NA,    U_NA,    U_NA, KC_BTN1, KC_BTN3
-
 // Navigation.
 #define LAYOUT_LAYER_NAV                                                                      \
- KC_MPRV, KC_VOLD, KC_VOLU, KC_VOLD, KC_MNXT, USR_UND, USR_CUT, USR_CPY, USR_PST, USR_RDO, \
+    KC_MPRV, KC_VOLD, KC_VOLU, KC_VOLD, KC_MNXT, USR_UND, USR_CUT, USR_CPY, USR_PST, USR_RDO, \
     KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, KC_CAPS, ______________HOME_ROW_GASC_R______________, \
-    KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_INS,  KC_MPRV, KC_VOLD, KC_VOLU, KC_VOLD, KC_MNXT, \
+    KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_INS,  KC_MPRV, KC_VOLU, KC_VOLD, KC_VOLD, KC_MNXT, \
                 U_NA,    U_NA,    U_NA,                 NO_EXLM, NO_QUES
 
 // Mouse.
@@ -294,7 +277,7 @@ combo_t key_combos[] = {
 #define LAYOUT_LAYER_SYM                                                                      \
     NO_GRV, NO_AMPR,    CX_AT,   CX_AT, NO_HASH, __________________RESET_R__________________, \
     NO_AMPR, NO_LBRC, CX_LCBR, NO_LPRN, NO_PERC, ______________HOME_ROW_GASC_R______________, \
-    CX_TILD, NO_RBRC, CX_RCBR, NO_RPRN,  CX_DLR,   KC_F5,   KC_F2,  KC_F12,  KC_F12, CW_TOGG, \
+    CX_TILD, NO_RBRC, CX_RCBR, NO_RPRN,  CX_DLR,   KC_F5,  KC_F2, NO_RCBR, CX_ISMAC, CW_TOGG, \
                          U_NA, KC_MUTE, KC_MPLY,    U_NA, U_NA
 
 // Numerals.
@@ -365,8 +348,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT_wrapper(
     MOUSE_MOD(HOME_ROW_MOD_GASC(LAYOUT_LAYER_BASE_BEPO))
   ),
-  [LAYER_MBO] = LAYOUT_wrapper(LAYOUT_LAYER_MBO),
-  [LAYER_MEDIA] = LAYOUT_wrapper(LAYOUT_LAYER_MEDIA),
   [LAYER_NAV] = LAYOUT_wrapper(LAYOUT_LAYER_NAV),
   [LAYER_MOUSE] = LAYOUT_wrapper(LAYOUT_LAYER_MOUSE),
   [LAYER_SYM] = LAYOUT_wrapper(LAYOUT_LAYER_SYM),
@@ -400,7 +381,6 @@ void shutdown_user(void) {
     rgb_matrix_update_pwm_buffers();
 #endif // RGB_MATRIX_ENABLE
 }
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     bool is_apple;
     const uint16_t mod_shift = get_mods() & MOD_MASK_SHIFT; //track shift
@@ -408,6 +388,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     const uint16_t mod_alt = get_mods() & MOD_MASK_ALT; //track alt
     const uint16_t mod_gui = get_mods() & MOD_MASK_GUI; //track gui
     is_apple = (os_type == OS_MACOS) || (os_type == OS_IOS);
+    isMac = !is_apple;
 
     switch (keycode) {
         // ------HOME and END with Alt+Ctrl+Arrow------
@@ -441,7 +422,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         //     }
         //     return false;
         // break;
-        // Handle keycodes that differ between Mac and PC
+        // case NO_LPRN:
+        //     if(record->event.pressed && mod_alt && !is_apple) {
+        //         tap_code16(NO_LCBR);
+        //     } else {
+        //         tap_code16(NO_LPRN);
+        //     }
+        //     return false;
+        // break;
+        // case NO_RPRN:
+        //     if(record->event.pressed && mod_alt && !is_apple) {
+        //         tap_code16(NO_RCBR);
+        //     } else if (record->event.pressed && mod_gui && is_apple) {
+        //         tap_code16(NO_RPRN);
+        //     }
+        //     return false;
+        // break;
+
+         // Handle keycodes that differ between Mac and PC
         case CX_AT:
             if(record->event.pressed) {
                 register_code16((is_apple) ? MAC_AT : NO_AT);
@@ -572,13 +570,35 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-
 const key_override_t delete_key_override = ko_make_basic(MOD_BIT(KC_LSFT), BAC_NUM, KC_DEL);
 const key_override_t space_key_override = ko_make_basic(MOD_BIT(KC_LSFT), SPC_NAV, KC_ESC);
 const key_override_t tab_key_override = ko_make_basic(MOD_BIT(KC_LSFT), TAB_FUN, NO_LABK);
 const key_override_t ent_key_override = ko_make_basic(MOD_BIT(KC_RSFT), ENT_SYM, NO_RABK);
 const key_override_t lprn_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_LPRN, NO_LBRC);
 const key_override_t rprn_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_RPRN, NO_RBRC);
+const key_override_t lprn2_key_override = ko_make_basic(MOD_MASK_GUI, NO_LPRN, NO_LABK);
+const key_override_t rprn2_key_override = ko_make_basic(MOD_MASK_GUI, NO_RPRN, NO_RABK);
+const key_override_t quest_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_QUES, NO_EXLM);
+const key_override_t lprn3_key_override = {.trigger_mods          = MOD_BIT(KC_LALT),
+                                   .layers                 = ~(1 << 1),
+                                   .suppressed_mods        = MOD_BIT(KC_LALT),
+                                   .options                = ko_option_no_unregister_on_other_key_down,
+                                   .negative_mod_mask      = (uint8_t) ~(MOD_BIT(KC_LALT)),
+                                   .custom_action          = NULL,
+                                   .context                = NULL,
+                                   .trigger                = NO_LPRN,
+                                   .replacement            = NO_LCBR,
+                                    .enabled                = (bool *)&isMac};
+const key_override_t rprn3_key_override = {.trigger_mods          = MOD_BIT(KC_LALT),
+                                      .layers                 = ~(1 << 1),
+                                      .suppressed_mods        = MOD_BIT(KC_LALT),
+                                      .options                = ko_option_no_unregister_on_other_key_down,
+                                      .negative_mod_mask      = (uint8_t) ~(MOD_BIT(KC_LALT)),
+                                      .custom_action          = NULL,
+                                      .context                = NULL,
+                                      .trigger                = NO_RPRN,
+                                      .replacement            = NO_RCBR,
+                                        .enabled                = (bool *)&isMac};
 
 // This globally defines all key overrides to be used
 const key_override_t **key_overrides = (const key_override_t *[]){
@@ -588,5 +608,10 @@ const key_override_t **key_overrides = (const key_override_t *[]){
     &ent_key_override,
     &lprn_key_override,
     &rprn_key_override,
+    &lprn2_key_override,
+    &rprn2_key_override,
+    &quest_key_override,
+    &lprn3_key_override,
+    &rprn3_key_override,
 	NULL // Null terminate the array of overrides!
 };
