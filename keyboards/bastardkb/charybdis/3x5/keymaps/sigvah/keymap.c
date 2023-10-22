@@ -20,7 +20,20 @@
 #include "os_detection.h"
 #include "keymap_norwegian.h"
 #include "keymap_norwegian_mac.h"
+#include "features/achordion.h"
 
+
+bool achordion_chord(uint16_t tap_hold_keycode,
+                     keyrecord_t* tap_hold_record,
+                     uint16_t other_keycode,
+                     keyrecord_t* other_record) {
+  return achordion_opposite_hands(tap_hold_record, other_record);
+}
+
+
+void matrix_scan_user(void) {
+  achordion_task();
+}
 bool caps_word_press_user(uint16_t keycode) {
     switch (keycode) {
         // Keycodes that continue Caps Word, with shift applied.
@@ -69,7 +82,6 @@ enum keycodes {
     CX_CUT,
     CX_COPY,
     CX_PSTE,
-    CX_ISMAC,
 };
 
 
@@ -93,12 +105,14 @@ enum keycodes {
 #if defined(OS_DETECTION_ENABLE) && defined(DEFERRED_EXEC_ENABLE)
 
 os_variant_t os_type;
+bool is_not_mac;
 
 uint32_t startup_exec(uint32_t trigger_time, void *cb_arg) {
     if (is_keyboard_master()) {
         os_type = detected_host_os();
         if (os_type) {
             bool is_mac = (os_type == OS_MACOS) || (os_type == OS_IOS);
+            is_not_mac = !is_mac;
             if (keymap_config.swap_lctl_lgui != is_mac) {
                 keymap_config.swap_lctl_lgui = keymap_config.swap_rctl_rgui = is_mac;
                 eeconfig_update_keymap(keymap_config.raw);
@@ -161,41 +175,40 @@ enum combos {
   BCK_ENT_DEL,
   NE_LPRN,
   EI_RPRN,
-  LU_QUES,
+  LU_MINS,
 };
-_Bool isMac = true;
 const uint16_t PROGMEM ae_combo[] = {KC_H, KC_COMM, COMBO_END};
 const uint16_t PROGMEM ai_combo[] = {KC_F, KC_P, COMBO_END};
 const uint16_t PROGMEM ao_combo[] = {KC_C, KC_D, COMBO_END};
 const uint16_t PROGMEM bk_combo[] = {RSFT_T(KC_BSPC), LT(LAYER_NUM, KC_SPC), COMBO_END};
 const uint16_t PROGMEM zx_combo[] = {KC_Z, KC_X, COMBO_END};
 const uint16_t PROGMEM xc_combo[] = {KC_X, KC_C, COMBO_END};
-const uint16_t PROGMEM gm_combo[] = {LT(LAYER_SYM, KC_SPC), LT(LAYER_NUM, KC_BSPC), COMBO_END};
+const uint16_t PROGMEM gm_combo[] = {KC_G, KC_M, COMBO_END};
 const uint16_t PROGMEM dh_combo[] = {KC_D, KC_H, COMBO_END};
 const uint16_t PROGMEM wf_combo[] = {KC_W, KC_F, COMBO_END};
 const uint16_t PROGMEM uy_combo[] = {KC_U, KC_Y, COMBO_END};
 const uint16_t PROGMEM spc_tab_esc_combo[] = {LT(LAYER_NAV, KC_SPC), LT(LAYER_FUN, KC_TAB), COMBO_END};
 const uint16_t PROGMEM bck_ent_del_combo[] = {LT(LAYER_NUM, KC_BSPC), LT(LAYER_SYM, KC_ENT), COMBO_END};
-const uint16_t PROGMEM ne_lprn_combo[] = {RCTL_T(KC_E), RSFT_T(KC_N), COMBO_END};
-const uint16_t PROGMEM ei_rprn_combo[] = {RCTL_T(KC_E), LALT_T(KC_I), COMBO_END};
-const uint16_t PROGMEM lu_ques_combo[] = {KC_L, KC_U, COMBO_END};
+const uint16_t PROGMEM ne_lprn_combo[] = {KC_COMM, KC_DOT, COMBO_END};
+const uint16_t PROGMEM ei_rprn_combo[] = {KC_DOT, NO_QUES, COMBO_END};
+const uint16_t PROGMEM lu_mins_combo[] = {KC_L, KC_U, COMBO_END};
 
 
 combo_t key_combos[] = {
-  [NN_AA] = COMBO(ae_combo, KC_LBRC),
-  [GO_AE] = COMBO(ai_combo, KC_QUOT),
-  [GI_OE] = COMBO(ao_combo, KC_SCLN),
-  [ZX_F2] = COMBO(zx_combo, KC_F2),
-  [XC_F12] = COMBO(xc_combo, KC_F12),
+  [NN_AA] = COMBO(ae_combo, KC_LBRC), //Å
+  [GO_AE] = COMBO(ai_combo, KC_QUOT), //Æ
+  [GI_OE] = COMBO(ao_combo, KC_SCLN), //Ø
+  [ZX_F2] = COMBO(zx_combo, NO_LABK),
+  [XC_F12] = COMBO(xc_combo, CX_RCBR),
   [GM_CWT] = COMBO(gm_combo, CW_TOGG),
   [DH_ESC] = COMBO(dh_combo, KC_ESC),
-  [WF_F4] = COMBO(wf_combo, KC_F4),
-  [UY_DEL] = COMBO(uy_combo, KC_DEL),
-  [SPC_TAB_ESC] = COMBO(spc_tab_esc_combo, KC_ESC),
-  [BCK_ENT_DEL] = COMBO(bck_ent_del_combo, KC_DEL),
-  [NE_LPRN] = COMBO(ne_lprn_combo, NO_LPRN),
-  [EI_RPRN] = COMBO(ei_rprn_combo, NO_RPRN),
-    [LU_QUES] = COMBO(lu_ques_combo, NO_QUES),
+  [WF_F4] = COMBO(wf_combo, CX_LCBR),
+  [UY_DEL] = COMBO(uy_combo, NO_LPRN),
+  [SPC_TAB_ESC] = COMBO(spc_tab_esc_combo, OSM(MOD_LSFT)),
+  [BCK_ENT_DEL] = COMBO(bck_ent_del_combo, OSM(MOD_LSFT)),
+  [NE_LPRN] = COMBO(ne_lprn_combo, NO_RPRN),
+  [EI_RPRN] = COMBO(ei_rprn_combo, NO_LBRC),
+    [LU_MINS] = COMBO(lu_mins_combo, NO_MINS),
 };
 // -----------------------------------------
 
@@ -241,12 +254,11 @@ combo_t key_combos[] = {
     __VA_ARGS__
 #define KC_LAYOUT_wrapper(...) _KC_LAYOUT_wrapper(__VA_ARGS__)
 
-/** Base layer with BÉPO layout. */
-#define LAYOUT_LAYER_BASE_BEPO KC_LAYOUT_wrapper(               \
-       Q,    W,    F,    P,    B,    J,    L,    U,    Y, QUOT, \
-       A,    R,    S,    T,    G,    M,    N,    E,    I,    O, \
-       Z,    X,    C,    D,    V,    K,    H, COMM,  DOT, MINS, \
-       KC_ESC, SPC_NAV, TAB_FUN,    ENT_SYM, BAC_NUM)
+#define LAYOUT_LAYER_BASE_BEPO                \
+       KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y, CX_QUOT, \
+       KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O, \
+       KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,    KC_K,    KC_H, KC_COMM,  KC_DOT, NO_QUES, \
+       KC_ESC, SPC_NAV, TAB_FUN,    ENT_SYM, BAC_NUM
 
 /** Convenience key shorthands. */
 #define U_NA KC_NO // Present but not available for use.
@@ -277,7 +289,7 @@ combo_t key_combos[] = {
 #define LAYOUT_LAYER_SYM                                                                      \
     NO_GRV, NO_AMPR,    CX_AT,   CX_AT, NO_HASH, __________________RESET_R__________________, \
     NO_AMPR, NO_LBRC, CX_LCBR, NO_LPRN, NO_PERC, ______________HOME_ROW_GASC_R______________, \
-    CX_TILD, NO_RBRC, CX_RCBR, NO_RPRN,  CX_DLR,   KC_F5,  KC_F2, NO_RCBR, CX_ISMAC, CW_TOGG, \
+    CX_TILD, NO_RBRC, CX_RCBR, NO_RPRN,  CX_DLR,   KC_F5,  KC_F2, NO_RCBR, U_NA, CW_TOGG, \
                          U_NA, KC_MUTE, KC_MPLY,    U_NA, U_NA
 
 // Numerals.
@@ -338,7 +350,7 @@ combo_t key_combos[] = {
      MOUSE(L10),        L11,        L12,        L13,        L14,  \
             R15,        R16,        R17,        R18,        R19,  \
             L20,        L21,        L22,        L23,        L24,  \
-            R25,        R26,        R27,        R28, MOUSE(R29), \
+            R25,        R26,        R27,        R28,        R29, \
       __VA_ARGS__
 #define MOUSE_MOD(...) _MOUSE_MOD(__VA_ARGS__)
 
@@ -382,13 +394,13 @@ void shutdown_user(void) {
 #endif // RGB_MATRIX_ENABLE
 }
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+      if (!process_achordion(keycode, record)) { return false; }
     bool is_apple;
     const uint16_t mod_shift = get_mods() & MOD_MASK_SHIFT; //track shift
     const uint16_t mod_ctrl = get_mods() & MOD_MASK_CTRL; //track ctrl
     const uint16_t mod_alt = get_mods() & MOD_MASK_ALT; //track alt
     const uint16_t mod_gui = get_mods() & MOD_MASK_GUI; //track gui
     is_apple = (os_type == OS_MACOS) || (os_type == OS_IOS);
-    isMac = !is_apple;
 
     switch (keycode) {
         // ------HOME and END with Alt+Ctrl+Arrow------
@@ -474,16 +486,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
         case CX_LCBR:
             if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_LCBR : NO_LCBR);
-            } else {
+                if (mod_shift) {
+                    unregister_mods(mod_shift);
+                    tap_code16(NO_LABK);
+                    register_mods(mod_shift);
+                }
+                else { tap_code16((is_apple) ? MAC_LCBR : NO_LCBR);
+                }} else {
                 unregister_code16((is_apple) ? MAC_LCBR : NO_LCBR);
             }
             return false;
         break;
         case CX_RCBR:
             if(record->event.pressed) {
-                register_code16((is_apple) ? MAC_RCBR : NO_RCBR);
-            } else {
+                if (mod_shift) {
+                    unregister_mods(mod_shift);
+                    tap_code16(NO_RABK);
+                    register_mods(mod_shift);
+                }
+                else { tap_code16((is_apple) ? MAC_RCBR : NO_RCBR);
+                }} else {
                 unregister_code16((is_apple) ? MAC_RCBR : NO_RCBR);
             }
             return false;
@@ -551,24 +573,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
-uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case LT(LAYER_MOUSE, KC_A):
-            return TAPPING_TERM + 40;
-        case LALT_T(KC_R):
-            return TAPPING_TERM + 35;
-        case LCTL_T(KC_S):
-            return TAPPING_TERM + 30;
-        case RGUI_T(KC_O):
-            return TAPPING_TERM + 40;
-        case LALT_T(KC_I):
-            return TAPPING_TERM + 35;
-        case RCTL_T(KC_E):
-            return TAPPING_TERM + 30;
-        default:
-            return TAPPING_TERM;
-    }
-}
+ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+     switch (keycode) {
+         case LT(LAYER_MOUSE, KC_A):
+             return TAPPING_TERM + 50;
+//         case LALT_T(KC_R):
+//             return TAPPING_TERM + 35;
+//         case LCTL_T(KC_S):
+//             return TAPPING_TERM + 30;
+//         case RGUI_T(KC_O):
+//             return TAPPING_TERM + 40;
+//         case LALT_T(KC_I):
+//             return TAPPING_TERM + 35;
+//         case RCTL_T(KC_E):
+//             return TAPPING_TERM + 30;
+         default:
+             return TAPPING_TERM;
+     }
+ }
 
 const key_override_t delete_key_override = ko_make_basic(MOD_BIT(KC_LSFT), BAC_NUM, KC_DEL);
 const key_override_t space_key_override = ko_make_basic(MOD_BIT(KC_LSFT), SPC_NAV, KC_ESC);
@@ -576,8 +598,6 @@ const key_override_t tab_key_override = ko_make_basic(MOD_BIT(KC_LSFT), TAB_FUN,
 const key_override_t ent_key_override = ko_make_basic(MOD_BIT(KC_RSFT), ENT_SYM, NO_RABK);
 const key_override_t lprn_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_LPRN, NO_LBRC);
 const key_override_t rprn_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_RPRN, NO_RBRC);
-const key_override_t lprn2_key_override = ko_make_basic(MOD_MASK_GUI, NO_LPRN, NO_LABK);
-const key_override_t rprn2_key_override = ko_make_basic(MOD_MASK_GUI, NO_RPRN, NO_RABK);
 const key_override_t quest_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_QUES, NO_EXLM);
 const key_override_t lprn3_key_override = {.trigger_mods          = MOD_BIT(KC_LALT),
                                    .layers                 = ~(1 << 1),
@@ -588,7 +608,7 @@ const key_override_t lprn3_key_override = {.trigger_mods          = MOD_BIT(KC_L
                                    .context                = NULL,
                                    .trigger                = NO_LPRN,
                                    .replacement            = NO_LCBR,
-                                    .enabled                = (bool *)&isMac};
+                                    .enabled                = (bool *)&is_not_mac};
 const key_override_t rprn3_key_override = {.trigger_mods          = MOD_BIT(KC_LALT),
                                       .layers                 = ~(1 << 1),
                                       .suppressed_mods        = MOD_BIT(KC_LALT),
@@ -598,7 +618,7 @@ const key_override_t rprn3_key_override = {.trigger_mods          = MOD_BIT(KC_L
                                       .context                = NULL,
                                       .trigger                = NO_RPRN,
                                       .replacement            = NO_RCBR,
-                                        .enabled                = (bool *)&isMac};
+                                        .enabled                = (bool *)&is_not_mac};
 
 // This globally defines all key overrides to be used
 const key_override_t **key_overrides = (const key_override_t *[]){
@@ -608,10 +628,20 @@ const key_override_t **key_overrides = (const key_override_t *[]){
     &ent_key_override,
     &lprn_key_override,
     &rprn_key_override,
-    &lprn2_key_override,
-    &rprn2_key_override,
     &quest_key_override,
     &lprn3_key_override,
     &rprn3_key_override,
 	NULL // Null terminate the array of overrides!
 };
+uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
+  switch (tap_hold_keycode) {
+    case LT(LAYER_MOUSE, KC_A):
+    case LT(LAYER_NUM, KC_BSPC):
+    case LT(LAYER_NAV, KC_SPC):
+    case LSFT_T(KC_T):
+    case RSFT_T(KC_N):
+      return 0;  // Bypass Achordion for these keys.
+  }
+
+  return 800;  // Otherwise use a timeout of 800 ms.
+}

@@ -1,3 +1,4 @@
+SRC += features/achordion.c
 OS_DETECTION_ENABLE = yes
 DEFERRED_EXEC_ENABLE = yes
 CAPS_WORD_ENABLE = yes
