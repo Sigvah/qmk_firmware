@@ -37,6 +37,7 @@
 #    define TAPPING_TERM 165
 #endif // TAPPING_TERM
 #define TAPPING_TERM_PER_KEY
+#define QUICK_TAP_TERM 0
 /**
  * Enable rapid switch from tap to hold.  Disable auto-repeat when pressing key
  * twice, except for one-shot keys.

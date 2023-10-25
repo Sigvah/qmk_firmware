@@ -162,26 +162,23 @@ void keyboard_post_init_user(void) {
 
 // ---------------COMBOS----------------
 enum combos {
-  NN_AA,
-  GO_AE,
-  GI_OE,
-  ZX_F2,
-  XC_F12,
+  H_COMM_AA,
+  FP_AE,
+  CD_OE,
+  XC_RCBR,
   GM_CWT,
   DH_ESC,
-  WF_F4,
-  UY_DEL,
+  WF_LCBR,
+  UY_LPRN,
   SPC_TAB_ESC,
   BCK_ENT_DEL,
   NE_LPRN,
-  EI_RPRN,
   LU_MINS,
 };
-const uint16_t PROGMEM ae_combo[] = {KC_H, KC_COMM, COMBO_END};
-const uint16_t PROGMEM ai_combo[] = {KC_F, KC_P, COMBO_END};
-const uint16_t PROGMEM ao_combo[] = {KC_C, KC_D, COMBO_END};
+const uint16_t PROGMEM aa_combo[] = {KC_H, KC_COMM, COMBO_END};
+const uint16_t PROGMEM ae_combo[] = {KC_F, KC_P, COMBO_END};
+const uint16_t PROGMEM oe_combo[] = {KC_C, KC_D, COMBO_END};
 const uint16_t PROGMEM bk_combo[] = {RSFT_T(KC_BSPC), LT(LAYER_NUM, KC_SPC), COMBO_END};
-const uint16_t PROGMEM zx_combo[] = {KC_Z, KC_X, COMBO_END};
 const uint16_t PROGMEM xc_combo[] = {KC_X, KC_C, COMBO_END};
 const uint16_t PROGMEM gm_combo[] = {KC_G, KC_M, COMBO_END};
 const uint16_t PROGMEM dh_combo[] = {KC_D, KC_H, COMBO_END};
@@ -190,25 +187,22 @@ const uint16_t PROGMEM uy_combo[] = {KC_U, KC_Y, COMBO_END};
 const uint16_t PROGMEM spc_tab_esc_combo[] = {LT(LAYER_NAV, KC_SPC), LT(LAYER_FUN, KC_TAB), COMBO_END};
 const uint16_t PROGMEM bck_ent_del_combo[] = {LT(LAYER_NUM, KC_BSPC), LT(LAYER_SYM, KC_ENT), COMBO_END};
 const uint16_t PROGMEM ne_lprn_combo[] = {KC_COMM, KC_DOT, COMBO_END};
-const uint16_t PROGMEM ei_rprn_combo[] = {KC_DOT, NO_QUES, COMBO_END};
 const uint16_t PROGMEM lu_mins_combo[] = {KC_L, KC_U, COMBO_END};
 
 
 combo_t key_combos[] = {
-  [NN_AA] = COMBO(ae_combo, KC_LBRC), //Å
-  [GO_AE] = COMBO(ai_combo, KC_QUOT), //Æ
-  [GI_OE] = COMBO(ao_combo, KC_SCLN), //Ø
-  [ZX_F2] = COMBO(zx_combo, NO_LABK),
-  [XC_F12] = COMBO(xc_combo, CX_RCBR),
-  [GM_CWT] = COMBO(gm_combo, CW_TOGG),
+  [H_COMM_AA] = COMBO(aa_combo, KC_LBRC), //Å
+  [FP_AE] = COMBO(ae_combo, KC_QUOT), //Æ
+  [CD_OE] = COMBO(oe_combo, KC_SCLN), //Ø
+  [WF_LCBR] = COMBO(wf_combo, CX_LCBR), //{
+  [XC_RCBR] = COMBO(xc_combo, CX_RCBR), //}
+  [UY_LPRN] = COMBO(uy_combo, NO_LPRN), //(
+  [NE_LPRN] = COMBO(ne_lprn_combo, NO_RPRN), //)
+  [LU_MINS] = COMBO(lu_mins_combo, NO_MINS), //-
+  [GM_CWT] = COMBO(gm_combo, CW_TOGG), //CAPS_WORD
   [DH_ESC] = COMBO(dh_combo, KC_ESC),
-  [WF_F4] = COMBO(wf_combo, CX_LCBR),
-  [UY_DEL] = COMBO(uy_combo, NO_LPRN),
   [SPC_TAB_ESC] = COMBO(spc_tab_esc_combo, OSM(MOD_LSFT)),
   [BCK_ENT_DEL] = COMBO(bck_ent_del_combo, OSM(MOD_LSFT)),
-  [NE_LPRN] = COMBO(ne_lprn_combo, NO_RPRN),
-  [EI_RPRN] = COMBO(ei_rprn_combo, NO_LBRC),
-    [LU_MINS] = COMBO(lu_mins_combo, NO_MINS),
 };
 // -----------------------------------------
 
