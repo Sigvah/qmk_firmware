@@ -57,6 +57,7 @@ enum charybdis_keymap_bstiq_layers {
     LAYER_MBO,
     LAYER_MEDIA,
     LAYER_NAV,
+    LAYER_NAV_MIRRORED,
     LAYER_MOUSE,
     LAYER_SYM,
     LAYER_NUM,
@@ -198,11 +199,11 @@ combo_t key_combos[] = {
   [XC_RCBR] = COMBO(xc_combo, CX_RCBR), //}
   [UY_LPRN] = COMBO(uy_combo, NO_LPRN), //(
   [NE_LPRN] = COMBO(ne_lprn_combo, NO_RPRN), //)
-  [LU_MINS] = COMBO(lu_mins_combo, NO_MINS), //-
+  [LU_MINS] = COMBO(lu_mins_combo, NO_QUES), //-
   [GM_CWT] = COMBO(gm_combo, CW_TOGG), //CAPS_WORD
   [DH_ESC] = COMBO(dh_combo, KC_ESC),
-  [SPC_TAB_ESC] = COMBO(spc_tab_esc_combo, OSM(MOD_LSFT)),
-  [BCK_ENT_DEL] = COMBO(bck_ent_del_combo, OSM(MOD_LSFT)),
+  [SPC_TAB_ESC] = COMBO(spc_tab_esc_combo, KC_MPLY),
+  [BCK_ENT_DEL] = COMBO(bck_ent_del_combo, KC_MUTE),
 };
 // -----------------------------------------
 
@@ -216,7 +217,7 @@ combo_t key_combos[] = {
 #define SPC_NAV LT(LAYER_NAV, KC_SPC)
 #define MOUSE(KC) LT(LAYER_MOUSE, KC)
 #define ESC_SLP LT(KC_SLEP, KC_ESC)
-#define HYP_ESC LCMD_T(LCTL_T(LALT_T(KC_ESC)))
+#define HYP_ESC ALL_T(KC_ESC)
 #define X_DRG LT(DRGSCRL, KC_X)
 
 #define USR_RDO KC_AGAIN
@@ -251,8 +252,8 @@ combo_t key_combos[] = {
 #define LAYOUT_LAYER_BASE_BEPO                \
        KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y, CX_QUOT, \
        KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O, \
-       KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,    KC_K,    KC_H, KC_COMM,  KC_DOT, NO_QUES, \
-       KC_ESC, SPC_NAV, TAB_FUN,    ENT_SYM, BAC_NUM
+       KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,    KC_K,    KC_H, KC_COMM,  KC_DOT, NO_MINS, \
+       HYP_ESC, SPC_NAV, TAB_FUN,    ENT_SYM, BAC_NUM
 
 /** Convenience key shorthands. */
 #define U_NA KC_NO // Present but not available for use.
@@ -261,16 +262,24 @@ combo_t key_combos[] = {
 /** Convenience row shorthands. */
 #define __________________RESET_L__________________ QK_BOOT,    U_NA,    U_NA,    U_NA,    U_NA
 #define __________________RESET_R__________________    U_NA,    U_NA,    U_NA,    U_NA, QK_BOOT
-#define ______________HOME_ROW_GASC_L______________ KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT,    U_NA
+#define ______________HOME_ROW_GASC_L______________ KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, TG(LAYER_NAV_MIRRORED)
 #define ______________HOME_ROW_GASC_R______________    U_NA, KC_RSFT, KC_LCTL, KC_LALT, KC_LGUI
 
 /** Layers. */
 // Navigation.
 #define LAYOUT_LAYER_NAV                                                                      \
+   USR_RDO, USR_PST, USR_CPY, USR_CUT, USR_UND, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPRV, KC_MNXT, \
+   ______________HOME_ROW_GASC_L______________, KC_CAPS, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, \
+   KC_MNXT, KC_VOLD, KC_VOLU, KC_MPRV, KC_MNXT, KC_MNXT, KC_HOME, KC_PGDN, KC_PGUP,  KC_END, \
+                    U_NA,    U_NA,    U_NA,                 NO_EXLM, KC_ESC
+
+// Navigation mirrored.
+#define LAYOUT_LAYER_NAV_MIRRORED                                                                      \
     KC_MPRV, KC_VOLD, KC_VOLU, KC_VOLD, KC_MNXT, USR_UND, USR_CUT, USR_CPY, USR_PST, USR_RDO, \
-    KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, KC_CAPS, ______________HOME_ROW_GASC_R______________, \
+    KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, TG(LAYER_NAV_MIRRORED), ______________HOME_ROW_GASC_R______________, \
     KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_INS,  KC_MPRV, KC_VOLU, KC_VOLD, KC_VOLD, KC_MNXT, \
                 U_NA,    U_NA,    U_NA,                 NO_EXLM, NO_QUES
+
 
 // Mouse.
 #define LAYOUT_LAYER_MOUSE                                                                    \
@@ -281,8 +290,8 @@ combo_t key_combos[] = {
 
 // Symbols.
 #define LAYOUT_LAYER_SYM                                                                      \
-    NO_GRV, NO_AMPR,    CX_AT,   CX_AT, NO_HASH, __________________RESET_R__________________, \
-    NO_AMPR, NO_LBRC, CX_LCBR, NO_LPRN, NO_PERC, ______________HOME_ROW_GASC_R______________, \
+    NO_GRV, NO_AMPR,    CX_AT, CX_TILD, NO_HASH, __________________RESET_R__________________, \
+    NO_AMPR, NO_HASH,  CX_DLR, NO_PERC, NO_PERC, ______________HOME_ROW_GASC_R______________, \
     CX_TILD, NO_RBRC, CX_RCBR, NO_RPRN,  CX_DLR,   KC_F5,  KC_F2, NO_RCBR, U_NA, CW_TOGG, \
                          U_NA, KC_MUTE, KC_MPLY,    U_NA, U_NA
 
@@ -344,7 +353,7 @@ combo_t key_combos[] = {
      MOUSE(L10),        L11,        L12,        L13,        L14,  \
             R15,        R16,        R17,        R18,        R19,  \
             L20,        L21,        L22,        L23,        L24,  \
-            R25,        R26,        R27,        R28,        R29, \
+            R25,        R26,        R27,        R28, MOUSE(R29),  \
       __VA_ARGS__
 #define MOUSE_MOD(...) _MOUSE_MOD(__VA_ARGS__)
 
@@ -355,6 +364,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     MOUSE_MOD(HOME_ROW_MOD_GASC(LAYOUT_LAYER_BASE_BEPO))
   ),
   [LAYER_NAV] = LAYOUT_wrapper(LAYOUT_LAYER_NAV),
+  [LAYER_NAV_MIRRORED] = LAYOUT_wrapper(LAYOUT_LAYER_NAV_MIRRORED),
   [LAYER_MOUSE] = LAYOUT_wrapper(LAYOUT_LAYER_MOUSE),
   [LAYER_SYM] = LAYOUT_wrapper(LAYOUT_LAYER_SYM),
   [LAYER_NUM] = LAYOUT_wrapper(LAYOUT_LAYER_NUM),
@@ -587,7 +597,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
  }
 
 const key_override_t delete_key_override = ko_make_basic(MOD_BIT(KC_LSFT), BAC_NUM, KC_DEL);
-const key_override_t space_key_override = ko_make_basic(MOD_BIT(KC_LSFT), SPC_NAV, KC_ESC);
+const key_override_t space_key_override = ko_make_basic(MOD_BIT(KC_RSFT), SPC_NAV, KC_ESC);
 const key_override_t tab_key_override = ko_make_basic(MOD_BIT(KC_LSFT), TAB_FUN, NO_LABK);
 const key_override_t ent_key_override = ko_make_basic(MOD_BIT(KC_RSFT), ENT_SYM, NO_RABK);
 const key_override_t lprn_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_LPRN, NO_LBRC);
