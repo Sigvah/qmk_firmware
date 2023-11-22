@@ -303,7 +303,7 @@ combo_t key_combos[] = {
     NO_ARNG, KC_SLEP, CX_DLR,   CX_PND,   CX_EURO, NO_PLUS, NO_7, NO_8, NO_9, CX_BSLS, \
     ______________HOME_ROW_GASC_L______________, NO_EQL,    NO_4,    NO_5,    NO_6, CX_PIPE, \
     NO_ARNG, NO_ARNG, NO_OSTR, KC_ESC,    KC_F12, NO_ASTR,    NO_1,    NO_2,    NO_3, NO_SLSH, \
-                      U_NA,     U_NA,      U_NA,    NO_0, NO_RABK
+                      U_NA,     U_NA,      U_NA,     NO_RABK,  NO_0
 
 // Function keys.
 #define LAYOUT_LAYER_FUN                                                                      \
@@ -635,7 +635,7 @@ const key_override_t rprn3_key_override = {.trigger_mods          = MOD_BIT(KC_L
                                       .trigger                = NO_RPRN,
                                       .replacement            = NO_RCBR,
                                         .enabled                = (bool *)&is_not_mac};
-const key_override_t ctrl_z = ko_make_basic(MOD_BIT(KC_LSFT), MOUSE(KC_Z), RCTL(KC_Z));
+const key_override_t ctrl_z = ko_make_basic(MOD_BIT(KC_RCTL), MOUSE(KC_Z), RCTL(KC_Z));
 
 
 // This globally defines all key overrides to be used
