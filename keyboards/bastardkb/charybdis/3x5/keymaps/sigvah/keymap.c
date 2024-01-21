@@ -168,21 +168,29 @@ enum combos {
   CD_OE, //Ø
   XC_RCBR, // } shift >
   GM_CWT, //CAPS_WORD
-  DH_ESC, //ESC
+  FU_CWT, //CAPS_WORD
+  DH_HSH, //ESC
   WF_LCBR, // { shift <
   UY_LPRN, // ( shift [
   SPC_TAB_ESC, // Pause
   BCK_ENT_DEL, // Mute
   NE_LPRN, // ) shift ]
   LU_QUES, // ? shift !
-  AR_DRG_SCRL, // Drag Scroll
+  SE_ESC, // ESC
+  RI_CWT, //CAPS_WORD
+  PL_DLR, // $
+  TN_AMPR, // &
+  TF_PRCT, // %
+  NU_DLR, // $
+  TW_CAPS, //CAPS_LOCK
+  SPC_BCK_SFT, // SHIFT
 };
 const uint16_t PROGMEM aa_combo[] = {KC_H, KC_COMM, COMBO_END};
 const uint16_t PROGMEM ae_combo[] = {KC_F, KC_P, COMBO_END};
 const uint16_t PROGMEM oe_combo[] = {KC_C, KC_D, COMBO_END};
-const uint16_t PROGMEM bk_combo[] = {RSFT_T(KC_BSPC), LT(LAYER_NUM, KC_SPC), COMBO_END};
 const uint16_t PROGMEM xc_combo[] = {KC_X, KC_C, COMBO_END};
 const uint16_t PROGMEM gm_combo[] = {KC_G, KC_M, COMBO_END};
+const uint16_t PROGMEM fu_combo[] = {KC_F, KC_U, COMBO_END};
 const uint16_t PROGMEM dh_combo[] = {KC_D, KC_H, COMBO_END};
 const uint16_t PROGMEM wf_combo[] = {KC_W, KC_F, COMBO_END};
 const uint16_t PROGMEM uy_combo[] = {KC_U, KC_Y, COMBO_END};
@@ -190,7 +198,14 @@ const uint16_t PROGMEM spc_tab_esc_combo[] = {LT(LAYER_NUM, KC_SPC), LT(LAYER_FU
 const uint16_t PROGMEM bck_ent_del_combo[] = {LT(LAYER_NAV_MIRRORED, KC_BSPC), LT(LAYER_SYM, KC_ENT), COMBO_END};
 const uint16_t PROGMEM ne_lprn_combo[] = {KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM lu_ques_combo[] = {KC_L, KC_U, COMBO_END};
-const uint16_t PROGMEM ar_drg_scrl_combo[] = {LCMD_T(KC_A), LALT_T(KC_R), COMBO_END};
+const uint16_t PROGMEM se_esc_combo[] = {LCTL_T(KC_S), RCTL_T(KC_E), COMBO_END};
+const uint16_t PROGMEM ri_cwt_combo[] = {LALT_T(KC_R), LALT_T(KC_I), COMBO_END};
+const uint16_t PROGMEM pl_dlr_combo[] = {KC_P, KC_L, COMBO_END};
+const uint16_t PROGMEM tn_combo[] = {LSFT_T(KC_T), RSFT_T(KC_N), COMBO_END};
+const uint16_t PROGMEM tf_combo[] = {LSFT_T(KC_T), KC_F, COMBO_END};
+const uint16_t PROGMEM nu_dlr_combo[] = {RSFT_T(KC_N), KC_U, COMBO_END};
+const uint16_t PROGMEM tw_combo[] = {LSFT(KC_T), KC_W, COMBO_END};
+const uint16_t PROGMEM spc_bck_combo[] = {LT(LAYER_NUM, KC_SPC), LT(LAYER_NAV_MIRRORED, KC_BSPC), COMBO_END};
 
 
 combo_t key_combos[] = {
@@ -201,16 +216,23 @@ combo_t key_combos[] = {
   [XC_RCBR] = COMBO(xc_combo, CX_RCBR), //}
   [UY_LPRN] = COMBO(uy_combo, NO_LPRN), //(
   [NE_LPRN] = COMBO(ne_lprn_combo, NO_RPRN), //)
-  [LU_QUES] = COMBO(lu_ques_combo, NO_QUES), //-
-  [GM_CWT] = COMBO(gm_combo, CW_TOGG), //CAPS_WORD
-  [DH_ESC] = COMBO(dh_combo, KC_ESC),
+  [LU_QUES] = COMBO(lu_ques_combo, NO_QUES), // ?
+  [GM_CWT] = COMBO(gm_combo, NO_PERC), // %
+  [FU_CWT] = COMBO(fu_combo, CX_AT), // @
+  [DH_HSH] = COMBO(dh_combo, NO_HASH), // #
   [SPC_TAB_ESC] = COMBO(spc_tab_esc_combo, KC_ESC),
   [BCK_ENT_DEL] = COMBO(bck_ent_del_combo, CW_TOGG),
-  [AR_DRG_SCRL] = COMBO(ar_drg_scrl_combo, DRGSCRL),
+  [SE_ESC] = COMBO(se_esc_combo, KC_ESC), //ESC
+  [RI_CWT] = COMBO(ri_cwt_combo, CW_TOGG), //CAPS_WORD
+  [PL_DLR] = COMBO(pl_dlr_combo, CX_DLR), // $
+  [TN_AMPR] = COMBO(tn_combo, NO_AMPR), // &
+  [TF_PRCT] = COMBO(tf_combo, NO_PERC), // %
+  [NU_DLR] = COMBO(nu_dlr_combo, CX_DLR), // $
+  [TW_CAPS] = COMBO(tw_combo, KC_CAPS), //CAPS_LOCK
+  [SPC_BCK_SFT] = COMBO(spc_bck_combo, OSM(MOD_LSFT)), //SHIFT
 };
 // -----------------------------------------
 
-// Automatically enable sniping when the mouse layer is on.
 #define CHARYBDIS_AUTO_SNIPING_ON_LAYER LAYER_MOUSE
 
 #define ESC_NAV LT(LAYER_NAV_MIRRORED, KC_ESC)
@@ -256,7 +278,7 @@ combo_t key_combos[] = {
        KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y, CX_QUOT, \
        KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O, \
        KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,    KC_K,    KC_H, KC_COMM,  KC_DOT, NO_MINS, \
-       HYP_ESC, SPC_NAV, TAB_FUN,    ENT_SYM, BAC_NUM
+       U_NA, SPC_NAV, TAB_FUN,    ENT_SYM, BAC_NUM
 
 /** Convenience key shorthands. */
 #define U_NA KC_NO // Present but not available for use.
@@ -272,7 +294,7 @@ combo_t key_combos[] = {
 // Navigation.
 #define LAYOUT_LAYER_NAV                                                                      \
    USR_RDO, USR_PST, USR_CPY, USR_CUT, USR_UND, KC_MNXT, KC_VOLD, KC_VOLU, KC_SLEP, KC_MNXT, \
-   ______________HOME_ROW_GASC_L______________, KC_CAPS, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, \
+   ______________HOME_ROW_GASC_L______________, TG(LAYER_NAV), KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, \
    KC_MNXT, KC_VOLD, KC_VOLU, KC_MPRV, KC_MNXT, KC_MNXT, KC_HOME, KC_PGDN, KC_PGUP,  KC_END, \
                     U_NA,    U_NA,    U_NA,                 KC_MPLY, KC_MUTE
 
@@ -383,23 +405,6 @@ layer_state_t layer_state_set_kb(layer_state_t state) {
 }
 #endif // POINTING_DEVICE_ENABLE && CHARYBDIS_AUTO_SNIPING_ON_LAYER
 
-#ifdef RGB_MATRIX_ENABLE
-// Forward-declare this helper function since it is defined in rgb_matrix.c.
-void rgb_matrix_update_pwm_buffers(void);
-#endif
-
-
-void shutdown_user(void) {
-#ifdef RGBLIGHT_ENABLE
-    rgblight_enable_noeeprom();
-    rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
-    rgblight_setrgb(RGB_RED);
-#endif // RGBLIGHT_ENABLE
-#ifdef RGB_MATRIX_ENABLE
-    rgb_matrix_set_color_all(RGB_RED);
-    rgb_matrix_update_pwm_buffers();
-#endif // RGB_MATRIX_ENABLE
-}
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (!process_achordion(keycode, record)) { return false; }
     bool is_apple;
@@ -615,26 +620,28 @@ const key_override_t ent_key_override = ko_make_basic(MOD_BIT(KC_RSFT), ENT_SYM,
 const key_override_t lprn_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_LPRN, NO_LBRC);
 const key_override_t rprn_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_RPRN, NO_RBRC);
 const key_override_t quest_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_QUES, NO_EXLM);
-const key_override_t lprn3_key_override = {.trigger_mods          = MOD_BIT(KC_LALT),
-                                   .layers                 = ~(1 << 1),
-                                   .suppressed_mods        = MOD_BIT(KC_LALT),
-                                   .options                = ko_option_no_unregister_on_other_key_down,
-                                   .negative_mod_mask      = (uint8_t) ~(MOD_BIT(KC_LALT)),
-                                   .custom_action          = NULL,
-                                   .context                = NULL,
-                                   .trigger                = NO_LPRN,
-                                   .replacement            = NO_LCBR,
-                                    .enabled                = (bool *)&is_not_mac};
-const key_override_t rprn3_key_override = {.trigger_mods          = MOD_BIT(KC_LALT),
-                                      .layers                 = ~(1 << 1),
-                                      .suppressed_mods        = MOD_BIT(KC_LALT),
-                                      .options                = ko_option_no_unregister_on_other_key_down,
-                                      .negative_mod_mask      = (uint8_t) ~(MOD_BIT(KC_LALT)),
-                                      .custom_action          = NULL,
-                                      .context                = NULL,
-                                      .trigger                = NO_RPRN,
-                                      .replacement            = NO_RCBR,
-                                        .enabled                = (bool *)&is_not_mac};
+const key_override_t lbrc_key_override = ko_make_basic(MOD_MASK_CTRL, NO_LBRC, NO_LCBR);
+const key_override_t rbrc_key_override = ko_make_basic(MOD_MASK_CTRL, NO_RBRC, NO_RCBR);
+// const key_override_t lprn3_key_override = {.trigger_mods          = MOD_BIT(KC_LALT),
+//                                    .layers                 = ~(1 << 1),
+//                                    .suppressed_mods        = MOD_BIT(KC_LALT),
+//                                    .options                = ko_option_no_unregister_on_other_key_down,
+//                                    .negative_mod_mask      = (uint8_t) ~(MOD_BIT(KC_LALT)),
+//                                    .custom_action          = NULL,
+//                                    .context                = NULL,
+//                                    .trigger                = NO_LPRN,
+//                                    .replacement            = NO_LCBR,
+//                                     .enabled                = (bool *)&is_not_mac};
+// const key_override_t rprn3_key_override = {.trigger_mods          = MOD_BIT(KC_LALT),
+//                                       .layers                 = ~(1 << 1),
+//                                       .suppressed_mods        = MOD_BIT(KC_LALT),
+//                                       .options                = ko_option_no_unregister_on_other_key_down,
+//                                       .negative_mod_mask      = (uint8_t) ~(MOD_BIT(KC_LALT)),
+//                                       .custom_action          = NULL,
+//                                       .context                = NULL,
+//                                       .trigger                = NO_RPRN,
+//                                       .replacement            = NO_RCBR,
+//                                         .enabled                = (bool *)&is_not_mac};
 const key_override_t ctrl_z = ko_make_basic(MOD_BIT(KC_RCTL), MOUSE(KC_Z), RCTL(KC_Z));
 
 
@@ -647,11 +654,14 @@ const key_override_t **key_overrides = (const key_override_t *[]){
     &lprn_key_override,
     &rprn_key_override,
     &quest_key_override,
-    &lprn3_key_override,
-    &rprn3_key_override,
+    &lbrc_key_override,
+    &rbrc_key_override,
+    // &lprn3_key_override,
+    // &rprn3_key_override,
     &ctrl_z,
 	NULL // Null terminate the array of overrides!
 };
+
 uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
   switch (tap_hold_keycode) {
     case LT(LAYER_MOUSE, KC_Z):
@@ -659,7 +669,6 @@ uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
     case LT(LAYER_NAV_MIRRORED, KC_BSPC):
     case LT(LAYER_NUM, KC_SPC):
     case LSFT_T(KC_T):
-    case RSFT_T(KC_N):
       return 0;  // Bypass Achordion for these keys.
   }
 
