@@ -217,14 +217,14 @@ combo_t key_combos[] = {
   [UY_LPRN] = COMBO(uy_combo, NO_LPRN), //(
   [NE_LPRN] = COMBO(ne_lprn_combo, NO_RPRN), //)
   [LU_QUES] = COMBO(lu_ques_combo, NO_QUES), // ?
-  [GM_CWT] = COMBO(gm_combo, NO_PERC), // %
+  [GM_CWT] = COMBO(gm_combo, CX_EURO), // %
   [FU_CWT] = COMBO(fu_combo, CX_AT), // @
   [DH_HSH] = COMBO(dh_combo, NO_HASH), // #
   [SPC_TAB_ESC] = COMBO(spc_tab_esc_combo, KC_ESC),
   [BCK_ENT_DEL] = COMBO(bck_ent_del_combo, CW_TOGG),
   [SE_ESC] = COMBO(se_esc_combo, KC_ESC), //ESC
   [RI_CWT] = COMBO(ri_cwt_combo, CW_TOGG), //CAPS_WORD
-  [PL_DLR] = COMBO(pl_dlr_combo, CX_DLR), // $
+  [PL_DLR] = COMBO(pl_dlr_combo, CX_PND), // $
   [TN_AMPR] = COMBO(tn_combo, NO_AMPR), // &
   [TF_PRCT] = COMBO(tf_combo, NO_PERC), // %
   [NU_DLR] = COMBO(nu_dlr_combo, CX_DLR), // $
@@ -238,7 +238,7 @@ combo_t key_combos[] = {
 #define ESC_NAV LT(LAYER_NAV_MIRRORED, KC_ESC)
 #define BAC_NUM LT(LAYER_NAV_MIRRORED, KC_BSPC)
 #define TAB_FUN LT(LAYER_FUN, KC_TAB)
-#define ENT_SYM LT(LAYER_SYM, KC_ENT)
+#define ENT_MED LT(LAYER_MEDIA, KC_ENT)
 #define SPC_NAV LT(LAYER_NUM, KC_SPC)
 #define MOUSE(KC) LT(LAYER_MOUSE, KC)
 #define ESC_SLP LT(KC_SLEP, KC_ESC)
@@ -278,7 +278,7 @@ combo_t key_combos[] = {
        KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y, CX_QUOT, \
        KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O, \
        KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,    KC_K,    KC_H, KC_COMM,  KC_DOT, NO_MINS, \
-       U_NA, SPC_NAV, TAB_FUN,    ENT_SYM, BAC_NUM
+       U_NA, SPC_NAV, TAB_FUN,    ENT_MED, BAC_NUM
 
 /** Convenience key shorthands. */
 #define U_NA KC_NO // Present but not available for use.
@@ -333,7 +333,11 @@ combo_t key_combos[] = {
     ______________HOME_ROW_GASC_L______________, KC_SCRL, KC_F4,   KC_F5,   KC_F6,   KC_F11, \
     KC_LEFT, KC_DOWN, KC_UP, KC_RGHT,      U_NA, KC_PAUS, KC_F1,   KC_F2,   KC_F3,   KC_F10, \
                          U_NA,    U_NA,    U_NA,  KC_SPC,  KC_APP
-
+#define LAYOUT_LAYER_MEDIA                                                                    \
+    XXXXXXX,RGB_RMOD, RGB_TOG, RGB_MOD, XXXXXXX, XXXXXXX,RGB_RMOD, RGB_TOG, RGB_MOD, XXXXXXX, \
+    KC_MPRV, KC_VOLD, KC_MUTE, KC_VOLU, KC_MNXT, KC_MPRV, KC_VOLD, KC_MUTE, KC_VOLU, KC_MNXT, \
+    XXXXXXX, XXXXXXX, XXXXXXX, EE_CLR,  QK_BOOT, QK_BOOT, EE_CLR,  XXXXXXX, XXXXXXX, XXXXXXX, \
+                      U_NA, KC_MPLY, KC_MSTP, U_NA, KC_MPLY
 /**
  * Add Home Row mod to a layout.
  *
@@ -394,6 +398,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_SYM] = LAYOUT_wrapper(LAYOUT_LAYER_SYM),
   [LAYER_NUM] = LAYOUT_wrapper(LAYOUT_LAYER_NUM),
   [LAYER_FUN] = LAYOUT_wrapper(LAYOUT_LAYER_FUN),
+  [LAYER_MEDIA] = LAYOUT_wrapper(LAYOUT_LAYER_MEDIA),
 };
 // clang-format on
 
@@ -615,8 +620,6 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
 
 const key_override_t delete_key_override = ko_make_basic(MOD_BIT(KC_LSFT), BAC_NUM, KC_DEL);
 const key_override_t space_key_override = ko_make_basic(MOD_BIT(KC_RSFT), SPC_NAV, KC_ESC);
-const key_override_t tab_key_override = ko_make_basic(MOD_BIT(KC_LSFT), TAB_FUN, NO_LABK);
-const key_override_t ent_key_override = ko_make_basic(MOD_BIT(KC_RSFT), ENT_SYM, NO_RABK);
 const key_override_t lprn_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_LPRN, NO_LBRC);
 const key_override_t rprn_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_RPRN, NO_RBRC);
 const key_override_t quest_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_QUES, NO_EXLM);
@@ -649,8 +652,6 @@ const key_override_t ctrl_z = ko_make_basic(MOD_BIT(KC_RCTL), MOUSE(KC_Z), RCTL(
 const key_override_t **key_overrides = (const key_override_t *[]){
 	&delete_key_override,
     &space_key_override,
-    &tab_key_override,
-    &ent_key_override,
     &lprn_key_override,
     &rprn_key_override,
     &quest_key_override,
@@ -673,4 +674,13 @@ uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
   }
 
   return 800;  // Otherwise use a timeout of 800 ms.
+}
+uint16_t get_combo_term(uint16_t index, combo_t *combo) {
+    // decide by combo->keycode
+    switch (combo->keycode) {
+        case OSM(MOD_LSFT):
+            return 50;
+        default:
+            return 35;
+    }
 }
