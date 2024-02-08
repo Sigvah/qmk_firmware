@@ -54,7 +54,6 @@ bool caps_word_press_user(uint16_t keycode) {
 }
 enum charybdis_keymap_bstiq_layers {
     LAYER_BASE = 0,
-    LAYER_MBO,
     LAYER_MEDIA,
     LAYER_NAV,
     LAYER_NAV_MIRRORED,
