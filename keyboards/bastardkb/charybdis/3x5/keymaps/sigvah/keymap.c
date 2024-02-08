@@ -303,7 +303,7 @@ combo_t key_combos[] = {
     KC_MPRV, KC_VOLD, KC_VOLU, KC_VOLD, KC_MNXT, USR_UND, USR_CUT, USR_CPY, KC_SLEP, USR_RDO, \
     KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, TG(LAYER_NAV_MIRRORED), ______________HOME_ROW_GASC_R______________, \
     KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_INS,  KC_MPRV, KC_VOLD, KC_VOLU, KC_VOLD, KC_MNXT, \
-                U_NA,    KC_MUTE,    KC_MPLY,                 KC_MPLY, KC_MUTE
+                U_NA,    KC_SPC,    U_NA,                 U_NA, U_NA
 
 
 // Mouse.
@@ -337,7 +337,7 @@ combo_t key_combos[] = {
     XXXXXXX,RGB_RMOD, RGB_TOG, RGB_MOD, XXXXXXX, XXXXXXX,RGB_RMOD, RGB_TOG, RGB_MOD, XXXXXXX, \
     KC_MPRV, KC_VOLD, KC_MUTE, KC_VOLU, KC_MNXT, KC_MPRV, KC_VOLD, KC_MUTE, KC_VOLU, KC_MNXT, \
     XXXXXXX, XXXXXXX, XXXXXXX, EE_CLR,  QK_BOOT, QK_BOOT, EE_CLR,  XXXXXXX, XXXXXXX, XXXXXXX, \
-                      U_NA, KC_MPLY, KC_MSTP, U_NA, KC_MPLY
+                      U_NA, KC_MPLY, KC_MSTP, U_NA, U_NA
 /**
  * Add Home Row mod to a layout.
  *
