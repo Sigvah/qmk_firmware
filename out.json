@@ -2,13 +2,14 @@
     "keyboard": "bastardkb/charybdis/3x5/v2/splinky_3",
     "keymap": "sigvah",
     "layers": [
-        ["KC_Q", "KC_W", "KC_F", "KC_P", "KC_B", "KC_J", "KC_L", "KC_U", "KC_Y", "CX_QUOT", "KC_A", "KC_R", "KC_S", "KC_T", "KC_G", "KC_M", "KC_N", "KC_E", "KC_I", "KC_O", "KC_Z", "KC_X", "KC_C", "KC_D", "KC_V", "KC_K", "KC_H", "KC_COMM", "KC_DOT", "NO_QUES", "KC_ESC", "SPC_NAV", "TAB_FUN", "ENT_SYM", "BAC_NUM"],
-        ["KC_MPRV", "KC_VOLD", "KC_VOLU", "KC_VOLD", "KC_MNXT", "USR_UND", "USR_CUT", "USR_CPY", "USR_PST", "USR_RDO", "KC_LEFT", "KC_DOWN", "KC_UP", "KC_RGHT", "KC_CAPS", "U_NA, KC_RSFT, KC_LCTL, KC_LALT, KC_LGUI", "KC_HOME", "KC_PGDN", "KC_PGUP", "KC_END", "KC_INS", "KC_MPRV", "KC_VOLU", "KC_VOLD", "KC_VOLD", "KC_MNXT", "U_NA", "U_NA", "U_NA", "NO_EXLM", "NO_QUES"],
-        ["QK_BOOT", "EE_CLR", "KC_NO", "DPI_MOD", "DPI_RMOD", "S_D_MOD", "DPI_MOD", "KC_NO", "EE_CLR", "QK_BOOT", "KC_TRNS", "DRGSCRL", "KC_LCTL", "KC_LSFT", "U_NA", "U_NA, KC_RSFT, KC_LCTL, KC_LALT, KC_LGUI", "KC_TRNS", "DRGSCRL", "KC_LCTL", "KC_LSFT", "U_NA", "KC_BTN2", "KC_BTN1", "KC_BTN2", "DRGSCRL", "KC_TRNS", "U_NA", "KC_BTN1", "KC_BTN2", "KC_ENT", "KC_BSPC"],
-        ["NO_GRV", "NO_AMPR", "CX_AT", "CX_AT", "NO_HASH", "__________________RESET_R__________________", "NO_AMPR", "NO_LBRC", "CX_LCBR", "NO_LPRN", "NO_PERC", "U_NA, KC_RSFT, KC_LCTL, KC_LALT, KC_LGUI", "CX_TILD", "NO_RBRC", "CX_RCBR", "NO_RPRN", "CX_DLR", "KC_F5", "KC_F2", "NO_RCBR", "U_NA", "CW_TOGG", "U_NA", "KC_MUTE", "KC_MPLY", "U_NA", "U_NA"],
-        ["is_apple"],
-        ["is_apple"],
-        ["is_apple"]
+        ["MOUSE_MOD(HOME_ROW_MOD_GASC(LAYOUT_LAYER_BASE_BEPO))"],
+        ["LAYOUT_LAYER_NAV"],
+        ["LAYOUT_LAYER_NAV_MIRRORED"],
+        ["LAYOUT_LAYER_MOUSE"],
+        ["LAYOUT_LAYER_SYM"],
+        ["LAYOUT_LAYER_NUM"],
+        ["LAYOUT_LAYER_FUN"],
+        ["LAYOUT_LAYER_MEDIA"]
     ],
-    "layout": "LAYOUT"
+    "layout": "LAYOUT_wrapper"
 }

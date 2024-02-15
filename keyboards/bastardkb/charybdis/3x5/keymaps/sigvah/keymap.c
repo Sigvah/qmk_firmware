@@ -30,7 +30,6 @@ bool achordion_chord(uint16_t tap_hold_keycode,
   return achordion_opposite_hands(tap_hold_record, other_record);
 }
 
-
 void matrix_scan_user(void) {
   achordion_task();
 }
@@ -55,8 +54,8 @@ bool caps_word_press_user(uint16_t keycode) {
 enum charybdis_keymap_bstiq_layers {
     LAYER_BASE = 0,
     LAYER_MEDIA,
-    LAYER_NAV,
-    LAYER_NAV_MIRRORED,
+    LAYER_NAV_L,
+    //LAYER_NAV,
     LAYER_MOUSE,
     LAYER_SYM,
     LAYER_NUM,
@@ -86,20 +85,34 @@ enum keycodes {
 
 
 
-// ---------------AUTO MOUSE----------------
-// bool is_mouse_record_user(uint16_t keycode, keyrecord_t* record) {
-//     switch(keycode) {
-//         case DRGSCRL:
-//             return true;
-//         default:
-//             return false;
-//     }
-// }
+//--------------AUTO MOUSE----------------
+bool is_mouse_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch(keycode) {
+        case DRGSCRL:
+        case KC_BTN1:
+        case KC_BTN2:
+            set_auto_mouse_timeout(200);
+            return true;
+        default:
+            return false;
+    }
+}
+layer_state_t layer_state_set_user(layer_state_t state) {
+    static bool mouse_layer_on = false;
+    if (layer_state_cmp(state, LAYER_MOUSE) != mouse_layer_on) {
+        mouse_layer_on = layer_state_cmp(state, LAYER_MOUSE);
+        if (!mouse_layer_on) {
+            set_auto_mouse_timeout(1000);
+        }
+     }
+    return state;
+}
 
-// void pointing_device_init_user(void) {
-//     set_auto_mouse_enable(true);
-// }
-// -----------------------------------------
+void pointing_device_init_user(void) {
+    set_auto_mouse_enable(true);
+}
+
+//-----------------------------------------
 
 // ---------------OS CHECKER----------------
 #if defined(OS_DETECTION_ENABLE) && defined(DEFERRED_EXEC_ENABLE)
@@ -183,6 +196,7 @@ enum combos {
   NU_DLR, // $
   TW_CAPS, //CAPS_LOCK
   SPC_BCK_SFT, // SHIFT
+  LR_SFT, // MOUSE LAYER OFF
 };
 const uint16_t PROGMEM aa_combo[] = {KC_H, KC_COMM, COMBO_END};
 const uint16_t PROGMEM ae_combo[] = {KC_F, KC_P, COMBO_END};
@@ -194,7 +208,7 @@ const uint16_t PROGMEM dh_combo[] = {KC_D, KC_H, COMBO_END};
 const uint16_t PROGMEM wf_combo[] = {KC_W, KC_F, COMBO_END};
 const uint16_t PROGMEM uy_combo[] = {KC_U, KC_Y, COMBO_END};
 const uint16_t PROGMEM spc_tab_esc_combo[] = {LT(LAYER_NUM, KC_SPC), LT(LAYER_FUN, KC_TAB), COMBO_END};
-const uint16_t PROGMEM bck_ent_del_combo[] = {LT(LAYER_NAV_MIRRORED, KC_BSPC), LT(LAYER_SYM, KC_ENT), COMBO_END};
+const uint16_t PROGMEM bck_ent_del_combo[] = {LT(LAYER_NAV_L, KC_BSPC), LT(LAYER_SYM, KC_ENT), COMBO_END};
 const uint16_t PROGMEM ne_lprn_combo[] = {KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM lu_ques_combo[] = {KC_L, KC_U, COMBO_END};
 const uint16_t PROGMEM se_esc_combo[] = {LCTL_T(KC_S), RCTL_T(KC_E), COMBO_END};
@@ -204,7 +218,8 @@ const uint16_t PROGMEM tn_combo[] = {LSFT_T(KC_T), RSFT_T(KC_N), COMBO_END};
 const uint16_t PROGMEM tf_combo[] = {LSFT_T(KC_T), KC_F, COMBO_END};
 const uint16_t PROGMEM nu_dlr_combo[] = {RSFT_T(KC_N), KC_U, COMBO_END};
 const uint16_t PROGMEM tw_combo[] = {LSFT(KC_T), KC_W, COMBO_END};
-const uint16_t PROGMEM spc_bck_combo[] = {LT(LAYER_NUM, KC_SPC), LT(LAYER_NAV_MIRRORED, KC_BSPC), COMBO_END};
+const uint16_t PROGMEM spc_bck_combo[] = {LT(LAYER_NUM, KC_SPC), LT(LAYER_NAV_L, KC_BSPC), COMBO_END};
+const uint16_t PROGMEM lr_sft_combo[] = {KC_LCTL, KC_RCTL, COMBO_END};
 
 
 combo_t key_combos[] = {
@@ -219,9 +234,9 @@ combo_t key_combos[] = {
   [GM_CWT] = COMBO(gm_combo, CX_EURO), // %
   [FU_CWT] = COMBO(fu_combo, CX_AT), // @
   [DH_HSH] = COMBO(dh_combo, NO_HASH), // #
-  [SPC_TAB_ESC] = COMBO(spc_tab_esc_combo, KC_ESC),
+  [SPC_TAB_ESC] = COMBO(spc_tab_esc_combo, KC_BTN1),
   [BCK_ENT_DEL] = COMBO(bck_ent_del_combo, CW_TOGG),
-  [SE_ESC] = COMBO(se_esc_combo, KC_ESC), //ESC
+  [SE_ESC] = COMBO(se_esc_combo, MO(LAYER_MOUSE)), //MOUSE TOGGLE
   [RI_CWT] = COMBO(ri_cwt_combo, CW_TOGG), //CAPS_WORD
   [PL_DLR] = COMBO(pl_dlr_combo, CX_PND), // $
   [TN_AMPR] = COMBO(tn_combo, NO_AMPR), // &
@@ -229,16 +244,17 @@ combo_t key_combos[] = {
   [NU_DLR] = COMBO(nu_dlr_combo, CX_DLR), // $
   [TW_CAPS] = COMBO(tw_combo, KC_CAPS), //CAPS_LOCK
   [SPC_BCK_SFT] = COMBO(spc_bck_combo, OSM(MOD_LSFT)), //SHIFT
+  [LR_SFT] = COMBO(lr_sft_combo, TG(LAYER_MOUSE))
 };
 // -----------------------------------------
 
-#define CHARYBDIS_AUTO_SNIPING_ON_LAYER LAYER_MOUSE
+//#define CHARYBDIS_AUTO_SNIPING_ON_LAYER LAYER_MOUSE
 
-#define ESC_NAV LT(LAYER_NAV_MIRRORED, KC_ESC)
-#define BAC_NUM LT(LAYER_NAV_MIRRORED, KC_BSPC)
+#define ESC_NAV LT(LAYER_NAV_L, KC_ESC)
+#define BAC_NAV LT(LAYER_NAV_L, KC_BSPC)
 #define TAB_FUN LT(LAYER_FUN, KC_TAB)
 #define ENT_MED LT(LAYER_MEDIA, KC_ENT)
-#define SPC_NAV LT(LAYER_NUM, KC_SPC)
+#define SPC_NUM LT(LAYER_NUM, KC_SPC)
 #define MOUSE(KC) LT(LAYER_MOUSE, KC)
 #define ESC_SLP LT(KC_SLEP, KC_ESC)
 #define HYP_ESC ALL_T(KC_ESC)
@@ -277,7 +293,7 @@ combo_t key_combos[] = {
        KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,    KC_J,    KC_L,    KC_U,    KC_Y, CX_QUOT, \
        KC_A,    KC_R,    KC_S,    KC_T,    KC_G,    KC_M,    KC_N,    KC_E,    KC_I,    KC_O, \
        KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,    KC_K,    KC_H, KC_COMM,  KC_DOT, NO_MINS, \
-       U_NA, SPC_NAV, TAB_FUN,    ENT_MED, BAC_NUM
+       U_NA, SPC_NUM, TAB_FUN,    ENT_MED, BAC_NAV
 
 /** Convenience key shorthands. */
 #define U_NA KC_NO // Present but not available for use.
@@ -286,8 +302,8 @@ combo_t key_combos[] = {
 /** Convenience row shorthands. */
 #define __________________RESET_L__________________ QK_BOOT,    U_NA,    U_NA,    U_NA,    U_NA
 #define __________________RESET_R__________________    U_NA,    U_NA,    U_NA,    U_NA, QK_BOOT
-#define ______________HOME_ROW_GASC_L______________ KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, TG(LAYER_NAV_MIRRORED)
-#define ______________HOME_ROW_GASC_R______________    U_NA, KC_RSFT, KC_LCTL, KC_LALT, KC_LGUI
+#define ______________HOME_ROW_GASC_L______________ KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, TG(LAYER_NAV_L)
+#define ______________HOME_ROW_GASC_R______________    U_NA, KC_RSFT, KC_RCTL, KC_LALT, KC_LGUI
 
 /** Layers. */
 // Navigation.
@@ -295,12 +311,12 @@ combo_t key_combos[] = {
    USR_RDO, USR_PST, USR_CPY, USR_CUT, USR_UND, KC_MNXT, KC_VOLD, KC_VOLU, KC_SLEP, KC_MNXT, \
    ______________HOME_ROW_GASC_L______________, TG(LAYER_NAV), KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, \
    KC_MNXT, KC_VOLD, KC_VOLU, KC_MPRV, KC_MNXT, KC_MNXT, KC_HOME, KC_PGDN, KC_PGUP,  KC_END, \
-                    U_NA,    U_NA,    U_NA,                 KC_MPLY, KC_MUTE
+                    U_NA,    U_NA,    NO_LABK,                KC_MPLY, KC_MUTE
 
 // Navigation mirrored.
 #define LAYOUT_LAYER_NAV_MIRRORED                                                                      \
     KC_MPRV, KC_VOLD, KC_VOLU, KC_VOLD, KC_MNXT, USR_UND, USR_CUT, USR_CPY, KC_SLEP, USR_RDO, \
-    KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, TG(LAYER_NAV_MIRRORED), ______________HOME_ROW_GASC_R______________, \
+    KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, TG(LAYER_NAV_L), ______________HOME_ROW_GASC_R______________, \
     KC_HOME, KC_PGDN, KC_PGUP, KC_END, KC_INS,  KC_MPRV, KC_VOLD, KC_VOLU, KC_VOLD, KC_MNXT, \
                 U_NA,    KC_SPC,    U_NA,                 U_NA, U_NA
 
@@ -308,9 +324,9 @@ combo_t key_combos[] = {
 // Mouse.
 #define LAYOUT_LAYER_MOUSE                                                                    \
     QK_BOOT,  EE_CLR, XXXXXXX, DPI_MOD, DPI_RMOD, S_D_MOD, DPI_MOD, XXXXXXX, EE_CLR,  QK_BOOT, \
-    _______, DRGSCRL, KC_LCTL, KC_LSFT,     U_NA, ______________HOME_ROW_GASC_R______________, \
+    _______, DRGSCRL, KC_LCTL, KC_LSFT,     U_NA, TO(LAYER_BASE), KC_NO, KC_RCTL, KC_LALT, KC_LGUI, \
     _______, DRGSCRL, KC_LCTL, KC_LSFT,     U_NA, KC_BTN2,  KC_BTN1, KC_BTN2, DRGSCRL, _______, \
-                        U_NA, KC_BTN1, KC_BTN2,       KC_ENT, KC_BSPC
+                        U_NA, KC_BTN1, KC_BTN2,       KC_TRNS, KC_TRNS
 
 // Symbols.
 #define LAYOUT_LAYER_SYM                                                                      \
@@ -380,7 +396,7 @@ combo_t key_combos[] = {
             R05,        R06,        R07,        R08,        R09,  \
             L10,        L11,        L12,        L13,        L14,  \
             R15,        R16,        R17,        R18,        R19,  \
-     MOUSE(L20),        L21,        L22,        L23,        L24,  \
+L20,        L21,        L22,        L23,        L24,  \
             R25,        R26,        R27,        R28, MOUSE(R29),  \
       __VA_ARGS__
 #define MOUSE_MOD(...) _MOUSE_MOD(__VA_ARGS__)
@@ -391,8 +407,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT_wrapper(
     MOUSE_MOD(HOME_ROW_MOD_GASC(LAYOUT_LAYER_BASE_BEPO))
   ),
-  [LAYER_NAV] = LAYOUT_wrapper(LAYOUT_LAYER_NAV),
-  [LAYER_NAV_MIRRORED] = LAYOUT_wrapper(LAYOUT_LAYER_NAV_MIRRORED),
+  //[LAYER_NAV] = LAYOUT_wrapper(LAYOUT_LAYER_NAV),
+  [LAYER_NAV_L] = LAYOUT_wrapper(LAYOUT_LAYER_NAV_MIRRORED),
   [LAYER_MOUSE] = LAYOUT_wrapper(LAYOUT_LAYER_MOUSE),
   [LAYER_SYM] = LAYOUT_wrapper(LAYOUT_LAYER_SYM),
   [LAYER_NUM] = LAYOUT_wrapper(LAYOUT_LAYER_NUM),
@@ -401,13 +417,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-#if defined(POINTING_DEVICE_ENABLE) && defined(CHARYBDIS_AUTO_SNIPING_ON_LAYER)
-layer_state_t layer_state_set_kb(layer_state_t state) {
-    state = layer_state_set_user(state);
-    charybdis_set_pointer_sniping_enabled(layer_state_cmp(state, CHARYBDIS_AUTO_SNIPING_ON_LAYER));
-    return state;
-}
-#endif // POINTING_DEVICE_ENABLE && CHARYBDIS_AUTO_SNIPING_ON_LAYER
+// #if defined(POINTING_DEVICE_ENABLE) && defined(CHARYBDIS_AUTO_SNIPING_ON_LAYER)
+// layer_state_t layer_state_set_kb(layer_state_t state) {
+//     state = layer_state_set_user(state);
+//     charybdis_set_pointer_sniping_enabled(layer_state_cmp(state, CHARYBDIS_AUTO_SNIPING_ON_LAYER));
+//     return state;
+// }
+// #endif // POINTING_DEVICE_ENABLE && CHARYBDIS_AUTO_SNIPING_ON_LAYER
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (!process_achordion(keycode, record)) { return false; }
@@ -610,15 +626,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LT(LAYER_MOUSE, KC_Z):
-        case LT(LAYER_NAV_MIRRORED, KC_BSPC):
+        case LT(LAYER_NAV_L, KC_BSPC):
             return QUICK_TAP_TERM + 100;
         default:
             return QUICK_TAP_TERM;
     }
 }
 
-const key_override_t delete_key_override = ko_make_basic(MOD_BIT(KC_LSFT), BAC_NUM, KC_DEL);
-const key_override_t space_key_override = ko_make_basic(MOD_BIT(KC_RSFT), SPC_NAV, KC_ESC);
+const key_override_t delete_key_override = ko_make_basic(MOD_BIT(KC_LSFT), BAC_NAV, KC_DEL);
+const key_override_t space_key_override = ko_make_basic(MOD_BIT(KC_RSFT), SPC_NUM, KC_ESC);
 const key_override_t lprn_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_LPRN, NO_LBRC);
 const key_override_t rprn_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_RPRN, NO_RBRC);
 const key_override_t quest_key_override = ko_make_basic(MOD_MASK_SHIFT, NO_QUES, NO_EXLM);
@@ -644,7 +660,7 @@ const key_override_t rbrc_key_override = ko_make_basic(MOD_MASK_CTRL, NO_RBRC, N
 //                                       .trigger                = NO_RPRN,
 //                                       .replacement            = NO_RCBR,
 //                                         .enabled                = (bool *)&is_not_mac};
-const key_override_t ctrl_z = ko_make_basic(MOD_BIT(KC_RCTL), MOUSE(KC_Z), RCTL(KC_Z));
+//const key_override_t ctrl_z = ko_make_basic(MOD_BIT(KC_RCTL), MOUSE(KC_Z), RCTL(KC_Z));
 
 
 // This globally defines all key overrides to be used
@@ -658,7 +674,7 @@ const key_override_t **key_overrides = (const key_override_t *[]){
     &rbrc_key_override,
     // &lprn3_key_override,
     // &rprn3_key_override,
-    &ctrl_z,
+    //&ctrl_z,
 	NULL // Null terminate the array of overrides!
 };
 
@@ -666,7 +682,7 @@ uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
   switch (tap_hold_keycode) {
     case LT(LAYER_MOUSE, KC_Z):
     case LT(LAYER_MOUSE, NO_MINS):
-    case LT(LAYER_NAV_MIRRORED, KC_BSPC):
+    case LT(LAYER_NAV_L, KC_BSPC):
     case LT(LAYER_NUM, KC_SPC):
     case LSFT_T(KC_T):
       return 0;  // Bypass Achordion for these keys.
@@ -678,6 +694,7 @@ uint16_t get_combo_term(uint16_t index, combo_t *combo) {
     // decide by combo->keycode
     switch (combo->keycode) {
         case OSM(MOD_LSFT):
+        case MO(LAYER_MOUSE):
             return 50;
         default:
             return 35;
