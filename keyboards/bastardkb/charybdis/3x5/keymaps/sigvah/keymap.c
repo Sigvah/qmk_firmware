@@ -86,12 +86,29 @@ enum keycodes {
 
 
 //--------------AUTO MOUSE----------------
-bool is_mouse_record_user(uint16_t keycode, keyrecord_t *record) {
+bool pre_process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch(keycode) {
         case DRGSCRL:
         case KC_BTN1:
         case KC_BTN2:
             set_auto_mouse_timeout(200);
+            break;
+        case KC_RSFT:
+        case KC_RCTL:
+        case KC_LALT:
+        case KC_LGUI:
+            set_auto_mouse_timeout(50);
+            break;
+    }
+    return true;
+}
+bool is_mouse_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch(keycode) {
+        case DRGSCRL:
+            return true;
+        case SNIPING:
+        case S_D_MOD:
+        case DPI_MOD:
             return true;
         default:
             return false;
@@ -102,7 +119,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     if (layer_state_cmp(state, LAYER_MOUSE) != mouse_layer_on) {
         mouse_layer_on = layer_state_cmp(state, LAYER_MOUSE);
         if (!mouse_layer_on) {
-            set_auto_mouse_timeout(1000);
+            set_auto_mouse_timeout(600);
         }
      }
     return state;
@@ -324,7 +341,7 @@ combo_t key_combos[] = {
 // Mouse.
 #define LAYOUT_LAYER_MOUSE                                                                    \
     QK_BOOT,  EE_CLR, XXXXXXX, DPI_MOD, DPI_RMOD, S_D_MOD, DPI_MOD, XXXXXXX, EE_CLR,  QK_BOOT, \
-    _______, DRGSCRL, KC_LCTL, KC_LSFT,     U_NA, TO(LAYER_BASE), KC_NO, KC_RCTL, KC_LALT, KC_LGUI, \
+    SNIPING, DRGSCRL, KC_LCTL, KC_LSFT,  KC_TRNS,  ______________HOME_ROW_GASC_R______________, \
     _______, DRGSCRL, KC_LCTL, KC_LSFT,     U_NA, KC_BTN2,  KC_BTN1, KC_BTN2, DRGSCRL, _______, \
                         U_NA, KC_BTN1, KC_BTN2,       KC_TRNS, KC_TRNS
 
