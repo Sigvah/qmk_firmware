@@ -45,10 +45,10 @@
  *
  * See docs.qmk.fm/using-qmk/software-features/tap_hold#tapping-force-hold
  */
-#define POINTING_DEVICE_AUTO_MOUSE_ENABLE
-#define AUTO_MOUSE_DEFAULT_LAYER 3
-#define AUTO_MOUSE_TIME 600
-#define AUTO_MOUSE_DELAY 200
+// #define POINTING_DEVICE_AUTO_MOUSE_ENABLE
+// #define AUTO_MOUSE_DEFAULT_LAYER 3
+// #define AUTO_MOUSE_TIME 130
+// #define AUTO_MOUSE_DELAY 200
 
 //#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 #define COMBO_TERM 35

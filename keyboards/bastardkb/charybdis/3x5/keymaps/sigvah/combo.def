@@ -1,0 +1,24 @@
+// Converting the existing combos into shorter versions as requested
+COMB(H_COMM_AA,   KC_LBRC,   KC_H, KC_COMM)        // Å
+COMB(FP_AE,       KC_QUOT,   KC_F, KC_P)          // Æ
+COMB(CD_OE,       KC_SCLN,   KC_C, KC_D)          // Ø
+COMB(WF_LCBR,     CX_LCBR,   KC_W, KC_F)          // {
+COMB(XC_RCBR,     CX_RCBR,   KC_X, KC_C)          // }
+COMB(UY_LPRN,     NO_LPRN,   KC_U, KC_Y)          // (
+COMB(NE_LPRN,     NO_RPRN,   KC_COMM, KC_DOT)     // )
+COMB(LU_QUES,     NO_QUES,   KC_L, KC_U)          // ?
+COMB(GM_CWT,      CX_EURO,   KC_G, KC_M)          // %
+COMB(FU_CWT,      CX_AT,     KC_F, KC_U)          // @
+COMB(DH_HSH,      NO_HASH,   KC_D, KC_H)          // #
+COMB(SPC_TAB_ESC, DRGSCRL,   LT(LAYER_NUM, KC_SPC), LT(LAYER_FUN, KC_TAB)) // Pause
+COMB(BCK_ENT_DEL, CW_TOGG,   LT(LAYER_NAV_L, KC_BSPC), LT(LAYER_SYM, KC_ENT)) // Mute
+COMB(SE_ESC,      KC_NO,     LCTL_T(KC_S), RCTL_T(KC_E)) // MOUSE TOGGLE
+COMB(RI_CWT,      CW_TOGG,   LALT_T(KC_R), LALT_T(KC_I)) // CAPS_WORD
+COMB(PL_DLR,      CX_PND,    KC_P, KC_L)          // $
+COMB(TN_AMPR,     NO_AMPR,   LSFT_T(KC_T), RSFT_T(KC_N)) // &
+COMB(TF_PRCT,     NO_PERC,   LSFT_T(KC_T), KC_F)  // %
+COMB(NU_DLR,      CX_DLR,    RSFT_T(KC_N), KC_U)  // $
+COMB(TW_CAPS,     KC_CAPS,   LSFT(KC_T), KC_W)    // CAPS_LOCK
+COMB(SPC_BCK_SFT, OSM(MOD_LSFT), LT(LAYER_NUM, KC_SPC), LT(LAYER_NAV_L, KC_BSPC)) // SHIFT
+COMB(LR_SFT,      TG(LAYER_MOUSE), KC_LCTL, KC_RCTL)
+COMB(BTN12,       DRGSCRL,   KC_BTN1, KC_BTN2)
