@@ -217,7 +217,12 @@ enum combos {
   LR_SFT, // MOUSE LAYER OFF
   BTN12,
   NH_BTN1,
-  ECOMM_BTN2
+  ECOMM_BTN2,
+  IDOT_DRGSCRL,
+  TD_BTN1,
+  SC_BTN2,
+  RX_DRGSCRL
+
 };
 const uint16_t PROGMEM aa_combo[] = {KC_H, KC_COMM, COMBO_END};
 const uint16_t PROGMEM ae_combo[] = {KC_F, KC_P, COMBO_END};
@@ -242,10 +247,12 @@ const uint16_t PROGMEM tw_combo[] = {LSFT(KC_T), KC_W, COMBO_END};
 const uint16_t PROGMEM spc_bck_combo[] = {LT(LAYER_NUM, KC_SPC), LT(LAYER_NAV_L, KC_BSPC), COMBO_END};
 const uint16_t PROGMEM lr_sft_combo[] = {KC_LCTL, KC_RCTL, COMBO_END};
 const uint16_t PROGMEM btn1_2_combo[] = {KC_BTN1, KC_BTN2, COMBO_END};
-const uint16_t PROGMEM nh_combo[] = {KC_N, KC_H, COMBO_END};
-const uint16_t PROGMEM ecomm_combo[] = {KC_E, KC_COMM, COMBO_END};
-
-
+const uint16_t PROGMEM nh_combo[] = {RSFT_T(KC_N), KC_H, COMBO_END};
+const uint16_t PROGMEM ecomm_combo[] = {RCTL_T(KC_E), KC_COMM, COMBO_END};
+const uint16_t PROGMEM idot_combo[] = {LALT_T(KC_I), KC_DOT, COMBO_END};
+const uint16_t PROGMEM rx_combo[] = {LALT_T(KC_R), KC_X, COMBO_END};
+const uint16_t PROGMEM sc_combo[] = {LCTL_T(KC_S), KC_C, COMBO_END};
+const uint16_t PROGMEM td_combo[] = {LSFT_T(KC_T), KC_D, COMBO_END};
 
 combo_t key_combos[] = {
   [H_COMM_AA] = COMBO(aa_combo, KC_LBRC), //Å
@@ -259,7 +266,7 @@ combo_t key_combos[] = {
   [GM_CWT] = COMBO(gm_combo, CX_EURO), // %
   [FU_CWT] = COMBO(fu_combo, CX_AT), // @
   [DH_HSH] = COMBO(dh_combo, NO_HASH), // #
-  [SPC_TAB_ESC] = COMBO(spc_tab_esc_combo, DRGSCRL),
+  [SPC_TAB_ESC] = COMBO(spc_tab_esc_combo, MO(LAYER_MOUSE)),
   [BCK_ENT_DEL] = COMBO(bck_ent_del_combo, CW_TOGG),
   [SE_ESC] = COMBO(se_esc_combo, KC_NO), //MOUSE TOGGLE
   [RI_CWT] = COMBO(ri_cwt_combo, CW_TOGG), //CAPS_WORD
@@ -272,6 +279,10 @@ combo_t key_combos[] = {
   [BTN12] = COMBO(btn1_2_combo, DRGSCRL),
   [NH_BTN1] = COMBO(nh_combo, KC_BTN1),
   [ECOMM_BTN2] = COMBO(ecomm_combo, KC_BTN2),
+  [IDOT_DRGSCRL] = COMBO(idot_combo, DRGSCRL),
+  [RX_DRGSCRL] = COMBO(rx_combo, DRGSCRL),
+  [SC_BTN2] = COMBO(sc_combo, KC_BTN2),
+  [TD_BTN1] = COMBO(td_combo, KC_BTN1),
 };
 // -----------------------------------------
 
@@ -282,6 +293,7 @@ combo_t key_combos[] = {
 #define TAB_FUN LT(LAYER_FUN, KC_TAB)
 #define ENT_MED LT(LAYER_MEDIA, KC_ENT)
 #define SPC_NUM LT(LAYER_NUM, KC_SPC)
+#define ESC_MOS LT(LAYER_MOUSE, KC_ESC)
 #define MOUSE(KC) LT(LAYER_MOUSE, KC)
 #define ESC_SLP LT(KC_SLEP, KC_ESC)
 #define HYP_ESC ALL_T(KC_ESC)
@@ -348,11 +360,12 @@ combo_t key_combos[] = {
                 U_NA,    KC_SPC,    U_NA,                 U_NA, U_NA
 
 
+// Mouse.
 #define LAYOUT_LAYER_MOUSE                                                                    \
     QK_BOOT,  EE_CLR, XXXXXXX, DPI_MOD, DPI_RMOD, S_D_MOD, DPI_MOD, XXXXXXX, EE_CLR,  QK_BOOT, \
-    SNIPING, DRGSCRL, KC_LCTL, SNIPING,  KC_TRNS,  ______________HOME_ROW_GASC_R______________, \
-    QK_REBOOT, DRGSCRL, KC_LCTL, KC_LSFT,     U_NA, KC_BTN2,  KC_BTN1, KC_BTN2, DRGSCRL, QK_REBOOT, \
-                        U_NA, KC_BTN1, KC_BTN2,       _______, _______
+    _______, DRGSCRL, KC_LCTL, KC_LSFT,     U_NA, TO(LAYER_BASE), KC_NO, KC_RCTL, KC_LALT, KC_LGUI, \
+    _______, DRGSCRL, KC_LCTL, KC_LSFT,     U_NA, KC_BTN2,  KC_BTN1, KC_BTN2, DRGSCRL, _______, \
+                        U_NA, KC_BTN1, KC_BTN2,       KC_TRNS, KC_TRNS
 
 // Symbols.
 #define LAYOUT_LAYER_SYM                                                                      \
@@ -418,12 +431,12 @@ combo_t key_combos[] = {
     L10, L11, L12, L13, L14, R15, R16, R17, R18, R19,             \
     L20, L21, L22, L23, L24, R25, R26, R27, R28, R29,             \
     ...)                                                          \
-            L00,        L01,        L02,   MOUSE(L03),        L04,  \
+            L00,        L01,        L02,        L03,        L04,  \
             R05,        R06,        R07,        R08,        R09,  \
             L10,        L11,        L12,        L13,        L14,  \
             R15,        R16,        R17,        R18,        R19,  \
-            L20,        L21,        L22,        L23,        L24,  \
-            R25, MOUSE(R26),        R27,        R28, MOUSE(R29),  \
+     MOUSE(L20),        L21,        L22,        L23,        L24,  \
+            R25,        R26,        R27,        R28, MOUSE(R29),  \
       __VA_ARGS__
 #define MOUSE_MOD(...) _MOUSE_MOD(__VA_ARGS__)
 
@@ -651,6 +664,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //  }
 uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        case LT(LAYER_MOUSE, KC_Z):
         case LT(LAYER_NAV_L, KC_BSPC):
             return QUICK_TAP_TERM + 100;
         default:
@@ -705,6 +719,8 @@ const key_override_t **key_overrides = (const key_override_t *[]){
 
 uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
   switch (tap_hold_keycode) {
+    case LT(LAYER_MOUSE, KC_Z):
+    case LT(LAYER_MOUSE, NO_MINS):
     case LT(LAYER_NAV_L, KC_BSPC):
     case LT(LAYER_NUM, KC_SPC):
     case LSFT_T(KC_T):
@@ -716,9 +732,9 @@ uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
 uint16_t get_combo_term(uint16_t index, combo_t *combo) {
     // decide by combo->keycode
     switch (combo->keycode) {
-        case CW_TOGG:
-        case DRGSCRL:
-            return 60;
+        case OSM(MOD_LSFT):
+        case MO(LAYER_MOUSE):
+            return 50;
         default:
             return 35;
     }
