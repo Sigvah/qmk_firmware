@@ -268,12 +268,12 @@ combo_t key_combos[] = {
   [DH_HSH] = COMBO(dh_combo, NO_HASH), // #
   [SPC_TAB_ESC] = COMBO(spc_tab_esc_combo, MO(LAYER_MOUSE)),
   [BCK_ENT_DEL] = COMBO(bck_ent_del_combo, CW_TOGG),
-  [SE_ESC] = COMBO(se_esc_combo, KC_NO), //MOUSE TOGGLE
   [RI_CWT] = COMBO(ri_cwt_combo, CW_TOGG), //CAPS_WORD
-  [PL_DLR] = COMBO(pl_dlr_combo, CX_PND), // $
+  [SE_ESC] = COMBO(se_esc_combo, CX_DLR), // $
+  [PL_DLR] = COMBO(pl_dlr_combo, CX_PND), // £
   [TN_AMPR] = COMBO(tn_combo, NO_AMPR), // &
   [TF_PRCT] = COMBO(tf_combo, NO_PERC), // %
-  [NU_DLR] = COMBO(nu_dlr_combo, CX_DLR), // $
+  [NU_DLR] = COMBO(nu_dlr_combo, CX_TILD), // ~
   [TW_CAPS] = COMBO(tw_combo, KC_CAPS), //CAPS_LOCK
   [SPC_BCK_SFT] = COMBO(spc_bck_combo, OSM(MOD_LSFT)), //SHIFT
   [BTN12] = COMBO(btn1_2_combo, DRGSCRL),
@@ -363,8 +363,8 @@ combo_t key_combos[] = {
 // Mouse.
 #define LAYOUT_LAYER_MOUSE                                                                    \
     QK_BOOT,  EE_CLR, XXXXXXX, DPI_MOD, DPI_RMOD, S_D_MOD, DPI_MOD, XXXXXXX, EE_CLR,  QK_BOOT, \
-    _______, DRGSCRL, KC_LCTL, KC_LSFT,     U_NA, TO(LAYER_BASE), KC_NO, KC_RCTL, KC_LALT, KC_LGUI, \
-    _______, DRGSCRL, KC_LCTL, KC_LSFT,     U_NA, KC_BTN2,  KC_BTN1, KC_BTN2, DRGSCRL, _______, \
+     ______________HOME_ROW_GASC_L______________, TO(LAYER_BASE), KC_NO, KC_RCTL, KC_LALT, KC_LGUI, \
+    _______, DRGSCRL, SNIPING, KC_LSFT,     U_NA, KC_BTN2,  KC_BTN1, KC_BTN2, DRGSCRL, _______, \
                         U_NA, KC_BTN1, KC_BTN2,       KC_TRNS, KC_TRNS
 
 // Symbols.
@@ -734,6 +734,7 @@ uint16_t get_combo_term(uint16_t index, combo_t *combo) {
     switch (combo->keycode) {
         case OSM(MOD_LSFT):
         case MO(LAYER_MOUSE):
+        case CW_TOGG:
             return 50;
         default:
             return 35;
