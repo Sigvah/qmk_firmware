@@ -28,17 +28,16 @@
 /* CRC. */
 #define CRC8_USE_TABLE
 #define CRC8_OPTIMIZE_SPEED
+#define SPLIT_LAYER_STATE_ENABLE
 
 #if 1
 #   define I2C_DRIVER I2CD1
 #   define I2C1_SDA_PIN GP2
 #   define I2C1_SCL_PIN GP3
 #   define I2C1_CLOCK_SPEED 1000000
-#   define DIGITIZER_MOTION_PIN GP12
+#   define DIGITIZER_MOTION_PIN GP13
 #   define DIGITIZER_MOTION_PIN_ACTIVE_LOW yes
 #   define PROCYON_50_42
-#   define MXT_SWITCH_XY
-#   define MXT_INVERT_Y
 #else
     /* Cirque trackpad over SPI. */
 #   define SPI_DRIVER SPID0
