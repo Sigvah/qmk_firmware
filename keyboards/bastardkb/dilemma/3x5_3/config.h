@@ -38,6 +38,7 @@
 #   define DIGITIZER_MOTION_PIN GP13
 #   define DIGITIZER_MOTION_PIN_ACTIVE_LOW yes
 #   define PROCYON_50_42
+#   define MOUSEKEY_WHEEL_DIRECTION_INVERT
 #else
     /* Cirque trackpad over SPI. */
 #   define SPI_DRIVER SPID0
